@@ -1,0 +1,686 @@
+<html lang="vi"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hướng dẫn Deploy C# / Angular lên IIS</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --primary: #2563eb;
+      --primary-soft: #dbeafe;
+      --danger: #dc2626;
+      --warning: #d97706;
+      --success: #16a34a;
+      --border: #e5e7eb;
+      --code-bg: #111827;
+      --code-text: #e5e7eb;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+    }
+
+    header {
+      background: linear-gradient(135deg, #1e40af, #2563eb);
+      color: white;
+      padding: 48px 24px;
+    }
+
+    header .container {
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+
+    header h1 {
+      margin: 0 0 12px;
+      font-size: 36px;
+      line-height: 1.2;
+    }
+
+    header p {
+      margin: 0;
+      max-width: 860px;
+      color: #dbeafe;
+      font-size: 17px;
+    }
+
+    .container {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    nav {
+      position: sticky;
+      top: 16px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+    }
+
+    nav h3 {
+      margin: 0 0 12px;
+      font-size: 16px;
+    }
+
+    nav a {
+      display: block;
+      color: var(--text);
+      text-decoration: none;
+      padding: 8px 10px;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+
+    nav a:hover {
+      background: var(--primary-soft);
+      color: var(--primary);
+    }
+
+    main {
+      min-width: 0;
+    }
+
+    section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 28px;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+    }
+
+    h2 {
+      margin-top: 0;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+      color: #111827;
+    }
+
+    h3 { margin-top: 28px; color: #111827; }
+    h4 { margin-bottom: 8px; }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      background: var(--primary-soft);
+      color: var(--primary);
+      margin-right: 8px;
+    }
+
+    .note, .warn, .ok, .error {
+      padding: 14px 16px;
+      border-radius: 14px;
+      margin: 16px 0;
+      border-left: 5px solid;
+    }
+
+    .note { background: #eff6ff; border-color: var(--primary); }
+    .warn { background: #fffbeb; border-color: var(--warning); }
+    .ok { background: #f0fdf4; border-color: var(--success); }
+    .error { background: #fef2f2; border-color: var(--danger); }
+
+    code {
+      background: #eef2ff;
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-family: Consolas, monospace;
+      font-size: 0.95em;
+    }
+
+    pre {
+      background: var(--code-bg);
+      color: var(--code-text);
+      padding: 16px;
+      border-radius: 14px;
+      overflow-x: auto;
+      font-size: 14px;
+    }
+
+    pre code {
+      background: transparent;
+      color: inherit;
+      padding: 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      overflow: hidden;
+      border-radius: 12px;
+    }
+
+    th, td {
+      border: 1px solid var(--border);
+      padding: 12px;
+      vertical-align: top;
+      text-align: left;
+    }
+
+    th {
+      background: #f9fafb;
+      font-weight: 700;
+    }
+
+    ul, ol { padding-left: 22px; }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      background: #fbfdff;
+    }
+
+    .footer {
+      color: var(--muted);
+      text-align: center;
+      padding: 32px 16px 48px;
+      font-size: 14px;
+    }
+
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+      nav { position: static; }
+      .grid-2 { grid-template-columns: 1fr; }
+      header h1 { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Hướng dẫn Deploy C# / ASP.NET Core và Angular lên IIS</h1>
+      <p>Tài liệu thực hành triển khai ứng dụng lên IIS: chuẩn bị môi trường, publish backend C#, publish Angular, cấu hình IIS, xử lý routing SPA, cấu hình API, log, quyền thư mục và các lỗi thường gặp.</p>
+    </div>
+  </header>
+
+  <div class="container layout">
+    <nav>
+      <h3>Mục lục</h3>
+      <a href="#overview">1. Tổng quan mô hình deploy</a>
+      <a href="#prepare">2. Chuẩn bị IIS Server</a>
+      <a href="#publish-csharp">3. Publish C# / ASP.NET Core</a>
+      <a href="#publish-angular">4. Publish Angular</a>
+      <a href="#iis-backend">5. Tạo IIS Site cho Backend</a>
+      <a href="#iis-angular">6. Tạo IIS Site cho Angular</a>
+      <a href="#config">7. Cấu hình appsettings / environment</a>
+      <a href="#logs">8. Log và kiểm tra sau deploy</a>
+      <a href="#errors">9. Lỗi thường gặp và cách khắc phục</a>
+      <a href="#checklist">10. Checklist triển khai</a>
+    </nav>
+
+    <main>
+      <section id="overview">
+        <h2>1. Tổng quan mô hình deploy</h2>
+        <p>Một hệ thống web nội bộ hoặc EMR thường có 2 phần:</p>
+        <div class="grid-2">
+          <div class="card">
+            <h3>Backend C# / ASP.NET Core</h3>
+            <p>Chạy API, nghiệp vụ, xác thực, kết nối database, file storage, background job.</p>
+            <p>Ví dụ URL:</p>
+            <pre><code>https://api.company.local</code></pre>
+          </div>
+          <div class="card">
+            <h3>Frontend Angular</h3>
+            <p>Ứng dụng SPA chạy HTML, CSS, JS static. Gọi API qua HTTP/HTTPS.</p>
+            <p>Ví dụ URL:</p>
+            <pre><code>https://emr.company.local</code></pre>
+          </div>
+        </div>
+        <div class="note">
+          <strong>Khuyến nghị:</strong> Nên deploy backend và frontend thành 2 IIS Site riêng biệt. Cách này dễ cấu hình SSL, CORS, log, recycle app pool và scale sau này.
+        </div>
+      </section>
+
+      <section id="prepare">
+        <h2>2. Chuẩn bị IIS Server</h2>
+
+        <h3>2.1. Bật IIS trên Windows</h3>
+        <ol>
+          <li>Mở <strong>Turn Windows features on or off</strong>.</li>
+          <li>Bật <strong>Internet Information Services</strong>.</li>
+          <li>Bật thêm các mục:</li>
+        </ol>
+        <ul>
+          <li>Web Management Tools → IIS Management Console</li>
+          <li>World Wide Web Services → Common HTTP Features → Static Content</li>
+          <li>World Wide Web Services → Application Development Features → ASP.NET, .NET Extensibility, ISAPI Extensions, ISAPI Filters</li>
+          <li>Security → Request Filtering</li>
+        </ul>
+
+        <h3>2.2. Cài .NET Hosting Bundle</h3>
+        <p>Với ASP.NET Core chạy trên IIS, server cần cài đúng <strong>.NET Hosting Bundle</strong>. Hosting Bundle chứa ASP.NET Core Runtime và ASP.NET Core Module để IIS có thể khởi động ứng dụng.</p>
+        <div class="warn">
+          Nếu máy server chỉ cài .NET SDK nhưng chưa cài Hosting Bundle, ứng dụng ASP.NET Core vẫn có thể lỗi khi chạy trên IIS.
+        </div>
+
+        <h3>2.3. Cài IIS URL Rewrite</h3>
+        <p>Angular SPA cần URL Rewrite để khi người dùng refresh trực tiếp các route như <code>/benh-an/123</code>, IIS sẽ trả về <code>index.html</code> thay vì báo 404.</p>
+
+        <h3>2.4. Tạo thư mục deploy</h3>
+        <pre><code>D:\Sites\MyApp\Api
+D:\Sites\MyApp\Web
+D:\Sites\MyApp\Logs
+D:\Sites\MyApp\Files</code></pre>
+        <p>Nên tách thư mục source code, publish output, log và file upload.</p>
+      </section>
+
+      <section id="publish-csharp">
+        <h2>3. Publish C# / ASP.NET Core</h2>
+
+        <h3>3.1. Publish bằng CLI</h3>
+        <pre><code>dotnet restore
+dotnet build -c Release
+dotnet publish -c Release -o D:\Publish\MyApi</code></pre>
+
+        <h3>3.2. Publish self-contained cho Windows x64</h3>
+        <pre><code>dotnet publish -c Release -r win-x64 --self-contained true -o D:\Publish\MyApi</code></pre>
+        <p>Dùng self-contained khi server không muốn phụ thuộc nhiều vào runtime đã cài sẵn. Tuy nhiên dung lượng publish sẽ lớn hơn.</p>
+
+        <h3>3.3. Publish framework-dependent</h3>
+        <pre><code>dotnet publish -c Release -o D:\Publish\MyApi</code></pre>
+        <p>Cách này nhẹ hơn, nhưng server phải cài đúng .NET Runtime / Hosting Bundle tương ứng.</p>
+
+        <h3>3.4. File cần có sau publish</h3>
+        <pre><code>MyApi.dll
+MyApi.exe                 nếu self-contained hoặc apphost enabled
+appsettings.json
+appsettings.Production.json
+web.config
+wwwroot\                  nếu backend có static file</code></pre>
+
+        <h3>3.5. Chạy thử trước khi đưa vào IIS</h3>
+        <pre><code>cd D:\Publish\MyApi
+dotnet MyApi.dll</code></pre>
+        <p>Nếu chạy thành công bằng CLI nhưng lỗi trên IIS, vấn đề thường nằm ở IIS, quyền thư mục, Hosting Bundle, app pool hoặc web.config.</p>
+      </section>
+
+      <section id="publish-angular">
+        <h2>4. Publish Angular</h2>
+
+        <h3>4.1. Build production</h3>
+        <pre><code>npm install
+ng build -c production</code></pre>
+        <p>Hoặc nếu project có script:</p>
+        <pre><code>npm run build:prod</code></pre>
+
+        <h3>4.2. Xác định output folder</h3>
+        <p>Tùy phiên bản Angular và cấu hình project, output có thể là:</p>
+        <pre><code>dist/my-app
+hoặc
+/dist/my-app/browser</code></pre>
+        <p>Thư mục cần copy lên IIS là thư mục chứa file <code>index.html</code>.</p>
+
+        <h3>4.3. Build khi deploy vào subfolder</h3>
+        <p>Nếu ứng dụng chạy tại:</p>
+        <pre><code>https://domain.com/emr/</code></pre>
+        <p>Build với base href:</p>
+        <pre><code>ng build -c production --base-href /emr/</code></pre>
+
+        <h3>4.4. web.config cho Angular SPA</h3>
+        <p>Tạo file <code>web.config</code> cùng cấp với <code>index.html</code>:</p>
+        <pre><code>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;configuration&gt;
+  &lt;system.webServer&gt;
+    &lt;rewrite&gt;
+      &lt;rules&gt;
+        &lt;rule name="Angular Routes" stopProcessing="true"&gt;
+          &lt;match url=".*" /&gt;
+          &lt;conditions logicalGrouping="MatchAll"&gt;
+            &lt;add input="{REQUEST_FILENAME}" matchType="IsFile" negate="true" /&gt;
+            &lt;add input="{REQUEST_FILENAME}" matchType="IsDirectory" negate="true" /&gt;
+          &lt;/conditions&gt;
+          &lt;action type="Rewrite" url="/" /&gt;
+        &lt;/rule&gt;
+      &lt;/rules&gt;
+    &lt;/rewrite&gt;
+
+    &lt;staticContent&gt;
+      &lt;remove fileExtension=".json" /&gt;
+      &lt;mimeMap fileExtension=".json" mimeType="application/json" /&gt;
+      &lt;remove fileExtension=".webmanifest" /&gt;
+      &lt;mimeMap fileExtension=".webmanifest" mimeType="application/manifest+json" /&gt;
+    &lt;/staticContent&gt;
+  &lt;/system.webServer&gt;
+&lt;/configuration&gt;</code></pre>
+
+        <div class="warn">
+          Nếu deploy Angular vào subfolder như <code>/emr/</code>, rule rewrite nên đổi thành <code>&lt;action type="Rewrite" url="/emr/" /&gt;</code> hoặc cấu hình IIS Application đúng theo subfolder.
+        </div>
+      </section>
+
+      <section id="iis-backend">
+        <h2>5. Tạo IIS Site cho Backend ASP.NET Core</h2>
+
+        <h3>5.1. Tạo Application Pool</h3>
+        <ol>
+          <li>Mở <strong>IIS Manager</strong>.</li>
+          <li>Vào <strong>Application Pools</strong> → <strong>Add Application Pool</strong>.</li>
+          <li>Name: <code>MyApiPool</code>.</li>
+          <li>.NET CLR Version: <strong>No Managed Code</strong>.</li>
+          <li>Managed pipeline mode: <strong>Integrated</strong>.</li>
+        </ol>
+        <div class="note">
+          ASP.NET Core tự chạy trong Kestrel phía sau IIS, vì vậy App Pool nên để <strong>No Managed Code</strong>.
+        </div>
+
+        <h3>5.2. Tạo Website</h3>
+        <ol>
+          <li>Sites → Add Website.</li>
+          <li>Site name: <code>MyApi</code>.</li>
+          <li>Application Pool: <code>MyApiPool</code>.</li>
+          <li>Physical path: <code>D:\Sites\MyApp\Api</code>.</li>
+          <li>Binding: <code>https://api.company.local</code> hoặc port riêng.</li>
+        </ol>
+
+        <h3>5.3. Copy publish output</h3>
+        <pre><code>xcopy D:\Publish\MyApi D:\Sites\MyApp\Api /E /Y</code></pre>
+
+        <h3>5.4. Cấp quyền thư mục</h3>
+        <p>Cấp quyền cho identity của App Pool:</p>
+        <pre><code>IIS AppPool\MyApiPool</code></pre>
+        <p>Các quyền thường cần:</p>
+        <ul>
+          <li>Read &amp; Execute cho thư mục deploy.</li>
+          <li>Modify cho thư mục log, upload, file storage.</li>
+        </ul>
+      </section>
+
+      <section id="iis-angular">
+        <h2>6. Tạo IIS Site cho Angular</h2>
+
+        <h3>6.1. Tạo Application Pool</h3>
+        <p>Angular chỉ là static file, có thể tạo App Pool riêng:</p>
+        <pre><code>Name: MyWebPool
+.NET CLR Version: No Managed Code</code></pre>
+
+        <h3>6.2. Tạo Website</h3>
+        <ol>
+          <li>Sites → Add Website.</li>
+          <li>Site name: <code>MyWeb</code>.</li>
+          <li>Physical path: <code>D:\Sites\MyApp\Web</code>.</li>
+          <li>Binding: <code>https://emr.company.local</code>.</li>
+        </ol>
+
+        <h3>6.3. Copy Angular build output</h3>
+        <pre><code>xcopy D:\AngularProject\dist\my-app\browser D:\Sites\MyApp\Web /E /Y</code></pre>
+        <p>Nhớ copy cả file <code>web.config</code> vào cùng cấp với <code>index.html</code>.</p>
+      </section>
+
+      <section id="config">
+        <h2>7. Cấu hình appsettings / environment</h2>
+
+        <h3>7.1. Backend appsettings.Production.json</h3>
+        <pre><code>{
+  "ConnectionStrings": {
+    "Default": "Server=SQL-SERVER;Database=MyDb;User Id=sa;Password=your_password;TrustServerCertificate=True"
+  },
+  "App": {
+    "SelfUrl": "https://api.company.local",
+    "CorsOrigins": "https://emr.company.local"
+  },
+  "FileStorage": {
+    "RootPath": "D:\\Sites\\MyApp\\Files"
+  }
+}</code></pre>
+
+        <h3>7.2. Angular environment production</h3>
+        <pre><code>export const environment = {
+  production: true,
+  apis: {
+    default: {
+      url: 'https://api.company.local'
+    }
+  }
+};</code></pre>
+
+        <h3>7.3. CORS</h3>
+        <p>Nếu frontend và backend khác domain hoặc khác port, backend cần cho phép origin của Angular.</p>
+        <pre><code>https://emr.company.local</code></pre>
+        <div class="error">
+          Không nên cấu hình CORS dạng <code>*</code> cho hệ thống nội bộ có đăng nhập, cookie, token hoặc dữ liệu bệnh án.
+        </div>
+      </section>
+
+      <section id="logs">
+        <h2>8. Log và kiểm tra sau deploy</h2>
+
+        <h3>8.1. Kiểm tra nhanh</h3>
+        <ul>
+          <li>Mở URL backend: <code>https://api.company.local/swagger</code> hoặc endpoint health check.</li>
+          <li>Mở URL Angular: <code>https://emr.company.local</code>.</li>
+          <li>Đăng nhập thử.</li>
+          <li>F12 → Network → kiểm tra API có lỗi 401, 403, 404, 500 không.</li>
+          <li>Refresh trực tiếp route con của Angular.</li>
+        </ul>
+
+        <h3>8.2. Bật stdoutLog cho ASP.NET Core khi cần debug</h3>
+        <p>Trong <code>web.config</code> backend, tạm bật:</p>
+        <pre><code>&lt;aspNetCore processPath="dotnet"
+            arguments=".\MyApi.dll"
+            stdoutLogEnabled="true"
+            stdoutLogFile=".\logs\stdout"
+            hostingModel="inprocess" /&gt;</code></pre>
+        <div class="warn">
+          Chỉ bật <code>stdoutLogEnabled</code> khi cần debug. Sau khi xử lý xong lỗi nên tắt để tránh sinh log quá nhiều.
+        </div>
+
+        <h3>8.3. Nơi xem log</h3>
+        <ul>
+          <li>IIS log: <code>C:\inetpub\logs\LogFiles</code></li>
+          <li>Windows Event Viewer → Windows Logs → Application</li>
+          <li>Log file của ứng dụng nếu có Serilog/NLog/log riêng</li>
+          <li>Browser DevTools → Console / Network</li>
+        </ul>
+      </section>
+
+      <section id="errors">
+        <h2>9. Lỗi thường gặp và cách khắc phục</h2>
+
+        <h3>9.1. HTTP Error 500.19 - Internal Server Error</h3>
+        <table>
+          <tbody><tr><th>Dấu hiệu</th><td>IIS báo 500.19, không vào được site, thường hiển thị lỗi liên quan <code>web.config</code>.</td></tr>
+          <tr><th>Nguyên nhân</th><td>XML sai, section bị lock, thiếu module, thiếu Hosting Bundle, duplicate config, không đủ quyền đọc file config.</td></tr>
+          <tr><th>Cách xử lý</th><td>
+            <ol>
+              <li>Kiểm tra <code>web.config</code> có đúng XML không.</li>
+              <li>Nếu Angular dùng <code>&lt;rewrite&gt;</code>, kiểm tra đã cài URL Rewrite chưa.</li>
+              <li>Nếu backend ASP.NET Core, cài đúng .NET Hosting Bundle.</li>
+              <li>Kiểm tra quyền thư mục cho App Pool Identity.</li>
+              <li>Xem chi tiết HRESULT trên màn hình lỗi hoặc Event Viewer.</li>
+            </ol>
+          </td></tr>
+        </tbody></table>
+
+        <h3>9.2. HTTP Error 404.3 - Not Found</h3>
+        <table>
+          <tbody><tr><th>Dấu hiệu</th><td>IIS không phục vụ được file static như <code>.json</code>, <code>.webmanifest</code>, hoặc file lạ.</td></tr>
+          <tr><th>Nguyên nhân</th><td>Thiếu Static Content hoặc thiếu MIME type.</td></tr>
+          <tr><th>Cách xử lý</th><td>
+            <ol>
+              <li>Bật IIS feature <strong>Static Content</strong>.</li>
+              <li>Thêm MIME type trong IIS hoặc <code>web.config</code>.</li>
+              <li>Kiểm tra file có tồn tại trong thư mục deploy không.</li>
+            </ol>
+          </td></tr>
+        </tbody></table>
+
+        <h3>9.3. Angular refresh route bị 404</h3>
+        <table>
+          <tbody><tr><th>Dấu hiệu</th><td>Vào trang chủ được, nhưng refresh tại <code>/patient/123</code> thì báo 404.</td></tr>
+          <tr><th>Nguyên nhân</th><td>IIS tìm file/folder thật tên <code>/patient/123</code>, trong khi route này thuộc Angular Router.</td></tr>
+          <tr><th>Cách xử lý</th><td>
+            <ol>
+              <li>Cài URL Rewrite.</li>
+              <li>Thêm rule rewrite về <code>/</code> hoặc <code>/emr/</code>.</li>
+              <li>Đảm bảo <code>web.config</code> nằm cùng cấp <code>index.html</code>.</li>
+            </ol>
+          </td></tr>
+        </tbody></table>
+
+        <h3>9.4. Lỗi 502.5 / 500.30 ASP.NET Core failed to start</h3>
+        <table>
+          <tbody><tr><th>Dấu hiệu</th><td>IIS nhận request nhưng backend không start được.</td></tr>
+          <tr><th>Nguyên nhân</th><td>Sai connection string, thiếu runtime, lỗi appsettings, lỗi DI, lỗi migration/database, thiếu quyền ghi log.</td></tr>
+          <tr><th>Cách xử lý</th><td>
+            <ol>
+              <li>Chạy thử app bằng command line: <code>dotnet MyApi.dll</code>.</li>
+              <li>Bật stdoutLog tạm thời.</li>
+              <li>Xem Event Viewer.</li>
+              <li>Kiểm tra database có truy cập được từ server IIS không.</li>
+              <li>Kiểm tra biến môi trường <code>ASPNETCORE_ENVIRONMENT</code>.</li>
+            </ol>
+          </td></tr>
+        </tbody></table>
+
+        <h3>9.5. Lỗi CORS</h3>
+        <table>
+          <tbody><tr><th>Dấu hiệu</th><td>Browser Console báo request bị chặn bởi CORS policy.</td></tr>
+          <tr><th>Nguyên nhân</th><td>Backend chưa allow domain của Angular.</td></tr>
+          <tr><th>Cách xử lý</th><td>
+            <ol>
+              <li>Thêm origin frontend vào cấu hình CORS.</li>
+              <li>Kiểm tra đúng schema: <code>http</code> khác <code>https</code>.</li>
+              <li>Kiểm tra đúng port.</li>
+              <li>Nếu dùng cookie/auth, cần cấu hình credentials đúng.</li>
+            </ol>
+          </td></tr>
+        </tbody></table>
+
+        <h3>9.6. Lỗi 401 Unauthorized</h3>
+        <table>
+          <tbody><tr><th>Dấu hiệu</th><td>API trả 401 sau khi deploy, dù local chạy bình thường.</td></tr>
+          <tr><th>Nguyên nhân</th><td>Sai authority URL, issuer, audience, redirect URI, cookie domain, token config hoặc HTTPS.</td></tr>
+          <tr><th>Cách xử lý</th><td>
+            <ol>
+              <li>Kiểm tra URL AuthServer/API trong appsettings và Angular environment.</li>
+              <li>Kiểm tra redirect URI trên Auth Server.</li>
+              <li>Kiểm tra token issuer có đúng domain production không.</li>
+              <li>Kiểm tra server time có lệch quá nhiều không.</li>
+            </ol>
+          </td></tr>
+        </tbody></table>
+
+        <h3>9.7. Lỗi 403 Forbidden</h3>
+        <table>
+          <tbody><tr><th>Dấu hiệu</th><td>Truy cập site báo Forbidden.</td></tr>
+          <tr><th>Nguyên nhân</th><td>Không có default document, thiếu quyền thư mục, request filtering, authentication config sai.</td></tr>
+          <tr><th>Cách xử lý</th><td>
+            <ol>
+              <li>Kiểm tra có <code>index.html</code> trong thư mục Angular không.</li>
+              <li>Kiểm tra Default Document có <code>index.html</code>.</li>
+              <li>Cấp quyền Read cho App Pool Identity.</li>
+              <li>Kiểm tra Anonymous Authentication có bật cho Angular static site không.</li>
+            </ol>
+          </td></tr>
+        </tbody></table>
+
+        <h3>9.8. File upload không lưu được</h3>
+        <table>
+          <tbody><tr><th>Dấu hiệu</th><td>API upload lỗi 500 hoặc lưu file không thành công.</td></tr>
+          <tr><th>Nguyên nhân</th><td>App Pool không có quyền ghi, sai đường dẫn, ổ đĩa không tồn tại, giới hạn request size.</td></tr>
+          <tr><th>Cách xử lý</th><td>
+            <ol>
+              <li>Cấp quyền Modify cho thư mục upload.</li>
+              <li>Dùng path tuyệt đối như <code>D:\Sites\MyApp\Files</code>.</li>
+              <li>Kiểm tra dung lượng ổ đĩa.</li>
+              <li>Tăng giới hạn upload nếu file lớn.</li>
+            </ol>
+          </td></tr>
+        </tbody></table>
+
+        <h3>9.9. IIS không truy cập được từ máy khác trong mạng LAN</h3>
+        <table>
+          <tbody><tr><th>Dấu hiệu</th><td>Máy server vào được localhost, máy khác không vào được.</td></tr>
+          <tr><th>Nguyên nhân</th><td>Firewall chặn port, binding chỉ localhost, DNS/hosts chưa trỏ, SSL certificate không tin cậy.</td></tr>
+          <tr><th>Cách xử lý</th><td>
+            <ol>
+              <li>Mở Windows Firewall cho port 80/443 hoặc port custom.</li>
+              <li>Binding IIS dùng IP hoặc hostname phù hợp.</li>
+              <li>Kiểm tra bằng IP trước: <code>http://192.168.1.10</code>.</li>
+              <li>Nếu dùng hostname nội bộ, cấu hình DNS hoặc file hosts.</li>
+              <li>Nếu HTTPS nội bộ, cài certificate vào Trusted Root cho máy client.</li>
+            </ol>
+          </td></tr>
+        </tbody></table>
+      </section>
+
+      <section id="checklist">
+        <h2>10. Checklist triển khai</h2>
+
+        <h3>10.1. Checklist Backend</h3>
+        <ul>
+          <li>Đã build Release.</li>
+          <li>Đã publish đúng folder.</li>
+          <li>Server đã cài .NET Hosting Bundle.</li>
+          <li>App Pool để No Managed Code.</li>
+          <li>Connection string production đúng.</li>
+          <li>CORS allow đúng domain frontend.</li>
+          <li>App Pool có quyền đọc thư mục deploy.</li>
+          <li>App Pool có quyền ghi thư mục log/upload.</li>
+          <li>API chạy được bằng command line.</li>
+          <li>Swagger hoặc health check mở được.</li>
+        </ul>
+
+        <h3>10.2. Checklist Angular</h3>
+        <ul>
+          <li>Đã build production.</li>
+          <li>Copy đúng thư mục chứa <code>index.html</code>.</li>
+          <li>Environment production trỏ đúng API URL.</li>
+          <li>Nếu deploy subfolder, đã cấu hình <code>--base-href</code>.</li>
+          <li>Đã cài IIS URL Rewrite.</li>
+          <li>Đã thêm <code>web.config</code> rewrite route.</li>
+          <li>Refresh route con không bị 404.</li>
+          <li>Static file JS/CSS tải thành công.</li>
+        </ul>
+
+        <h3>10.3. Checklist bảo mật cơ bản</h3>
+        <ul>
+          <li>Dùng HTTPS cho frontend và backend.</li>
+          <li>Không để password production trong source code public.</li>
+          <li>Không bật stdout log lâu dài.</li>
+          <li>Không allow CORS <code>*</code> cho hệ thống có dữ liệu nhạy cảm.</li>
+          <li>Không cấp Full Control nếu chỉ cần Read/Modify.</li>
+          <li>Backup appsettings và database trước khi update production.</li>
+        </ul>
+
+        <div class="ok">
+          <strong>Quy trình deploy đề xuất:</strong> Publish ra thư mục tạm → backup bản đang chạy → stop site/app pool → copy file mới → kiểm tra appsettings → start site/app pool → test health check → test nghiệp vụ chính.
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="footer">
+    Tài liệu hướng dẫn deploy IIS cho C# / ASP.NET Core và Angular. Có thể chỉnh sửa thêm theo kiến trúc thực tế của dự án.
+  </div>
+
+
+</body></html>
