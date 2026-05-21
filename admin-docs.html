@@ -1,0 +1,1480 @@
+<html lang="vi" class="scroll-smooth"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AuthServer - Admin Portal Documentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;family=Fira+Code:wght@400;500&amp;display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['Fira Code', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              200: '#c7d2fe',
+              300: '#a5b4fc',
+              400: '#818cf8',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              800: '#3730a3',
+              900: '#312e81',
+              950: '#090d16',
+            },
+            dark: {
+              50: '#f8fafc',
+              100: '#f1f5f9',
+              200: '#e2e8f0',
+              300: '#cbd5e1',
+              400: '#94a3b8',
+              500: '#64748b',
+              600: '#475569',
+              700: '#334155',
+              800: '#1e293b',
+              850: '#111b2d',
+              900: '#0f172a',
+              950: '#070a13',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #070a13;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 3px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #4f46e5;
+    }
+    .active-nav {
+      background: linear-gradient(90deg, rgba(79, 70, 229, 0.15) 0%, rgba(99, 102, 241, 0) 100%);
+      border-left: 3px solid #6366f1;
+      color: #ffffff;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body class="text-dark-300 antialiased custom-scrollbar">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-40 w-full border-b border-dark-800 bg-dark-950/80 backdrop-blur-md">
+    <div class="mx-auto flex h-16 max-w-8xl items-center justify-between px-6">
+      <div class="flex items-center gap-3">
+        <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-400 text-white shadow-lg shadow-brand-500/20">
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+          </svg>
+        </div>
+        <div>
+          <span class="text-lg font-bold text-white tracking-wide">AuthServer</span>
+          <span class="ml-2 rounded-md bg-brand-500/10 px-2 py-0.5 text-xs font-semibold text-brand-400 border border-brand-500/20">Admin API Docs</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-4">
+        <span class="text-xs text-dark-400">Phiên bản: <strong class="text-dark-200">v1.0.0</strong></span>
+        <span class="h-4 w-px bg-dark-800"></span>
+        <div class="flex items-center gap-2">
+          <span class="relative flex h-2.5 w-2.5">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+          </span>
+          <span class="text-xs font-medium text-emerald-400">Đang hoạt động (Dev)</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="mx-auto max-w-8xl flex px-6">
+    <!-- Sidebar Navigation -->
+    <aside class="fixed bottom-0 top-16 left-[max(0px,calc((100%-80rem)/2))] z-30 hidden w-64 overflow-y-auto border-r border-dark-800 bg-dark-950 px-4 py-6 md:block custom-scrollbar">
+      <!-- Search Input -->
+      <div class="relative mb-6">
+        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+          <svg class="h-4 w-4 text-dark-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          </svg>
+        </div>
+        <input type="search" id="api-search" placeholder="Tìm kiếm API &amp; tài liệu..." class="w-full rounded-lg border border-dark-800 bg-dark-900 py-1.5 pl-9 pr-3 text-sm text-white placeholder-dark-500 outline-none transition focus:border-brand-500 focus:ring-1 focus:ring-brand-500">
+      </div>
+
+      <nav class="space-y-8">
+        <div>
+          <h4 class="px-3 text-xs font-semibold tracking-wider text-dark-400 uppercase">Bắt đầu</h4>
+          <div class="mt-2 space-y-1">
+            <a href="#tong-quan" class="nav-item flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-dark-400 hover:bg-dark-900 hover:text-white transition">
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-14 0 7 7 0 0114 0z"></path></svg>
+              Tổng quan kiến trúc
+            </a>
+            <a href="#xac-thuc-phan-quyen" class="nav-item flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-dark-400 hover:bg-dark-900 hover:text-white transition">
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path></svg>
+              Bảo mật &amp; Session Middleware
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="px-3 text-xs font-semibold tracking-wider text-dark-400 uppercase">Endpoints Quản trị</h4>
+          <div class="mt-2 space-y-1">
+            <a href="#api-dashboard" class="nav-item flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-dark-400 hover:bg-dark-900 hover:text-white transition">
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 002 2h2a2 2 0 002-2"></path></svg>
+              Dashboard Bảo mật
+            </a>
+            <a href="#api-users" class="nav-item flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-dark-400 hover:bg-dark-900 hover:text-white transition">
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+              Quản lý Người dùng
+            </a>
+            <a href="#api-tenants" class="nav-item flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-dark-400 hover:bg-dark-900 hover:text-white transition">
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+              Tổ chức &amp; Phòng ban
+            </a>
+            <a href="#api-clients" class="nav-item flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-dark-400 hover:bg-dark-900 hover:text-white transition">
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+              Quản lý Clients OIDC
+            </a>
+            <a href="#api-roles" class="nav-item flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-dark-400 hover:bg-dark-900 hover:text-white transition">
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+              Vai trò &amp; Phân quyền
+            </a>
+            <a href="#api-scopes" class="nav-item flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-dark-400 hover:bg-dark-900 hover:text-white transition">
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+              Quản lý Scopes OIDC
+            </a>
+            <a href="#api-sessions-tokens" class="nav-item flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-dark-400 hover:bg-dark-900 hover:text-white transition">
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+              Quản lý Sessions &amp; Tokens
+            </a>
+            <a href="#api-signatures" class="nav-item flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-dark-400 hover:bg-dark-900 hover:text-white transition">
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+              Quản lý Chữ ký số
+            </a>
+            <a href="#api-audit-logs" class="nav-item flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-dark-400 hover:bg-dark-900 hover:text-white transition">
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+              Hệ thống Audit Logs
+            </a>
+            <a href="#api-settings" class="nav-item flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-dark-400 hover:bg-dark-900 hover:text-white transition">
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path></svg>
+              Cấu hình Hệ thống
+            </a>
+            <a href="#api-troubleshooting" class="nav-item flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-dark-400 hover:bg-dark-900 hover:text-white transition">
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+              Xử lý Sự cố &amp; Diagnostics
+            </a>
+          </div>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="w-full md:pl-72 py-10 min-h-screen">
+      
+      <!-- Banner -->
+      <div class="mb-12 rounded-3xl bg-gradient-to-r from-brand-900/60 via-dark-850 to-dark-900 border border-brand-500/20 p-8 shadow-xl relative overflow-hidden">
+        <div class="absolute right-0 top-0 h-64 w-64 bg-brand-500/10 rounded-full blur-3xl -z-10"></div>
+        <h1 class="text-4xl font-extrabold text-white tracking-tight leading-none">Tài liệu Admin API &amp; Portal</h1>
+        <p class="mt-3 text-lg text-dark-300 max-w-2xl leading-relaxed">
+          Tài liệu kỹ thuật chi tiết dành cho nhà phát triển hệ thống Identity &amp; Authorization Server. Hướng dẫn toàn diện về bảo mật, quản trị người dùng, cấu hình OIDC Clients và kiểm soát phiên làm việc.
+        </p>
+      </div>
+
+      <!-- Section: Tong quan -->
+      <section id="tong-quan" class="mb-16 scroll-mt-20">
+        <div class="flex items-center gap-3 border-b border-dark-800 pb-3 mb-6">
+          <h2 class="text-2xl font-bold text-white tracking-tight">Tổng quan kiến trúc</h2>
+        </div>
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+          <div class="rounded-2xl border border-dark-800 bg-dark-900/40 p-6 leading-relaxed">
+            <h3 class="text-lg font-semibold text-white mb-3 flex items-center gap-2">
+              <span class="h-2 w-2 rounded-full bg-brand-500"></span> Core Framework
+            </h3>
+            <p class="text-sm">
+              Hệ thống được xây dựng trên nền tảng **ASP.NET Core Web API** kết hợp với **OpenIddict** để quản lý các luồng đăng nhập và cấp phát token OAuth2/OpenID Connect. Toàn bộ thông tin tài khoản, mật khẩu, và bảo mật hai lớp (MFA) được quản lý bởi **ASP.NET Core Identity** kết hợp cơ sở dữ liệu **Microsoft SQL Server**.
+            </p>
+          </div>
+          <div class="rounded-2xl border border-dark-800 bg-dark-900/40 p-6 leading-relaxed">
+            <h3 class="text-lg font-semibold text-white mb-3 flex items-center gap-2">
+              <span class="h-2 w-2 rounded-full bg-indigo-500"></span> Các cơ chế bảo vệ chính
+            </h3>
+            <p class="text-sm">
+              Sử dụng các tiêu chuẩn an toàn cao nhất: **Proof Key for Code Exchange (PKCE)** cho luồng Authorization Code Flow, cơ chế tự động khóa tài khoản khi nhập sai nhiều lần, và hệ thống **Custom Session Middleware** giúp giám sát và thu hồi token tức thì khi có yêu cầu từ phía quản trị viên.
+            </p>
+          </div>
+        </div>
+
+        <div class="mt-8 rounded-2xl border border-dark-800 bg-dark-900/20 p-6">
+          <h3 class="text-lg font-semibold text-white mb-4">Các tham số OpenID Connect phát hành mặc định</h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm">
+              <thead>
+                <tr class="border-b border-dark-800 text-dark-400">
+                  <th class="pb-3 font-semibold">Tham số</th>
+                  <th class="pb-3 font-semibold">Endpoint / Giá trị</th>
+                  <th class="pb-3 font-semibold">Mô tả</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-y-dark-800">
+                <tr>
+                  <td class="py-3 font-mono text-brand-400">Authorization Endpoint</td>
+                  <td class="py-3 font-mono text-dark-200">/connect/authorize</td>
+                  <td class="py-3 text-dark-400">Yêu cầu cấp mã Code xác thực (User login)</td>
+                </tr>
+                <tr>
+                  <td class="py-3 font-mono text-brand-400">Token Endpoint</td>
+                  <td class="py-3 font-mono text-dark-200">/connect/token</td>
+                  <td class="py-3 text-dark-400">Trao đổi Code lấy Access Token &amp; Refresh Token</td>
+                </tr>
+                <tr>
+                  <td class="py-3 font-mono text-brand-400">EndSession Endpoint</td>
+                  <td class="py-3 font-mono text-dark-200">/connect/endsession</td>
+                  <td class="py-3 text-dark-400">Đăng xuất người dùng và hủy session OIDC</td>
+                </tr>
+                <tr>
+                  <td class="py-3 font-mono text-brand-400">Introspection Endpoint</td>
+                  <td class="py-3 font-mono text-dark-200">/connect/introspect</td>
+                  <td class="py-3 text-dark-400">Kiểm tra thông tin chi tiết và trạng thái của Access Token</td>
+                </tr>
+                <tr>
+                  <td class="py-3 font-mono text-brand-400">Token Lifetime</td>
+                  <td class="py-3 text-dark-200">Access Token: 15m | Refresh Token: 30d</td>
+                  <td class="py-3 text-dark-400">Thiết lập thời gian hết hạn qua cấu hình hệ thống</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: Security Session Middleware -->
+      <section id="xac-thuc-phan-quyen" class="mb-16 scroll-mt-20">
+        <div class="flex items-center gap-3 border-b border-dark-800 pb-3 mb-6">
+          <h2 class="text-2xl font-bold text-white tracking-tight">Bảo mật &amp; Session Middleware</h2>
+        </div>
+        <div class="space-y-6 leading-relaxed">
+          <p>
+            Thông thường, các token Access Token (JWT) được lưu ở Client không thể bị hủy cho tới khi chúng hết hạn. Điều này tạo ra rủi ro nghiêm trọng khi một tài khoản bị lộ thông tin hoặc bị Admin vô hiệu hóa. 
+            Để xử lý vấn đề này, AuthServer áp dụng một cơ chế **Middleware kiểm tra Session hoạt động**.
+          </p>
+
+          <div class="rounded-2xl border border-brand-500/20 bg-brand-500/5 p-6 border-l-4 border-l-brand-500">
+            <h4 class="text-white font-semibold mb-2 flex items-center gap-2">
+              <svg class="h-5 w-5 text-brand-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+              Luồng kiểm tra bảo mật Session (Custom Middleware)
+            </h4>
+            <ul class="list-disc pl-5 text-sm space-y-2 text-dark-300">
+              <li>Mỗi Access Token do hệ thống phát hành sẽ mang một Claim đặc biệt tên là <code class="text-brand-300 font-mono">sid</code> (Session ID) đại diện cho phiên làm việc tương ứng trong DB.</li>
+              <li>Trong mỗi API request được gửi đến Backend, middleware sẽ chặn lại để lấy giá trị <code class="text-brand-300 font-mono">sid</code> này.</li>
+              <li>Hệ thống thực hiện kiểm tra thực tế trong bảng <code class="text-brand-300 font-mono">UserSessions</code>. Nếu phiên làm việc có trạng thái <code class="text-brand-300 font-mono">IsActive = false</code> hoặc đã bị **Revoked** bởi Admin, middleware lập tức phản hồi mã lỗi **401 Unauthorized** cùng thông báo: <code class="text-red-400">"The session has been revoked."</code>.</li>
+              <li>Bằng cách này, ngay khi Quản trị viên kích hoạt chức năng khóa tài khoản hoặc thu hồi session trên Admin Portal, tất cả các Client sử dụng token cũ sẽ lập tức bị đá đăng xuất.</li>
+            </ul>
+          </div>
+
+          <div class="mt-4">
+            <h4 class="text-white font-semibold mb-3">Các chính sách phân quyền (Authorization Policies)</h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-dark-900/60 p-4 rounded-xl border border-dark-800">
+                <span class="font-mono text-xs text-brand-400 font-semibold uppercase tracking-wider">Policy Name</span>
+                <h5 class="text-white font-bold font-mono text-sm mt-1">Admin.FullAccess</h5>
+                <p class="text-xs text-dark-400 mt-2">Yêu cầu Claim <code class="text-dark-200">permissions = Admin.FullAccess</code>. Quyền hạn tối cao thực hiện tất cả cấu hình hệ thống, quản lý OIDC Clients, vai trò, xóa/vô hiệu hóa tổ chức.</p>
+              </div>
+              <div class="bg-dark-900/60 p-4 rounded-xl border border-dark-800">
+                <span class="font-mono text-xs text-brand-400 font-semibold uppercase tracking-wider">Policy Name</span>
+                <h5 class="text-white font-bold font-mono text-sm mt-1">User.Create / User.Update</h5>
+                <p class="text-xs text-dark-400 mt-2">Quyền hạn cấp trung cho phép quản trị viên vận hành tạo và sửa thông tin người dùng, cài đặt thông tin cá nhân mà không thể thao tác các cấu hình máy chủ OIDC.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: Dashboard API -->
+      <section id="api-dashboard" class="mb-16 scroll-mt-20">
+        <div class="flex items-center gap-3 border-b border-dark-800 pb-3 mb-6">
+          <h2 class="text-2xl font-bold text-white tracking-tight">Dashboard Bảo mật</h2>
+          <span class="rounded bg-indigo-500/10 px-2.5 py-0.5 text-xs font-semibold text-indigo-400 border border-indigo-500/20">Dashboard</span>
+        </div>
+
+        <p class="mb-6 leading-relaxed">
+          Cung cấp các thông tin số liệu thống kê thời gian thực về tình trạng đăng nhập của người dùng, tỷ lệ MFA và các nguy cơ bảo mật tiềm ẩn như các IP đăng nhập thất bại nhiều lần.
+        </p>
+
+        <!-- API Card -->
+        <div class="rounded-2xl border border-dark-800 bg-dark-900/25 overflow-hidden">
+          <div class="bg-dark-900 px-6 py-4 flex items-center justify-between border-b border-dark-800">
+            <div class="flex items-center gap-3">
+              <span class="rounded bg-emerald-500/10 px-2.5 py-1 text-xs font-bold text-emerald-400 border border-emerald-500/20">GET</span>
+              <code class="text-white font-mono font-semibold text-sm">/api/admin/dashboard/stats</code>
+            </div>
+            <span class="text-xs font-mono text-dark-400 font-medium">Policy: Admin.FullAccess</span>
+          </div>
+
+          <div class="p-6 space-y-6">
+            <div>
+              <h4 class="text-sm font-semibold text-white mb-2 uppercase tracking-wider text-dark-400">Response (200 OK)</h4>
+              <div class="relative">
+                <button onclick="copyToClipboard(this)" class="absolute right-3 top-3 rounded-lg bg-dark-800 hover:bg-dark-700 px-3 py-1 text-xs font-medium text-white transition">Copy</button>
+                <pre class="bg-dark-950 p-4 rounded-xl text-xs font-mono text-dark-200 overflow-x-auto">{
+  "failedLoginsToday": 14,
+  "onlineUsersCount": 128,
+  "activeSessionsCount": 154,
+  "revokedTokensToday": 3,
+  "lockedUsersCount": 2,
+  "mfaAdoptionRate": 42.5,
+  "topFailedIps": [
+    { "label": "192.168.100.45", "count": 12 },
+    { "label": "103.45.21.90", "count": 2 }
+  ],
+  "topClients": [
+    { "label": "auth-angular-portal", "count": 2450 },
+    { "label": "mobile-app-client", "count": 890 }
+  ]
+}</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: User Management -->
+      <section id="api-users" class="mb-16 scroll-mt-20">
+        <div class="flex items-center gap-3 border-b border-dark-800 pb-3 mb-6">
+          <h2 class="text-2xl font-bold text-white tracking-tight">Quản lý Người dùng</h2>
+          <span class="rounded bg-brand-500/10 px-2.5 py-0.5 text-xs font-semibold text-brand-400 border border-brand-500/20">Users</span>
+        </div>
+
+        <p class="mb-6 leading-relaxed">
+          Tập hợp các API quản lý thông tin tài khoản người dùng, thiết lập tổ chức mặc định, bật tắt MFA và quản lý khóa khôi phục tài khoản.
+        </p>
+
+        <!-- API List -->
+        <div class="space-y-8">
+          
+          <!-- GET /api/users -->
+          <div class="rounded-2xl border border-dark-800 bg-dark-900/25 overflow-hidden">
+            <div class="bg-dark-900 px-6 py-4 flex items-center justify-between border-b border-dark-800">
+              <div class="flex items-center gap-3">
+                <span class="rounded bg-emerald-500/10 px-2.5 py-1 text-xs font-bold text-emerald-400 border border-emerald-500/20">GET</span>
+                <code class="text-white font-mono font-semibold text-sm">/api/users</code>
+              </div>
+              <span class="text-xs font-mono text-dark-400">Policy: Admin.FullAccess</span>
+            </div>
+            <div class="p-6 space-y-4">
+              <h4 class="text-xs font-semibold text-white uppercase tracking-wider text-dark-400">Query Parameters</h4>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                <div><code class="text-brand-400">page</code> <span class="text-dark-500">(int, mặc định: 1)</span> - Trang số.</div>
+                <div><code class="text-brand-400">pageSize</code> <span class="text-dark-500">(int, mặc định: 20)</span> - Số lượng dòng mỗi trang.</div>
+              </div>
+              <h4 class="text-xs font-semibold text-white uppercase tracking-wider text-dark-400">Response (200 OK)</h4>
+              <div class="relative">
+                <button onclick="copyToClipboard(this)" class="absolute right-3 top-3 rounded-lg bg-dark-800 hover:bg-dark-700 px-3 py-1 text-xs font-medium text-white transition">Copy</button>
+                <pre class="bg-dark-950 p-4 rounded-xl text-xs font-mono text-dark-200 overflow-x-auto">{
+  "total": 45,
+  "page": 1,
+  "pageSize": 20,
+  "data": [
+    {
+      "id": "4a15ce76-d98c-4231-97b5-27a3d13264ff",
+      "email": "nhanvien@domain.local",
+      "firstName": "Hải",
+      "lastName": "Nguyễn",
+      "isActive": true,
+      "twoFactorEnabled": true,
+      "roles": ["User"],
+      "createdAt": "2026-05-20T08:15:30Z"
+    }
+  ]
+}</pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- GET /api/users/{id} -->
+          <div class="rounded-2xl border border-dark-800 bg-dark-900/25 overflow-hidden">
+            <div class="bg-dark-900 px-6 py-4 flex items-center justify-between border-b border-dark-800">
+              <div class="flex items-center gap-3">
+                <span class="rounded bg-emerald-500/10 px-2.5 py-1 text-xs font-bold text-emerald-400 border border-emerald-500/20">GET</span>
+                <code class="text-white font-mono font-semibold text-sm">/api/users/{id}</code>
+              </div>
+              <span class="text-xs font-mono text-dark-400">Policy: Admin.FullAccess</span>
+            </div>
+            <div class="p-6">
+              <p class="text-sm mb-4 text-dark-300">Lấy thông tin chi tiết một người dùng, bao gồm thông tin cơ bản, danh sách tổ chức được liên kết, và danh sách các chứng thư chữ ký số đã đăng ký.</p>
+              <h4 class="text-xs font-semibold text-white uppercase tracking-wider text-dark-400 mb-2">Response (200 OK)</h4>
+              <div class="relative">
+                <button onclick="copyToClipboard(this)" class="absolute right-3 top-3 rounded-lg bg-dark-800 hover:bg-dark-700 px-3 py-1 text-xs font-medium text-white transition">Copy</button>
+                <pre class="bg-dark-950 p-4 rounded-xl text-xs font-mono text-dark-200 overflow-x-auto">{
+  "id": "4a15ce76-d98c-4231-97b5-27a3d13264ff",
+  "email": "nhanvien@domain.local",
+  "firstName": "Hải",
+  "lastName": "Nguyễn",
+  "isActive": true,
+  "twoFactorEnabled": true,
+  "createdAt": "2026-05-20T08:15:30Z",
+  "roles": ["User"],
+  "tenants": [
+    {
+      "id": "8bb2dc70-4e31-419b-b461-12bfa51c890a",
+      "tenantId": "f784d0b1-4f10-449e-b96f-c1f930eef2a1",
+      "tenantName": "Tổng Công ty A",
+      "tenantCode": "TCTA",
+      "roleId": "a90c1f5d-7521-4f7c-9b16-52bdc836c2e3",
+      "roleName": "User",
+      "departmentId": "23d91cf0-15bd-44aa-9c09-ef3d81dc52bf",
+      "departmentName": "Phòng Công nghệ",
+      "isDefault": true
+    }
+  ],
+  "signatures": []
+}</pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- POST /api/users -->
+          <div class="rounded-2xl border border-dark-800 bg-dark-900/25 overflow-hidden">
+            <div class="bg-dark-900 px-6 py-4 flex items-center justify-between border-b border-dark-800">
+              <div class="flex items-center gap-3">
+                <span class="rounded bg-indigo-500/10 px-2.5 py-1 text-xs font-bold text-indigo-400 border border-indigo-500/20">POST</span>
+                <code class="text-white font-mono font-semibold text-sm">/api/users</code>
+              </div>
+              <span class="text-xs font-mono text-dark-400">Policy: User.Create</span>
+            </div>
+            <div class="p-6 space-y-4">
+              <p class="text-sm text-dark-300">Tạo mới một tài khoản người dùng, đồng thời liên kết trực tiếp vào một tổ chức &amp; phòng ban.</p>
+              <h4 class="text-xs font-semibold text-white uppercase tracking-wider text-dark-400">Request Body</h4>
+              <div class="relative">
+                <button onclick="copyToClipboard(this)" class="absolute right-3 top-3 rounded-lg bg-dark-800 hover:bg-dark-700 px-3 py-1 text-xs font-medium text-white transition">Copy</button>
+                <pre class="bg-dark-950 p-4 rounded-xl text-xs font-mono text-dark-200 overflow-x-auto">{
+  "email": "employee@example.com",
+  "password": "Password123!",
+  "firstName": "Hương",
+  "lastName": "Trần",
+  "roleName": "User",
+  "tenantId": "f784d0b1-4f10-449e-b96f-c1f930eef2a1",
+  "departmentId": "23d91cf0-15bd-44aa-9c09-ef3d81dc52bf"
+}</pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Other User API Actions -->
+          <div class="rounded-2xl border border-dark-800 bg-dark-900/20 p-6 space-y-4">
+            <h4 class="text-md font-semibold text-white">Các tác vụ khác trên User</h4>
+            <div class="space-y-4">
+              <!-- PUT api/users/{id} -->
+              <div class="flex flex-col md:flex-row md:items-center justify-between p-4 rounded-xl bg-dark-900/60 border border-dark-800 gap-4">
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span class="rounded bg-amber-500/10 px-2 py-0.5 text-xs font-bold text-amber-400 border border-amber-500/20">PUT</span>
+                    <code class="text-white font-mono text-sm">/api/users/{id}</code>
+                  </div>
+                  <p class="text-xs text-dark-400 mt-1">Cập nhật họ tên, vai trò mặc định và tổ chức liên kết.</p>
+                </div>
+                <span class="text-xs font-mono text-dark-400">Policy: User.Update</span>
+              </div>
+              
+              <!-- PATCH api/users/{id}/activate -->
+              <div class="flex flex-col md:flex-row md:items-center justify-between p-4 rounded-xl bg-dark-900/60 border border-dark-800 gap-4">
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span class="rounded bg-indigo-500/10 px-2 py-0.5 text-xs font-bold text-indigo-400 border border-indigo-500/20">PATCH</span>
+                    <code class="text-white font-mono text-sm">/api/users/{id}/activate</code>
+                  </div>
+                  <p class="text-xs text-dark-400 mt-1">Kích hoạt hoặc Vô hiệu hóa tài khoản. **Đặc biệt:** Khi gửi giá trị <code class="text-dark-200">isActive = false</code>, tất cả token và session hiện hoạt của người dùng sẽ bị thu hồi ngay lập tức.</p>
+                </div>
+                <span class="text-xs font-mono text-dark-400">Policy: User.Update</span>
+              </div>
+
+              <!-- POST api/users/{id}/reset-password -->
+              <div class="flex flex-col md:flex-row md:items-center justify-between p-4 rounded-xl bg-dark-900/60 border border-dark-800 gap-4">
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span class="rounded bg-indigo-500/10 px-2 py-0.5 text-xs font-bold text-indigo-400 border border-indigo-500/20">POST</span>
+                    <code class="text-white font-mono text-sm">/api/users/{id}/reset-password</code>
+                  </div>
+                  <p class="text-xs text-dark-400 mt-1">Đặt lại mật khẩu trực tiếp từ Quản trị viên (Không yêu cầu mật khẩu cũ). Hủy toàn bộ phiên đăng nhập hiện hoạt để đảm bảo an toàn.</p>
+                </div>
+                <span class="text-xs font-mono text-dark-400">Policy: Admin.FullAccess</span>
+              </div>
+
+              <!-- POST api/users/{id}/mfa -->
+              <div class="flex flex-col md:flex-row md:items-center justify-between p-4 rounded-xl bg-dark-900/60 border border-dark-800 gap-4">
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span class="rounded bg-indigo-500/10 px-2 py-0.5 text-xs font-bold text-indigo-400 border border-indigo-500/20">POST</span>
+                    <code class="text-white font-mono text-sm">/api/users/{id}/mfa</code>
+                  </div>
+                  <p class="text-xs text-dark-400 mt-1">Bắt buộc bật hoặc cho phép tắt chức năng xác thực 2 lớp (MFA/2FA).</p>
+                </div>
+                <span class="text-xs font-mono text-dark-400">Policy: Admin.FullAccess</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- User Tenant Sub-management -->
+          <div class="rounded-2xl border border-dark-800 bg-dark-900/20 p-6 space-y-4">
+            <h4 class="text-md font-semibold text-white">Quản lý liên kết Tổ chức của Người dùng</h4>
+            <p class="text-sm text-dark-400">
+              Hỗ trợ mô hình đa tổ chức (Multi-Tenant). Một người dùng có thể thuộc nhiều tổ chức khác nhau với vai trò và phòng ban tương ứng.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-mono">
+              <div class="bg-dark-900/80 p-3 rounded-lg border border-dark-800">
+                <span class="text-emerald-400 font-bold">GET</span> /api/users/{id}/tenants
+                <span class="block text-dark-500 mt-1 text-[10px]">Lấy danh sách các Tenant được gán</span>
+              </div>
+              <div class="bg-dark-900/80 p-3 rounded-lg border border-dark-800">
+                <span class="text-indigo-400 font-bold">POST</span> /api/users/{id}/tenants
+                <span class="block text-dark-500 mt-1 text-[10px]">Gán một Tenant mới, cho phép chọn vai trò, phòng ban và đặt làm mặc định (Default)</span>
+              </div>
+              <div class="bg-dark-900/80 p-3 rounded-lg border border-dark-800">
+                <span class="text-red-400 font-bold">DELETE</span> /api/users/{id}/tenants/{tenantId}
+                <span class="block text-dark-500 mt-1 text-[10px]">Hủy gán người dùng khỏi một Tenant</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Section: Tenants & Departments -->
+      <section id="api-tenants" class="mb-16 scroll-mt-20">
+        <div class="flex items-center gap-3 border-b border-dark-800 pb-3 mb-6">
+          <h2 class="text-2xl font-bold text-white tracking-tight">Tổ chức &amp; Phòng ban</h2>
+          <span class="rounded bg-brand-500/10 px-2.5 py-0.5 text-xs font-semibold text-brand-400 border border-brand-500/20">Tenants</span>
+        </div>
+
+        <p class="mb-6 leading-relaxed">
+          Quản lý toàn bộ thông tin về các Tổng công ty, đối tác liên kết (Tenants) và cấu trúc cây phòng ban (Departments) trong hệ thống.
+        </p>
+
+        <!-- API List -->
+        <div class="space-y-6">
+          
+          <div class="rounded-2xl border border-dark-800 bg-dark-900/25 overflow-hidden">
+            <div class="bg-dark-900 px-6 py-4 flex items-center justify-between border-b border-dark-800">
+              <div class="flex items-center gap-3">
+                <span class="rounded bg-emerald-500/10 px-2.5 py-1 text-xs font-bold text-emerald-400 border border-emerald-500/20">GET</span>
+                <code class="text-white font-mono font-semibold text-sm">/api/admin/tenants</code>
+              </div>
+              <span class="text-xs font-mono text-dark-400">Policy: Admin.FullAccess</span>
+            </div>
+            <div class="p-6">
+              <p class="text-sm mb-4 text-dark-300">Lấy danh sách toàn bộ các tổ chức (chỉ gồm thông tin chung).</p>
+              <div class="relative">
+                <button onclick="copyToClipboard(this)" class="absolute right-3 top-3 rounded-lg bg-dark-800 hover:bg-dark-700 px-3 py-1 text-xs font-medium text-white transition">Copy</button>
+                <pre class="bg-dark-950 p-4 rounded-xl text-xs font-mono text-dark-200 overflow-x-auto">[
+  {
+    "id": "f784d0b1-4f10-449e-b96f-c1f930eef2a1",
+    "name": "Tổng Công ty A",
+    "code": "TCTA",
+    "logoUrl": "/images/logos/tcta.png",
+    "address": "123 Đường Lê Lợi, TP. Hồ Chí Minh",
+    "isActive": true,
+    "createdAt": "2026-05-18T03:40:00Z"
+  }
+]</pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="rounded-2xl border border-dark-800 bg-dark-900/25 overflow-hidden">
+            <div class="bg-dark-900 px-6 py-4 flex items-center justify-between border-b border-dark-800">
+              <div class="flex items-center gap-3">
+                <span class="rounded bg-emerald-500/10 px-2.5 py-1 text-xs font-bold text-emerald-400 border border-emerald-500/20">GET</span>
+                <code class="text-white font-mono font-semibold text-sm">/api/admin/tenants/{id}</code>
+              </div>
+              <span class="text-xs font-mono text-dark-400">Policy: Admin.FullAccess</span>
+            </div>
+            <div class="p-6">
+              <p class="text-sm mb-4 text-dark-300">Lấy thông tin chi tiết một tổ chức, đính kèm cây danh sách tất cả các Phòng ban trực thuộc.</p>
+              <div class="relative">
+                <button onclick="copyToClipboard(this)" class="absolute right-3 top-3 rounded-lg bg-dark-800 hover:bg-dark-700 px-3 py-1 text-xs font-medium text-white transition">Copy</button>
+                <pre class="bg-dark-950 p-4 rounded-xl text-xs font-mono text-dark-200 overflow-x-auto">{
+  "id": "f784d0b1-4f10-449e-b96f-c1f930eef2a1",
+  "name": "Tổng Công ty A",
+  "code": "TCTA",
+  "logoUrl": "/images/logos/tcta.png",
+  "address": "123 Đường Lê Lợi, TP. Hồ Chí Minh",
+  "isActive": true,
+  "createdAt": "2026-05-18T03:40:00Z",
+  "departments": [
+    {
+      "id": "23d91cf0-15bd-44aa-9c09-ef3d81dc52bf",
+      "tenantId": "f784d0b1-4f10-449e-b96f-c1f930eef2a1",
+      "name": "Phòng Công nghệ",
+      "code": "TECH",
+      "isActive": true,
+      "createdAt": "2026-05-18T03:45:00Z"
+    }
+  ]
+}</pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="rounded-2xl border border-dark-800 bg-dark-900/20 p-6 space-y-4">
+            <h4 class="text-md font-semibold text-white">Quản trị Tổ chức &amp; Phòng ban</h4>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-sm text-dark-300">
+                <thead>
+                  <tr class="border-b border-dark-800 text-dark-400">
+                    <th class="pb-2 font-semibold">Tác vụ</th>
+                    <th class="pb-2 font-semibold">Endpoint</th>
+                    <th class="pb-2 font-semibold">Mô tả bảo mật</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-dark-800">
+                  <tr>
+                    <td class="py-3"><span class="rounded bg-indigo-500/10 px-2 py-0.5 text-xs font-bold text-indigo-400">POST</span></td>
+                    <td class="py-3 font-mono text-dark-200">/api/admin/tenants</td>
+                    <td class="py-3 text-dark-400">Tạo mới tổ chức. Mã Code tổ chức không được trùng nhau.</td>
+                  </tr>
+                  <tr>
+                    <td class="py-3"><span class="rounded bg-amber-500/10 px-2 py-0.5 text-xs font-bold text-amber-400">PUT</span></td>
+                    <td class="py-3 font-mono text-dark-200">/api/admin/tenants/{id}</td>
+                    <td class="py-3 text-dark-400">Cập nhật tên, logo, địa chỉ, trạng thái hoạt động.</td>
+                  </tr>
+                  <tr>
+                    <td class="py-3"><span class="rounded bg-red-500/10 px-2 py-0.5 text-xs font-bold text-red-400">DELETE</span></td>
+                    <td class="py-3 font-mono text-dark-200">/api/admin/tenants/{id}</td>
+                    <td class="py-3 text-dark-400 text-red-400/90 font-medium">Lưu ý: Không thể xóa tổ chức đang có người dùng hoạt động để tránh lỗi tham chiếu khóa ngoại.</td>
+                  </tr>
+                  <tr>
+                    <td class="py-3"><span class="rounded bg-indigo-500/10 px-2 py-0.5 text-xs font-bold text-indigo-400">POST</span></td>
+                    <td class="py-3 font-mono text-dark-200">/api/admin/tenants/{id}/departments</td>
+                    <td class="py-3 text-dark-400">Tạo một Phòng ban mới trực thuộc Tổ chức chỉ định.</td>
+                  </tr>
+                  <tr>
+                    <td class="py-3"><span class="rounded bg-amber-500/10 px-2 py-0.5 text-xs font-bold text-amber-400">PUT</span></td>
+                    <td class="py-3 font-mono text-dark-200">/api/admin/tenants/{id}/departments/{deptId}</td>
+                    <td class="py-3 text-dark-400">Cập nhật thông tin phòng ban.</td>
+                  </tr>
+                  <tr>
+                    <td class="py-3"><span class="rounded bg-red-500/10 px-2 py-0.5 text-xs font-bold text-red-400">DELETE</span></td>
+                    <td class="py-3 font-mono text-dark-200">/api/admin/tenants/{id}/departments/{deptId}</td>
+                    <td class="py-3 text-dark-400">Xóa phòng ban (Chỉ cho phép khi không có người dùng liên kết).</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Section: Client Management -->
+      <section id="api-clients" class="mb-16 scroll-mt-20">
+        <div class="flex items-center gap-3 border-b border-dark-800 pb-3 mb-6">
+          <h2 class="text-2xl font-bold text-white tracking-tight">Quản lý Clients OIDC</h2>
+          <span class="rounded bg-brand-500/10 px-2.5 py-0.5 text-xs font-semibold text-brand-400 border border-brand-500/20">Clients</span>
+        </div>
+
+        <p class="mb-6 leading-relaxed">
+          Danh mục API dùng để đăng ký các ứng dụng kết nối (web, mobile, service) được quyền truy cập vào AuthServer. Cấu hình các đặc quyền bảo mật dựa trên chuẩn cấu trúc OpenIddict.
+        </p>
+
+        <!-- API List -->
+        <div class="space-y-6">
+          
+          <!-- GET /api/clients -->
+          <div class="rounded-2xl border border-dark-800 bg-dark-900/25 overflow-hidden">
+            <div class="bg-dark-900 px-6 py-4 flex items-center justify-between border-b border-dark-800">
+              <div class="flex items-center gap-3">
+                <span class="rounded bg-emerald-500/10 px-2.5 py-1 text-xs font-bold text-emerald-400 border border-emerald-500/20">GET</span>
+                <code class="text-white font-mono font-semibold text-sm">/api/clients</code>
+              </div>
+              <span class="text-xs font-mono text-dark-400">Policy: Admin.FullAccess</span>
+            </div>
+            <div class="p-6">
+              <p class="text-sm mb-4 text-dark-300">Lấy danh sách tất cả các ứng dụng đã đăng ký trên máy chủ OIDC.</p>
+              <div class="relative">
+                <button onclick="copyToClipboard(this)" class="absolute right-3 top-3 rounded-lg bg-dark-800 hover:bg-dark-700 px-3 py-1 text-xs font-medium text-white transition">Copy</button>
+                <pre class="bg-dark-950 p-4 rounded-xl text-xs font-mono text-dark-200 overflow-x-auto">[
+  {
+    "id": "e44d5c19-906d-4720-bd74-325b18aa2f89",
+    "clientId": "auth-angular-portal",
+    "displayName": "Angular Administration Portal",
+    "clientType": "public",
+    "redirectUris": ["http://localhost:4200/signin-oidc"],
+    "postLogoutRedirectUris": ["http://localhost:4200/"],
+    "permissions": [
+      "ept:authorization",
+      "ept:token",
+      "ept:logout",
+      "gt:authorization_code",
+      "gt:refresh_token",
+      "scp:openid",
+      "scp:profile",
+      "scp:email",
+      "scp:roles",
+      "rst:code"
+    ],
+    "requirements": [
+      "req:features:proof_key_for_code_exchange"
+    ],
+    "tenantId": null
+  }
+]</pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- POST /api/clients -->
+          <div class="rounded-2xl border border-dark-800 bg-dark-900/25 overflow-hidden">
+            <div class="bg-dark-900 px-6 py-4 flex items-center justify-between border-b border-dark-800">
+              <div class="flex items-center gap-3">
+                <span class="rounded bg-indigo-500/10 px-2.5 py-1 text-xs font-bold text-indigo-400 border border-indigo-500/20">POST</span>
+                <code class="text-white font-mono font-semibold text-sm">/api/clients</code>
+              </div>
+              <span class="text-xs font-mono text-dark-400">Policy: Admin.FullAccess</span>
+            </div>
+            <div class="p-6 space-y-4">
+              <p class="text-sm text-dark-300">Tạo một ứng dụng kết nối (Client) mới. Đối với client bảo mật (<code class="text-dark-200">clientType = "confidential"</code>), hệ thống sẽ sinh ra một chuỗi Client Secret ngẫu nhiên dạng mã UUID và chỉ trả về **duy nhất một lần** sau khi tạo thành công.</p>
+              
+              <h4 class="text-xs font-semibold text-white uppercase tracking-wider text-dark-400">Request Body</h4>
+              <div class="relative">
+                <button onclick="copyToClipboard(this)" class="absolute right-3 top-3 rounded-lg bg-dark-800 hover:bg-dark-700 px-3 py-1 text-xs font-medium text-white transition">Copy</button>
+                <pre class="bg-dark-950 p-4 rounded-xl text-xs font-mono text-dark-200 overflow-x-auto">{
+  "clientId": "accounting-service",
+  "displayName": "Accounting Microservice",
+  "clientType": "confidential",
+  "clientSecret": null, // Để null để hệ thống tự động sinh ngẫu nhiên an toàn
+  "redirectUris": ["https://accounting.domain.local/signin-oidc"],
+  "postLogoutRedirectUris": ["https://accounting.domain.local/"],
+  "allowedGrantTypes": ["authorization_code", "refresh_token"],
+  "allowedScopes": ["openid", "profile", "api"],
+  "requirePkce": true,
+  "tenantId": "f784d0b1-4f10-449e-b96f-c1f930eef2a1" // Trói buộc Client vào một Tenant cụ thể (nếu cần)
+}</pre>
+              </div>
+              
+              <h4 class="text-xs font-semibold text-white uppercase tracking-wider text-dark-400">Response (200 OK)</h4>
+              <pre class="bg-dark-950 p-4 rounded-xl text-xs font-mono text-dark-200 overflow-x-auto">{
+  "id": "23d19cf0-15bd-44aa-9c09-ef3d81dc52bf",
+  "clientId": "accounting-service",
+  "clientSecret": "79b6b7a5a8e040aa9128f117a2dc34ff" // LƯU Ý: Chỉ hiển thị một lần này
+}</pre>
+            </div>
+          </div>
+
+          <!-- Other Client Actions -->
+          <div class="rounded-2xl border border-dark-800 bg-dark-900/20 p-6 space-y-4">
+            <h4 class="text-md font-semibold text-white">Cập nhật &amp; Xóa ứng dụng</h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="p-4 rounded-xl bg-dark-900/60 border border-dark-800">
+                <span class="rounded bg-amber-500/10 px-2 py-0.5 text-xs font-bold text-amber-400 border border-amber-500/20">PUT</span>
+                <code class="text-white font-mono text-sm block mt-1">/api/clients/{id}</code>
+                <p class="text-xs text-dark-400 mt-2">Cập nhật toàn bộ các cấu hình phân quyền (Grant types, Scopes, Redirect URIs). Toàn bộ quyền cũ sẽ bị ghi đè hoàn toàn theo mô tả mới để tránh bị rò rỉ quyền cũ.</p>
+              </div>
+              <div class="p-4 rounded-xl bg-dark-900/60 border border-dark-800">
+                <span class="rounded bg-red-500/10 px-2 py-0.5 text-xs font-bold text-red-400 border border-red-500/20">DELETE</span>
+                <code class="text-white font-mono text-sm block mt-1">/api/clients/{id}</code>
+                <p class="text-xs text-dark-400 mt-2">Xóa ứng dụng khỏi máy chủ OIDC. Tất cả token đã cấp cho client này cũng sẽ mất hiệu lực ngay lập tức.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Section: Roles & Permissions -->
+      <section id="api-roles" class="mb-16 scroll-mt-20">
+        <div class="flex items-center gap-3 border-b border-dark-800 pb-3 mb-6">
+          <h2 class="text-2xl font-bold text-white tracking-tight">Vai trò &amp; Phân quyền</h2>
+          <span class="rounded bg-brand-500/10 px-2.5 py-0.5 text-xs font-semibold text-brand-400 border border-brand-500/20">Roles</span>
+        </div>
+
+        <p class="mb-6 leading-relaxed">
+          Quản lý danh sách vai trò (Roles) và ma trận quyền hạn hệ thống. Các quyền này sẽ được nhúng trực tiếp vào token người dùng phục vụ cho việc kiểm tra quyền ở các API nghiệp vụ.
+        </p>
+
+        <!-- API List -->
+        <div class="space-y-6">
+          
+          <div class="rounded-2xl border border-dark-800 bg-dark-900/25 overflow-hidden">
+            <div class="bg-dark-900 px-6 py-4 flex items-center justify-between border-b border-dark-800">
+              <div class="flex items-center gap-3">
+                <span class="rounded bg-emerald-500/10 px-2.5 py-1 text-xs font-bold text-emerald-400 border border-emerald-500/20">GET</span>
+                <code class="text-white font-mono font-semibold text-sm">/api/roles</code>
+              </div>
+              <span class="text-xs font-mono text-dark-400">Policy: Admin.FullAccess</span>
+            </div>
+            <div class="p-6">
+              <p class="text-sm mb-4 text-dark-300">Lấy danh sách tất cả các vai trò, kèm số lượng quyền được gán cho từng vai trò.</p>
+              <div class="relative">
+                <button onclick="copyToClipboard(this)" class="absolute right-3 top-3 rounded-lg bg-dark-800 hover:bg-dark-700 px-3 py-1 text-xs font-medium text-white transition">Copy</button>
+                <pre class="bg-dark-950 p-4 rounded-xl text-xs font-mono text-dark-200 overflow-x-auto">[
+  {
+    "id": "a90c1f5d-7521-4f7c-9b16-52bdc836c2e3",
+    "name": "Admin",
+    "description": "Quản trị viên toàn hệ thống",
+    "isActive": true,
+    "permissionsCount": 42,
+    "createdAt": "2026-05-18T00:00:00Z"
+  },
+  {
+    "id": "e812d1b5-829d-4871-bcf3-19bd23aef542",
+    "name": "User",
+    "description": "Người dùng nội bộ",
+    "isActive": true,
+    "permissionsCount": 5,
+    "createdAt": "2026-05-18T00:05:00Z"
+  }
+]</pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="rounded-2xl border border-dark-800 bg-dark-900/25 overflow-hidden">
+            <div class="bg-dark-900 px-6 py-4 flex items-center justify-between border-b border-dark-800">
+              <div class="flex items-center gap-3">
+                <span class="rounded bg-emerald-500/10 px-2.5 py-1 text-xs font-bold text-emerald-400 border border-emerald-500/20">GET</span>
+                <code class="text-white font-mono font-semibold text-sm">/api/roles/permissions</code>
+              </div>
+              <span class="text-xs font-mono text-dark-400">Policy: Admin.FullAccess</span>
+            </div>
+            <div class="p-6">
+              <p class="text-sm mb-4 text-dark-300">Lấy danh mục tất cả quyền có trên hệ thống, phân chia theo nhóm chức năng (Group) để hiển thị lên UI dạng ma trận phân quyền.</p>
+              <div class="relative">
+                <button onclick="copyToClipboard(this)" class="absolute right-3 top-3 rounded-lg bg-dark-800 hover:bg-dark-700 px-3 py-1 text-xs font-medium text-white transition">Copy</button>
+                <pre class="bg-dark-950 p-4 rounded-xl text-xs font-mono text-dark-200 overflow-x-auto">[
+  {
+    "groupName": "User Management",
+    "permissions": [
+      { "id": "1", "name": "User.Create", "description": "Quyền tạo người dùng mới" },
+      { "id": "2", "name": "User.Update", "description": "Quyền sửa đổi thông tin người dùng" }
+    ]
+  },
+  {
+    "groupName": "Admin Settings",
+    "permissions": [
+      { "id": "10", "name": "Admin.FullAccess", "description": "Toàn quyền quản trị" }
+    ]
+  }
+]</pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Create Role -->
+          <div class="rounded-2xl border border-dark-800 bg-dark-900/25 overflow-hidden">
+            <div class="bg-dark-900 px-6 py-4 flex items-center justify-between border-b border-dark-800">
+              <div class="flex items-center gap-3">
+                <span class="rounded bg-indigo-500/10 px-2.5 py-1 text-xs font-bold text-indigo-400 border border-indigo-500/20">POST</span>
+                <code class="text-white font-mono font-semibold text-sm">/api/roles</code>
+              </div>
+              <span class="text-xs font-mono text-dark-400">Policy: Admin.FullAccess</span>
+            </div>
+            <div class="p-6 space-y-4">
+              <p class="text-sm text-dark-300">Tạo vai trò mới và định nghĩa danh sách ID quyền được áp dụng ngay lúc khởi tạo.</p>
+              <h4 class="text-xs font-semibold text-white uppercase tracking-wider text-dark-400">Request Body</h4>
+              <pre class="bg-dark-950 p-4 rounded-xl text-xs font-mono text-dark-200 overflow-x-auto">{
+  "name": "Auditor",
+  "description": "Nhân viên kiểm toán hệ thống",
+  "permissionIds": ["5", "8", "12"]
+}</pre>
+            </div>
+          </div>
+
+          <!-- Blocked Rules -->
+          <div class="rounded-2xl border border-rose-500/20 bg-rose-500/5 p-6 border-l-4 border-l-rose-500">
+            <h4 class="text-white font-semibold mb-2 flex items-center gap-2">
+              <svg class="h-5 w-5 text-rose-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+              Quy tắc ràng buộc đặc biệt khi sửa / xóa vai trò
+            </h4>
+            <ul class="list-disc pl-5 text-sm space-y-2 text-dark-300">
+              <li>**Không được đổi tên:** Hệ thống cấm tuyệt đối việc đổi tên vai trò <code class="text-rose-300 font-mono">Admin</code> thành tên khác để tránh lỗi phá vỡ phân quyền hệ thống.</li>
+              <li>**Không được xóa:** Vai trò <code class="text-rose-300 font-mono">Admin</code> không thể bị xóa dưới bất kỳ hình thức nào.</li>
+              <li>**Đang được sử dụng:** Một vai trò đang có bất kỳ người dùng nào được gán vào thì không thể xóa (Hệ thống sẽ trả về mã lỗi **400 Bad Request** kèm thông báo số lượng người dùng đang gán vai trò đó). Bạn cần chuyển đổi vai trò của những người dùng này trước khi xóa vai trò.</li>
+            </ul>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Section: Scopes -->
+      <section id="api-scopes" class="mb-16 scroll-mt-20">
+        <div class="flex items-center gap-3 border-b border-dark-800 pb-3 mb-6">
+          <h2 class="text-2xl font-bold text-white tracking-tight">Quản lý Scopes OIDC</h2>
+          <span class="rounded bg-brand-500/10 px-2.5 py-0.5 text-xs font-semibold text-brand-400 border border-brand-500/20">Scopes</span>
+        </div>
+
+        <p class="mb-6 leading-relaxed">
+          Quản lý các phạm vi quyền truy cập OIDC (Scopes) mà Client có thể yêu cầu, đại diện cho tập hợp dữ liệu hoặc các tài nguyên API được bảo vệ.
+        </p>
+
+        <!-- API List -->
+        <div class="space-y-6">
+          
+          <div class="rounded-2xl border border-dark-800 bg-dark-900/25 overflow-hidden">
+            <div class="bg-dark-900 px-6 py-4 flex items-center justify-between border-b border-dark-800">
+              <div class="flex items-center gap-3">
+                <span class="rounded bg-emerald-500/10 px-2.5 py-1 text-xs font-bold text-emerald-400 border border-emerald-500/20">GET</span>
+                <code class="text-white font-mono font-semibold text-sm">/api/scopes</code>
+              </div>
+              <span class="text-xs font-mono text-dark-400">Policy: Admin.FullAccess</span>
+            </div>
+            <div class="p-6">
+              <div class="relative">
+                <button onclick="copyToClipboard(this)" class="absolute right-3 top-3 rounded-lg bg-dark-800 hover:bg-dark-700 px-3 py-1 text-xs font-medium text-white transition">Copy</button>
+                <pre class="bg-dark-950 p-4 rounded-xl text-xs font-mono text-dark-200 overflow-x-auto">[
+  {
+    "id": "31d91cf0-15bd-44aa-9c09-ef3d81dc52bf",
+    "name": "api",
+    "displayName": "Access Web API",
+    "description": "Cho phép truy cập các APIs nghiệp vụ của hệ thống",
+    "resources": ["api-resource-gateway"]
+  }
+]</pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="rounded-2xl border border-rose-500/20 bg-rose-500/5 p-6 border-l-4 border-l-rose-500">
+            <h4 class="text-white font-semibold mb-2">Hạn chế đặc biệt đối với Scopes mặc định</h4>
+            <p class="text-sm">
+              Để tuân thủ đúng chuẩn giao thức OpenID Connect, hệ thống **cấm xóa** các scopes hệ thống mặc định, bao gồm:
+              <code class="text-rose-300 font-mono">openid</code>, 
+              <code class="text-rose-300 font-mono">profile</code>, 
+              <code class="text-rose-300 font-mono">email</code>, 
+              <code class="text-rose-300 font-mono">offline_access</code> (Refresh Token), và 
+              <code class="text-rose-300 font-mono">roles</code>.
+            </p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Section: Sessions & Tokens -->
+      <section id="api-sessions-tokens" class="mb-16 scroll-mt-20">
+        <div class="flex items-center gap-3 border-b border-dark-800 pb-3 mb-6">
+          <h2 class="text-2xl font-bold text-white tracking-tight">Quản lý Sessions &amp; Tokens</h2>
+          <span class="rounded bg-brand-500/10 px-2.5 py-0.5 text-xs font-semibold text-brand-400 border border-brand-500/20">Sessions</span>
+        </div>
+
+        <p class="mb-6 leading-relaxed">
+          Theo dõi và kiểm soát trạng thái các phiên đăng nhập (Sessions) của tất cả người dùng và các token OIDC đang lưu hành.
+        </p>
+
+        <!-- API List -->
+        <div class="space-y-6">
+          
+          <div class="rounded-2xl border border-dark-800 bg-dark-900/25 overflow-hidden">
+            <div class="bg-dark-900 px-6 py-4 flex items-center justify-between border-b border-dark-800">
+              <div class="flex items-center gap-3">
+                <span class="rounded bg-emerald-500/10 px-2.5 py-1 text-xs font-bold text-emerald-400 border border-emerald-500/20">GET</span>
+                <code class="text-white font-mono font-semibold text-sm">/api/admin/sessions</code>
+              </div>
+              <span class="text-xs font-mono text-dark-400">Policy: Admin.FullAccess</span>
+            </div>
+            <div class="p-6">
+              <p class="text-sm mb-4 text-dark-300">Lấy danh sách các session đăng nhập của người dùng. Có thể lọc trạng thái hoạt động.</p>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs mb-4">
+                <div><code class="text-brand-400">page</code> - Trang hiện tại.</div>
+                <div><code class="text-brand-400">pageSize</code> - Kích thước trang.</div>
+                <div><code class="text-brand-400">activeOnly</code> <span class="text-dark-500">(bool)</span> - Chỉ lấy phiên đang hoạt động.</div>
+              </div>
+              <div class="relative">
+                <button onclick="copyToClipboard(this)" class="absolute right-3 top-3 rounded-lg bg-dark-800 hover:bg-dark-700 px-3 py-1 text-xs font-medium text-white transition">Copy</button>
+                <pre class="bg-dark-950 p-4 rounded-xl text-xs font-mono text-dark-200 overflow-x-auto">{
+  "total": 1,
+  "page": 1,
+  "pageSize": 20,
+  "data": [
+    {
+      "id": "e11d9cf0-15bd-44aa-9c09-ef3d81dc52bf",
+      "userId": "4a15ce76-d98c-4231-97b5-27a3d13264ff",
+      "userEmail": "nhanvien@domain.local",
+      "userDisplayName": "Nguyễn Hải",
+      "deviceId": "PC-CHROME-WIN",
+      "ipAddress": "192.168.100.15",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)...",
+      "isActive": true,
+      "createdAt": "2026-05-21T02:00:00Z",
+      "expiresAt": "2026-05-21T10:00:00Z",
+      "revokedAt": null,
+      "revokeReason": null
+    }
+  ]
+}</pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Revocation Actions -->
+          <div class="rounded-2xl border border-dark-800 bg-dark-900/20 p-6 space-y-4">
+            <h4 class="text-md font-semibold text-white">Các hành động thu hồi quyền truy cập (Revocation)</h4>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-sm text-dark-300">
+                <thead>
+                  <tr class="border-b border-dark-800 text-dark-400">
+                    <th class="pb-2 font-semibold">Tác vụ</th>
+                    <th class="pb-2 font-semibold">Endpoint</th>
+                    <th class="pb-2 font-semibold">Cơ chế hoạt động</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-dark-800 font-mono text-xs">
+                  <tr>
+                    <td class="py-3"><span class="rounded bg-indigo-500/10 px-2 py-0.5 text-xs font-bold text-indigo-400">POST</span></td>
+                    <td class="py-3 text-dark-200">/api/admin/sessions/{id}/revoke</td>
+                    <td class="py-3 text-dark-400">Thu hồi một phiên làm việc cụ thể. IP và trình duyệt tương ứng sẽ bị ép đăng xuất ngay lập tức.</td>
+                  </tr>
+                  <tr>
+                    <td class="py-3"><span class="rounded bg-indigo-500/10 px-2 py-0.5 text-xs font-bold text-indigo-400">POST</span></td>
+                    <td class="py-3 text-dark-200">/api/admin/sessions/user/{userId}/revoke-all</td>
+                    <td class="py-3 text-dark-400">Thu hồi toàn bộ phiên làm việc của người dùng chỉ định.</td>
+                  </tr>
+                  <tr>
+                    <td class="py-3"><span class="rounded bg-indigo-500/10 px-2 py-0.5 text-xs font-bold text-indigo-400">POST</span></td>
+                    <td class="py-3 text-dark-200">/api/admin/tokens/{id}/revoke</td>
+                    <td class="py-3 text-dark-400">Thu hồi trực tiếp token của OpenIddict.</td>
+                  </tr>
+                  <tr>
+                    <td class="py-3"><span class="rounded bg-indigo-500/10 px-2 py-0.5 text-xs font-bold text-indigo-400">POST</span></td>
+                    <td class="py-3 text-dark-200">/api/admin/tokens/user/{userId}/revoke-all</td>
+                    <td class="py-3 text-dark-400">Thu hồi tất cả token của một người dùng.</td>
+                  </tr>
+                  <tr>
+                    <td class="py-3"><span class="rounded bg-indigo-500/10 px-2 py-0.5 text-xs font-bold text-indigo-400">POST</span></td>
+                    <td class="py-3 text-dark-200">/api/admin/tokens/client/{clientId}/revoke-all</td>
+                    <td class="py-3 text-dark-400">Thu hồi toàn bộ token đã cấp cho một ứng dụng cụ thể (Ví dụ: khi phát hiện rò rỉ token phía Client).</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Section: Signatures -->
+      <section id="api-signatures" class="mb-16 scroll-mt-20">
+        <div class="flex items-center gap-3 border-b border-dark-800 pb-3 mb-6">
+          <h2 class="text-2xl font-bold text-white tracking-tight">Quản lý Chữ ký số</h2>
+          <span class="rounded bg-brand-500/10 px-2.5 py-0.5 text-xs font-semibold text-brand-400 border border-brand-500/20">Signatures</span>
+        </div>
+
+        <p class="mb-6 leading-relaxed">
+          AuthServer tích hợp phân hệ lưu trữ và ánh xạ chữ ký số (Digital Signature) của người dùng để thực hiện ký số tài liệu (PDF/PAdES) thông qua các thiết bị phần cứng (Hardware Token) hoặc ký số trên Cloud (Cloud HSM).
+        </p>
+
+        <!-- API List -->
+        <div class="space-y-6">
+          
+          <div class="rounded-2xl border border-dark-800 bg-dark-900/25 overflow-hidden">
+            <div class="bg-dark-900 px-6 py-4 flex items-center justify-between border-b border-dark-800">
+              <div class="flex items-center gap-3">
+                <span class="rounded bg-emerald-500/10 px-2.5 py-1 text-xs font-bold text-emerald-400 border border-emerald-500/20">GET</span>
+                <code class="text-white font-mono font-semibold text-sm">/api/users/{userId}/signatures</code>
+              </div>
+              <span class="text-xs font-mono text-dark-400">Yêu cầu xác thực</span>
+            </div>
+            <div class="p-6">
+              <p class="text-sm mb-4 text-dark-300">Lấy danh sách chứng thư và cấu hình chữ ký số của người dùng.</p>
+              <div class="relative">
+                <button onclick="copyToClipboard(this)" class="absolute right-3 top-3 rounded-lg bg-dark-800 hover:bg-dark-700 px-3 py-1 text-xs font-medium text-white transition">Copy</button>
+                <pre class="bg-dark-950 p-4 rounded-xl text-xs font-mono text-dark-200 overflow-x-auto">[
+  {
+    "id": "99d19cf0-15bd-44aa-9c09-ef3d81dc52bf",
+    "userId": "4a15ce76-d98c-4231-97b5-27a3d13264ff",
+    "signatureType": "Digital",
+    "certificatePath": "/certs/users/4a15ce76.pfx",
+    "caProvider": "VNPT-CA",
+    "issueDate": "2025-01-01T00:00:00Z",
+    "expiryDate": "2028-01-01T00:00:00Z",
+    "thumbprint": "5F4DCC3B5AA765D61D8327DEB882CF99",
+    "keyAlgorithm": "RSA-2048",
+    "certificateVersion": "V3",
+    "displayName": "Nguyễn Hải - Phòng Công nghệ",
+    "organization": "Tổng Công ty A",
+    "department": "Phòng Công nghệ",
+    "signatureImageUrl": "/images/signatures/4a15ce76.png",
+    "signingStandard": "PAdES",
+    "authenticationMethod": "Hardware Token",
+    "storageType": "Cloud HSM",
+    "status": "active"
+  }
+]</pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="rounded-2xl border border-dark-800 bg-dark-900/25 overflow-hidden">
+            <div class="bg-dark-900 px-6 py-4 flex items-center justify-between border-b border-dark-800">
+              <div class="flex items-center gap-3">
+                <span class="rounded bg-indigo-500/10 px-2.5 py-1 text-xs font-bold text-indigo-400 border border-indigo-500/20">POST</span>
+                <code class="text-white font-mono font-semibold text-sm">/api/users/{userId}/signatures</code>
+              </div>
+              <span class="text-xs font-mono text-dark-400">Yêu cầu xác thực</span>
+            </div>
+            <div class="p-6 space-y-4">
+              <p class="text-sm text-dark-300">Đăng ký thông tin chứng thư và cấu hình thiết bị ký số cho người dùng.</p>
+              <h4 class="text-xs font-semibold text-white uppercase tracking-wider text-dark-400">Request Body</h4>
+              <pre class="bg-dark-950 p-4 rounded-xl text-xs font-mono text-dark-200 overflow-x-auto">{
+  "signatureType": "Digital",
+  "certificatePath": "/certs/users/4a15ce76.pfx",
+  "caProvider": "VNPT-CA",
+  "issueDate": "2025-01-01T00:00:00Z",
+  "expiryDate": "2028-01-01T00:00:00Z",
+  "thumbprint": "5F4DCC3B5AA765D61D8327DEB882CF99",
+  "keyAlgorithm": "RSA-2048",
+  "certificateVersion": "V3",
+  "displayName": "Nguyễn Hải",
+  "organization": "Tổng Công ty A",
+  "department": "Phòng Công nghệ",
+  "signatureImageUrl": "/images/signatures/4a15ce76.png",
+  "signingStandard": "PAdES",
+  "authenticationMethod": "Hardware Token",
+  "storageType": "Cloud HSM",
+  "defaultReason": "Ký phê duyệt tài liệu",
+  "defaultLocation": "TP. Hồ Chí Minh",
+  "status": "active"
+}</pre>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Section: Audit Logs -->
+      <section id="api-audit-logs" class="mb-16 scroll-mt-20">
+        <div class="flex items-center gap-3 border-b border-dark-800 pb-3 mb-6">
+          <h2 class="text-2xl font-bold text-white tracking-tight">Hệ thống Audit Logs</h2>
+          <span class="rounded bg-brand-500/10 px-2.5 py-0.5 text-xs font-semibold text-brand-400 border border-brand-500/20">Audit Logs</span>
+        </div>
+
+        <p class="mb-6 leading-relaxed">
+          Ghi nhận toàn bộ vết lịch sử hoạt động nhạy cảm trên máy chủ xác thực bao gồm: thay đổi cấu hình ứng dụng, đăng nhập sai, khóa/mở khóa tài khoản, thu hồi session.
+        </p>
+
+        <!-- API Card -->
+        <div class="rounded-2xl border border-dark-800 bg-dark-900/25 overflow-hidden">
+          <div class="bg-dark-900 px-6 py-4 flex items-center justify-between border-b border-dark-800">
+            <div class="flex items-center gap-3">
+              <span class="rounded bg-emerald-500/10 px-2.5 py-1 text-xs font-bold text-emerald-400 border border-emerald-500/20">GET</span>
+              <code class="text-white font-mono font-semibold text-sm">/api/admin/audit-logs</code>
+            </div>
+            <span class="text-xs font-mono text-dark-400">Policy: Admin.FullAccess</span>
+          </div>
+
+          <div class="p-6 space-y-4">
+            <h4 class="text-xs font-semibold text-white uppercase tracking-wider text-dark-400">Tham số lọc (Query Params)</h4>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-mono text-dark-300">
+              <div class="bg-dark-900/60 p-3 rounded-lg border border-dark-800">
+                <code class="text-brand-400 font-bold">action</code>
+                <span class="block text-dark-400 mt-1 font-sans">Lọc tác vụ (ví dụ: LOGIN, USER_CREATED, TOKEN_REVOKED)</span>
+              </div>
+              <div class="bg-dark-900/60 p-3 rounded-lg border border-dark-800">
+                <code class="text-brand-400 font-bold">userId</code>
+                <span class="block text-dark-400 mt-1 font-sans">Lọc theo mã định danh tài khoản thực hiện tác vụ</span>
+              </div>
+              <div class="bg-dark-900/60 p-3 rounded-lg border border-dark-800">
+                <code class="text-brand-400 font-bold">fromDate / toDate</code>
+                <span class="block text-dark-400 mt-1 font-sans">Khoảng thời gian cần xuất log (ISO-8601)</span>
+              </div>
+            </div>
+
+            <h4 class="text-xs font-semibold text-white uppercase tracking-wider text-dark-400">Response (200 OK)</h4>
+            <div class="relative">
+              <button onclick="copyToClipboard(this)" class="absolute right-3 top-3 rounded-lg bg-dark-800 hover:bg-dark-700 px-3 py-1 text-xs font-medium text-white transition">Copy</button>
+              <pre class="bg-dark-950 p-4 rounded-xl text-xs font-mono text-dark-200 overflow-x-auto">{
+  "total": 1,
+  "page": 1,
+  "pageSize": 20,
+  "data": [
+    {
+      "id": 15024,
+      "action": "USER_CREATED",
+      "result": "Success",
+      "userId": "4a15ce76-d98c-4231-97b5-27a3d13264ff",
+      "userName": "nhanvien@domain.local",
+      "ipAddress": "192.168.100.2",
+      "timestamp": "2026-05-21T07:15:30Z",
+      "metadata": "{ \"Role\": \"User\", \"TenantId\": \"f784d0b1-4f10-449e-b96f-c1f930eef2a1\" }"
+    }
+  ]
+}</pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: Settings -->
+      <section id="api-settings" class="mb-16 scroll-mt-20">
+        <div class="flex items-center gap-3 border-b border-dark-800 pb-3 mb-6">
+          <h2 class="text-2xl font-bold text-white tracking-tight">Cấu hình Hệ thống</h2>
+          <span class="rounded bg-brand-500/10 px-2.5 py-0.5 text-xs font-semibold text-brand-400 border border-brand-500/20">Settings</span>
+        </div>
+
+        <p class="mb-6 leading-relaxed">
+          Đọc và cập nhật các tham số vận hành của hệ thống xác thực mà không cần khởi động lại máy chủ Web Server.
+        </p>
+
+        <!-- API List -->
+        <div class="space-y-6">
+          
+          <div class="rounded-2xl border border-dark-800 bg-dark-900/25 overflow-hidden">
+            <div class="bg-dark-900 px-6 py-4 flex items-center justify-between border-b border-dark-800">
+              <div class="flex items-center gap-3">
+                <span class="rounded bg-emerald-500/10 px-2.5 py-1 text-xs font-bold text-emerald-400 border border-emerald-500/20">GET</span>
+                <code class="text-white font-mono font-semibold text-sm">/api/admin/settings</code>
+              </div>
+              <span class="text-xs font-mono text-dark-400">Policy: Admin.FullAccess</span>
+            </div>
+            <div class="p-6">
+              <div class="relative">
+                <button onclick="copyToClipboard(this)" class="absolute right-3 top-3 rounded-lg bg-dark-800 hover:bg-dark-700 px-3 py-1 text-xs font-medium text-white transition">Copy</button>
+                <pre class="bg-dark-950 p-4 rounded-xl text-xs font-mono text-dark-200 overflow-x-auto">[
+  {
+    "key": "Security.Password.MinLength",
+    "value": "8",
+    "type": "Number",
+    "description": "Độ dài tối thiểu của mật khẩu tài khoản",
+    "lastModifiedAt": "2026-05-18T00:00:00Z"
+  },
+  {
+    "key": "Security.Login.MaxFailedAttempts",
+    "value": "5",
+    "type": "Number",
+    "description": "Số lần đăng nhập sai tối đa trước khi tạm khóa IP",
+    "lastModifiedAt": "2026-05-18T00:00:00Z"
+  }
+]</pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="rounded-2xl border border-dark-800 bg-dark-900/25 overflow-hidden">
+            <div class="bg-dark-900 px-6 py-4 flex items-center justify-between border-b border-dark-800">
+              <div class="flex items-center gap-3">
+                <span class="rounded bg-amber-500/10 px-2.5 py-1 text-xs font-bold text-amber-400 border border-amber-500/20">PUT</span>
+                <code class="text-white font-mono font-semibold text-sm">/api/admin/settings</code>
+              </div>
+              <span class="text-xs font-mono text-dark-400">Policy: Admin.FullAccess</span>
+            </div>
+            <div class="p-6 space-y-4">
+              <p class="text-sm text-dark-300">Cập nhật một danh sách các cấu hình cài đặt hệ thống.</p>
+              <h4 class="text-xs font-semibold text-white uppercase tracking-wider text-dark-400">Request Body</h4>
+              <pre class="bg-dark-950 p-4 rounded-xl text-xs font-mono text-dark-200 overflow-x-auto">[
+  {
+    "key": "Security.Login.MaxFailedAttempts",
+    "value": "10"
+  }
+]</pre>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Section: Troubleshooting -->
+      <section id="api-troubleshooting" class="mb-16 scroll-mt-20">
+        <div class="flex items-center gap-3 border-b border-dark-800 pb-3 mb-6">
+          <h2 class="text-2xl font-bold text-white tracking-tight">Xử lý Sự cố &amp; Diagnostics</h2>
+          <span class="rounded bg-brand-500/10 px-2.5 py-0.5 text-xs font-semibold text-brand-400 border border-brand-500/20">Trouble Shoot</span>
+        </div>
+
+        <p class="mb-6 leading-relaxed">
+          Tập hợp các API chẩn đoán nhanh lỗi tích hợp OIDC, phân tích cấu hình ứng dụng và truy dấu nhật ký lỗi nhằm hỗ trợ đội ngũ vận hành System Operator.
+        </p>
+
+        <!-- API List -->
+        <div class="space-y-6">
+          
+          <!-- Search user -->
+          <div class="rounded-2xl border border-dark-800 bg-dark-900/25 overflow-hidden">
+            <div class="bg-dark-900 px-6 py-4 flex items-center justify-between border-b border-dark-800">
+              <div class="flex items-center gap-3">
+                <span class="rounded bg-emerald-500/10 px-2.5 py-1 text-xs font-bold text-emerald-400 border border-emerald-500/20">GET</span>
+                <code class="text-white font-mono font-semibold text-sm">/api/admin/troubleshooting/search-user</code>
+              </div>
+              <span class="text-xs font-mono text-dark-400">Policy: Admin.FullAccess</span>
+            </div>
+            <div class="p-6">
+              <p class="text-sm mb-4 text-dark-300">Tìm kiếm nhanh tài khoản người dùng theo email, số điện thoại hoặc username (Giới hạn tối đa 10 dòng kết quả để bảo mật thông tin).</p>
+              <div class="text-xs font-mono mb-2"><code class="text-brand-400">query</code> - Chuỗi tìm kiếm.</div>
+            </div>
+          </div>
+
+          <!-- Analyze Client -->
+          <div class="rounded-2xl border border-dark-800 bg-dark-900/25 overflow-hidden">
+            <div class="bg-dark-900 px-6 py-4 flex items-center justify-between border-b border-dark-800">
+              <div class="flex items-center gap-3">
+                <span class="rounded bg-emerald-500/10 px-2.5 py-1 text-xs font-bold text-emerald-400 border border-emerald-500/20">GET</span>
+                <code class="text-white font-mono font-semibold text-sm">/api/admin/troubleshooting/analyze-client/{clientId}</code>
+              </div>
+              <span class="text-xs font-mono text-dark-400">Policy: Admin.FullAccess</span>
+            </div>
+            <div class="p-6 space-y-4">
+              <p class="text-sm text-dark-300">Hệ thống thực hiện phân tích cấu hình OIDC của ứng dụng để phát hiện các lỗ hổng hoặc cấu hình sai sót phổ biến.</p>
+              <h4 class="text-xs font-semibold text-white uppercase tracking-wider text-dark-400">Response (200 OK)</h4>
+              <div class="relative">
+                <button onclick="copyToClipboard(this)" class="absolute right-3 top-3 rounded-lg bg-dark-800 hover:bg-dark-700 px-3 py-1 text-xs font-medium text-white transition">Copy</button>
+                <pre class="bg-dark-950 p-4 rounded-xl text-xs font-mono text-dark-200 overflow-x-auto">{
+  "clientId": "some-public-app",
+  "displayName": "Mobile Public Client",
+  "clientType": "public",
+  "issues": [
+    "No Redirect URIs configured.",
+    "Public client should not have a client secret."
+  ],
+  "isHealthy": false
+}</pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Error logs -->
+          <div class="rounded-2xl border border-dark-800 bg-dark-900/25 overflow-hidden">
+            <div class="bg-dark-900 px-6 py-4 flex items-center justify-between border-b border-dark-800">
+              <div class="flex items-center gap-3">
+                <span class="rounded bg-emerald-500/10 px-2.5 py-1 text-xs font-bold text-emerald-400 border border-emerald-500/20">GET</span>
+                <code class="text-white font-mono font-semibold text-sm">/api/admin/troubleshooting/error-logs</code>
+              </div>
+              <span class="text-xs font-mono text-dark-400">Policy: Admin.FullAccess</span>
+            </div>
+            <div class="p-6">
+              <p class="text-sm mb-4 text-dark-300">Quét nhanh danh sách lịch sử các lỗi kết nối của OIDC client, phục vụ gỡ rối trong quá trình tích hợp.</p>
+              <div class="text-xs font-mono mb-4"><code class="text-brand-400">type</code> - Phân loại lỗi, nhận giá trị: <code class="text-dark-200">redirect_uri</code>, <code class="text-dark-200">invalid_client</code>, hoặc <code class="text-dark-200">invalid_grant</code>.</div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer class="border-t border-dark-800 bg-dark-950/40 py-8 text-center text-xs text-dark-500">
+    <div class="mx-auto max-w-8xl px-6">
+      <p>© 2026 AuthServer. Phát triển bởi Đội ngũ Kiến trúc và Bảo mật Hệ thống.</p>
+      <p class="mt-2 text-dark-600">Được biên soạn và tối ưu hóa cho môi trường vận hành an toàn cao cấp.</p>
+    </div>
+  </footer>
+
+  <!-- Scroll to top button -->
+  <button id="btn-back-to-top" class="fixed bottom-6 right-6 hidden z-50 rounded-xl bg-brand-600 hover:bg-brand-500 text-white p-3 shadow-lg shadow-brand-500/20 transition transform hover:scale-110 active:scale-95 outline-none">
+    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+    </svg>
+  </button>
+
+  <script>
+    // Search filtering logic
+    const searchInput = document.getElementById('api-search');
+    const navItems = document.querySelectorAll('.nav-item');
+    const sections = document.querySelectorAll('main > section');
+
+    searchInput.addEventListener('input', (e) => {
+      const val = e.target.value.toLowerCase().trim();
+      
+      navItems.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        if (text.includes(val)) {
+          item.style.display = 'flex';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+
+      sections.forEach(sec => {
+        const id = sec.id;
+        const text = sec.textContent.toLowerCase();
+        const header = sec.querySelector('h2').textContent.toLowerCase();
+        
+        if (text.includes(val) || header.includes(val)) {
+          sec.style.display = 'block';
+        } else {
+          sec.style.display = 'none';
+        }
+      });
+    });
+
+    // Active link highlighting on scroll
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -60% 0px',
+      threshold: 0
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          navItems.forEach(item => {
+            if (item.getAttribute('href') === `#${id}`) {
+              item.classList.add('active-nav');
+            } else {
+              item.classList.remove('active-nav');
+            }
+          });
+        }
+      });
+    }, observerOptions);
+
+    sections.forEach(section => {
+      observer.observe(section);
+    });
+
+    // Copy to clipboard logic
+    function copyToClipboard(button) {
+      const codeBlock = button.nextElementSibling;
+      const textToCopy = codeBlock.textContent.trim();
+      
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        const originalText = button.textContent;
+        button.textContent = 'Copied!';
+        button.classList.add('bg-emerald-600');
+        button.classList.remove('bg-dark-800');
+        
+        setTimeout(() => {
+          button.textContent = originalText;
+          button.classList.remove('bg-emerald-600');
+          button.classList.add('bg-dark-800');
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy: ', err);
+      });
+    }
+
+    // Scroll to top button logic
+    const btnBackToTop = document.getElementById('btn-back-to-top');
+    
+    window.onscroll = function() {
+      if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+        btnBackToTop.classList.remove('hidden');
+      } else {
+        btnBackToTop.classList.add('hidden');
+      }
+    };
+
+    btnBackToTop.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+  </script>
+
+
+</body></html>
