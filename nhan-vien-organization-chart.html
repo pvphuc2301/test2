@@ -122,8 +122,26 @@
             </div>
 
             <div id="list" class="overflow-hidden rounded border border-msborder bg-white shadow-sm">
-              <div class="flex flex-col gap-3 border-b border-msborder px-4 py-3 lg:flex-row lg:items-center lg:justify-between">
-                <div class="flex flex-wrap gap-2">
+              <div class="flex flex-col gap-4 border-b border-msborder px-4 py-3 lg:flex-row lg:items-center lg:justify-between">
+                <div class="flex flex-wrap items-center gap-2">
+                  <div class="flex items-center rounded border border-msborder bg-[#faf9f8] p-1 shadow-sm">
+                    <button class="flex items-center gap-2 rounded bg-white px-3 py-2 text-sm font-semibold text-msblueDark shadow-sm">
+                      ☰ <span>List</span>
+                    </button>
+                    <button class="flex items-center gap-2 rounded px-3 py-2 text-sm font-semibold text-[#605e5c] hover:bg-white">
+                      🌳 <span>Tree</span>
+                    </button>
+                    <button class="flex items-center gap-2 rounded px-3 py-2 text-sm font-semibold text-[#605e5c] hover:bg-white">
+                      🪪 <span>Card</span>
+                    </button>
+                    <button class="flex items-center gap-2 rounded px-3 py-2 text-sm font-semibold text-[#605e5c] hover:bg-white">
+                      📊 <span>Chart</span>
+                    </button>
+                  </div>
+
+                  <div class="h-6 w-px bg-msborder"></div>
+
+                  <div class="flex flex-wrap gap-2">
                   <button class="rounded bg-msgray px-3 py-2 text-sm font-semibold hover:bg-msborder">Filter</button>
                   <button class="rounded bg-msgray px-3 py-2 text-sm font-semibold hover:bg-msborder">Sort</button>
                   <button class="rounded bg-msgray px-3 py-2 text-sm font-semibold hover:bg-msborder">Department</button>
@@ -132,54 +150,237 @@
                 </div>
                 <div class="flex items-center gap-2 rounded bg-msgray px-3 py-2 text-sm">🔎 <input class="bg-transparent outline-none" placeholder="Search employees"></div>
               </div>
+                </div>
 
-              <div class="overflow-x-auto">
-                <table class="w-full min-w-[1280px] text-left text-sm">
-                  <thead class="bg-[#faf9f8] text-xs font-semibold uppercase tracking-wide text-[#605e5c]">
-                    <tr class="border-b border-msborder">
-                      <th class="w-10 px-4 py-3"><input type="checkbox" class="h-4 w-4 accent-msblue"></th>
-                      <th class="px-4 py-3">Employee</th>
-                      <th class="px-4 py-3">Code</th>
-                      <th class="px-4 py-3">Department</th>
-                      <th class="px-4 py-3">Position</th>
-                      <th class="px-4 py-3">Level</th>
-                      <th class="px-4 py-3">Contract</th>
-                      <th class="px-4 py-3">Account</th>
-                      <th class="px-4 py-3">Profile</th>
-                      <th class="px-4 py-3">Status</th>
-                      <th class="px-4 py-3">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody class="divide-y divide-msborder">
-                    <tr class="bg-[#f5fbff] hover:bg-[#e5f1fb]">
-                      <td class="px-4 py-3"><input type="checkbox" checked="" class="h-4 w-4 accent-msblue"></td>
-                      <td class="px-4 py-3"><div class="flex items-center gap-3"><div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#c7e0f4] font-semibold text-msblueDark">NT</div><div><p class="font-semibold text-msblueDark">Nguyễn Văn Thành</p><p class="text-xs text-[#605e5c]">thanh.nguyen@hospital.vn</p></div></div></td>
-                      <td class="px-4 py-3">NV000128</td><td class="px-4 py-3">Cardiology</td><td class="px-4 py-3">Doctor</td><td class="px-4 py-3">Specialist</td>
-                      <td class="px-4 py-3"><span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Active</span></td>
-                      <td class="px-4 py-3"><span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Enabled</span></td>
-                      <td class="px-4 py-3">12/14 docs</td><td class="px-4 py-3"><span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Active</span></td>
-                      <td class="px-4 py-3"><button class="rounded px-2 py-1 hover:bg-white">•••</button></td>
-                    </tr>
-                    <tr class="hover:bg-msgray">
-                      <td class="px-4 py-3"><input type="checkbox" class="h-4 w-4 accent-msblue"></td>
-                      <td class="px-4 py-3"><div class="flex items-center gap-3"><div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#fde7e9] font-semibold text-[#a4262c]">LT</div><div><p class="font-semibold">Lê Minh Trang</p><p class="text-xs text-[#605e5c]">trang.le@hospital.vn</p></div></div></td>
-                      <td class="px-4 py-3">NV000084</td><td class="px-4 py-3">Human Resource</td><td class="px-4 py-3">HR Manager</td><td class="px-4 py-3">Management</td>
-                      <td class="px-4 py-3"><span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Active</span></td>
-                      <td class="px-4 py-3"><span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Enabled</span></td>
-                      <td class="px-4 py-3">14/14 docs</td><td class="px-4 py-3"><span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Active</span></td>
-                      <td class="px-4 py-3"><button class="rounded px-2 py-1 hover:bg-msborder">•••</button></td>
-                    </tr>
-                    <tr class="hover:bg-msgray">
-                      <td class="px-4 py-3"><input type="checkbox" class="h-4 w-4 accent-msblue"></td>
-                      <td class="px-4 py-3"><div class="flex items-center gap-3"><div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#fff4ce] font-semibold text-[#8a6100]">PH</div><div><p class="font-semibold">Phạm Hữu Phúc</p><p class="text-xs text-[#605e5c]">phuc.pham@hospital.vn</p></div></div></td>
-                      <td class="px-4 py-3">NV000215</td><td class="px-4 py-3">IT</td><td class="px-4 py-3">System Engineer</td><td class="px-4 py-3">Specialist</td>
-                      <td class="px-4 py-3"><span class="rounded bg-[#fff4ce] px-2 py-1 text-xs font-semibold text-[#8a6100]">Probation</span></td>
-                      <td class="px-4 py-3"><span class="rounded bg-[#fde7e9] px-2 py-1 text-xs font-semibold text-[#a4262c]">Missing role</span></td>
-                      <td class="px-4 py-3">9/14 docs</td><td class="px-4 py-3"><span class="rounded bg-[#fff4ce] px-2 py-1 text-xs font-semibold text-[#8a6100]">Probation</span></td>
-                      <td class="px-4 py-3"><button class="rounded px-2 py-1 hover:bg-msborder">•••</button></td>
-                    </tr>
-                  </tbody>
-                </table>
+                <div class="flex flex-wrap items-center gap-2 text-sm">
+                  <span class="rounded bg-[#e5f1fb] px-2 py-1 font-semibold text-msblueDark">View: List</span>
+                  <span class="rounded bg-msgray px-2 py-1">1,248 employees</span>
+                  <button class="rounded border border-[#8a8886] bg-white px-3 py-2 font-semibold hover:bg-msgray">Customize columns</button>
+                </div>
+              </div>
+
+              <div class="border-b border-msborder bg-[#faf9f8] px-4 py-3">
+                <div class="grid gap-4 md:grid-cols-4">
+                  <div class="rounded border border-msborder bg-white p-3 shadow-sm">
+                    <div class="mb-2 flex items-center justify-between">
+                      <p class="font-semibold text-msblueDark">List View</p>
+                      <span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Active</span>
+                    </div>
+                    <p class="text-sm text-[#605e5c]">Hiển thị dạng bảng dữ liệu với filter, sort và bulk actions.</p>
+                  </div>
+
+                  <div class="rounded border border-msborder bg-white p-3 shadow-sm hover:shadow-ms">
+                    <div class="mb-2 flex items-center justify-between">
+                      <p class="font-semibold">Tree View</p>
+                      <span class="rounded bg-msgray px-2 py-1 text-xs font-semibold">Hierarchy</span>
+                    </div>
+                    <p class="text-sm text-[#605e5c]">Hiển thị nhân viên theo phòng ban hoặc cấp quản lý.</p>
+                  </div>
+
+                  <div class="rounded border border-msborder bg-white p-3 shadow-sm hover:shadow-ms">
+                    <div class="mb-2 flex items-center justify-between">
+                      <p class="font-semibold">Card View</p>
+                      <span class="rounded bg-msgray px-2 py-1 text-xs font-semibold">Profile</span>
+                    </div>
+                    <p class="text-sm text-[#605e5c]">Hiển thị dạng card hồ sơ nhân viên với avatar và trạng thái.</p>
+                  </div>
+
+                  <div class="rounded border border-msborder bg-white p-3 shadow-sm hover:shadow-ms">
+                    <div class="mb-2 flex items-center justify-between">
+                      <p class="font-semibold">Organization Chart</p>
+                      <span class="rounded bg-msgray px-2 py-1 text-xs font-semibold">Structure</span>
+                    </div>
+                    <p class="text-sm text-[#605e5c]">Hiển thị sơ đồ tổ chức và quan hệ quản lý.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="border-b border-msborder bg-[#faf9f8] px-4 py-3">
+                <div class="flex flex-wrap items-center justify-between gap-3">
+                  <div class="flex flex-wrap items-center gap-2 text-sm">
+                    <span class="rounded bg-[#e5f1fb] px-2 py-1 font-semibold text-msblueDark">Organization Chart View</span>
+                    <span class="rounded bg-msgray px-2 py-1">1,248 employees</span>
+                    <span class="rounded bg-msgray px-2 py-1">42 departments</span>
+                  </div>
+
+                  <div class="flex flex-wrap gap-2">
+                    <button class="rounded border border-[#8a8886] bg-white px-3 py-2 text-sm font-semibold hover:bg-msgray">Expand all</button>
+                    <button class="rounded border border-[#8a8886] bg-white px-3 py-2 text-sm font-semibold hover:bg-msgray">Collapse all</button>
+                    <button class="rounded border border-[#8a8886] bg-white px-3 py-2 text-sm font-semibold hover:bg-msgray">Focus mode</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="overflow-auto bg-[#f8f8f8] p-8">
+                <div class="min-w-[1400px]">
+                  <div class="flex flex-col items-center">
+                    <div class="relative rounded-2xl border-2 border-msblue bg-white p-5 shadow-ms">
+                      <div class="mb-4 flex items-start justify-between gap-6">
+                        <div class="flex items-center gap-4">
+                          <div class="flex h-16 w-16 items-center justify-center rounded-full bg-[#c7e0f4] text-xl font-bold text-msblueDark">TD</div>
+                          <div>
+                            <p class="text-lg font-semibold text-msblueDark">Trần Đức Minh</p>
+                            <p class="text-sm text-[#605e5c]">Chief Executive Officer</p>
+                            <p class="mt-1 text-xs text-[#605e5c]">CEO · Executive Level</p>
+                          </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3 text-sm">
+                          <div class="rounded bg-[#faf9f8] px-3 py-2 text-center"><p class="font-semibold">6</p><p class="text-xs text-[#605e5c]">Directors</p></div>
+                          <div class="rounded bg-[#faf9f8] px-3 py-2 text-center"><p class="font-semibold">1,248</p><p class="text-xs text-[#605e5c]">Employees</p></div>
+                        </div>
+                      </div>
+
+                      <div class="flex gap-2 border-t border-msborder pt-4 text-sm">
+                        <button class="rounded border border-[#8a8886] bg-white px-3 py-2 font-semibold hover:bg-msgray">View profile</button>
+                        <button class="rounded border border-[#8a8886] bg-white px-3 py-2 font-semibold hover:bg-msgray">Send message</button>
+                        <button class="rounded bg-msblue px-3 py-2 font-semibold text-white hover:bg-msblueDark">Manage team</button>
+                      </div>
+                    </div>
+
+                    <div class="h-12 w-px bg-msborder"></div>
+                    <div class="h-8 w-[900px] border-t border-x border-msborder rounded-t"></div>
+
+                    <div class="grid grid-cols-4 gap-10">
+                      <div class="flex flex-col items-center">
+                        <div class="h-8 w-px bg-msborder"></div>
+                        <div class="w-[280px] rounded-2xl border border-msborder bg-white p-4 shadow-sm hover:shadow-ms">
+                          <div class="mb-4 flex items-start justify-between">
+                            <div class="flex items-center gap-3">
+                              <div class="flex h-12 w-12 items-center justify-center rounded-full bg-[#e5f1fb] font-semibold text-msblueDark">HN</div>
+                              <div>
+                                <p class="font-semibold">Hoàng Ngọc Lan</p>
+                                <p class="text-sm text-[#605e5c]">HR Director</p>
+                              </div>
+                            </div>
+                            <button class="rounded px-2 py-1 hover:bg-msgray">⌄</button>
+                          </div>
+
+                          <div class="mb-4 grid grid-cols-3 gap-2 text-center text-sm">
+                            <div class="rounded bg-[#faf9f8] p-2"><p class="font-semibold">4</p><p class="text-xs text-[#605e5c]">Managers</p></div>
+                            <div class="rounded bg-[#faf9f8] p-2"><p class="font-semibold">86</p><p class="text-xs text-[#605e5c]">Employees</p></div>
+                            <div class="rounded bg-[#faf9f8] p-2"><p class="font-semibold">3</p><p class="text-xs text-[#605e5c]">Teams</p></div>
+                          </div>
+
+                          <div class="flex flex-wrap gap-2 text-sm">
+                            <button class="rounded border border-[#8a8886] bg-white px-3 py-2 font-semibold hover:bg-msgray">Profile</button>
+                            <button class="rounded border border-[#8a8886] bg-white px-3 py-2 font-semibold hover:bg-msgray">Department</button>
+                          </div>
+                        </div>
+
+                        <div class="h-10 w-px bg-msborder"></div>
+                        <div class="h-6 w-[220px] border-t border-x border-msborder rounded-t"></div>
+
+                        <div class="grid grid-cols-2 gap-5">
+                          <div class="w-[210px] rounded-xl border border-msborder bg-white p-4 shadow-sm">
+                            <div class="mb-3 flex items-center gap-3">
+                              <div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#fff4ce] font-semibold text-[#8a6100]">TA</div>
+                              <div>
+                                <p class="font-semibold">Trần Anh Khoa</p>
+                                <p class="text-xs text-[#605e5c]">HR Manager</p>
+                              </div>
+                            </div>
+                            <div class="mb-3 text-sm text-[#605e5c]">22 employees</div>
+                            <button class="w-full rounded bg-msgray px-3 py-2 text-sm font-semibold hover:bg-msborder">View team</button>
+                          </div>
+
+                          <div class="w-[210px] rounded-xl border border-msborder bg-white p-4 shadow-sm">
+                            <div class="mb-3 flex items-center gap-3">
+                              <div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#fde7e9] font-semibold text-[#a4262c]">LT</div>
+                              <div>
+                                <p class="font-semibold">Lê Minh Trang</p>
+                                <p class="text-xs text-[#605e5c]">Talent Manager</p>
+                              </div>
+                            </div>
+                            <div class="mb-3 text-sm text-[#605e5c]">18 employees</div>
+                            <button class="w-full rounded bg-msgray px-3 py-2 text-sm font-semibold hover:bg-msborder">View team</button>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="flex flex-col items-center">
+                        <div class="h-8 w-px bg-msborder"></div>
+                        <div class="w-[280px] rounded-2xl border border-msborder bg-white p-4 shadow-sm hover:shadow-ms">
+                          <div class="mb-4 flex items-start justify-between">
+                            <div class="flex items-center gap-3">
+                              <div class="flex h-12 w-12 items-center justify-center rounded-full bg-[#dff6dd] font-semibold text-[#107c10]">PH</div>
+                              <div>
+                                <p class="font-semibold">Phạm Hải Nam</p>
+                                <p class="text-sm text-[#605e5c]">IT Director</p>
+                              </div>
+                            </div>
+                            <button class="rounded px-2 py-1 hover:bg-msgray">⌄</button>
+                          </div>
+
+                          <div class="mb-4 grid grid-cols-3 gap-2 text-center text-sm">
+                            <div class="rounded bg-[#faf9f8] p-2"><p class="font-semibold">5</p><p class="text-xs text-[#605e5c]">Managers</p></div>
+                            <div class="rounded bg-[#faf9f8] p-2"><p class="font-semibold">102</p><p class="text-xs text-[#605e5c]">Employees</p></div>
+                            <div class="rounded bg-[#faf9f8] p-2"><p class="font-semibold">6</p><p class="text-xs text-[#605e5c]">Projects</p></div>
+                          </div>
+
+                          <div class="flex flex-wrap gap-2 text-sm">
+                            <button class="rounded border border-[#8a8886] bg-white px-3 py-2 font-semibold hover:bg-msgray">Profile</button>
+                            <button class="rounded border border-[#8a8886] bg-white px-3 py-2 font-semibold hover:bg-msgray">Projects</button>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="flex flex-col items-center">
+                        <div class="h-8 w-px bg-msborder"></div>
+                        <div class="w-[280px] rounded-2xl border border-msborder bg-white p-4 shadow-sm hover:shadow-ms">
+                          <div class="mb-4 flex items-start justify-between">
+                            <div class="flex items-center gap-3">
+                              <div class="flex h-12 w-12 items-center justify-center rounded-full bg-[#fff4ce] font-semibold text-[#8a6100]">VT</div>
+                              <div>
+                                <p class="font-semibold">Võ Thanh Bình</p>
+                                <p class="text-sm text-[#605e5c]">Finance Director</p>
+                              </div>
+                            </div>
+                            <button class="rounded px-2 py-1 hover:bg-msgray">⌄</button>
+                          </div>
+
+                          <div class="mb-4 grid grid-cols-3 gap-2 text-center text-sm">
+                            <div class="rounded bg-[#faf9f8] p-2"><p class="font-semibold">3</p><p class="text-xs text-[#605e5c]">Managers</p></div>
+                            <div class="rounded bg-[#faf9f8] p-2"><p class="font-semibold">48</p><p class="text-xs text-[#605e5c]">Employees</p></div>
+                            <div class="rounded bg-[#faf9f8] p-2"><p class="font-semibold">2</p><p class="text-xs text-[#605e5c]">Teams</p></div>
+                          </div>
+
+                          <div class="flex flex-wrap gap-2 text-sm">
+                            <button class="rounded border border-[#8a8886] bg-white px-3 py-2 font-semibold hover:bg-msgray">Profile</button>
+                            <button class="rounded border border-[#8a8886] bg-white px-3 py-2 font-semibold hover:bg-msgray">Finance</button>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="flex flex-col items-center">
+                        <div class="h-8 w-px bg-msborder"></div>
+                        <div class="w-[280px] rounded-2xl border border-msborder bg-white p-4 shadow-sm hover:shadow-ms">
+                          <div class="mb-4 flex items-start justify-between">
+                            <div class="flex items-center gap-3">
+                              <div class="flex h-12 w-12 items-center justify-center rounded-full bg-[#fde7e9] font-semibold text-[#a4262c]">NT</div>
+                              <div>
+                                <p class="font-semibold">Nguyễn Thu Hà</p>
+                                <p class="text-sm text-[#605e5c]">Medical Director</p>
+                              </div>
+                            </div>
+                            <button class="rounded px-2 py-1 hover:bg-msgray">⌄</button>
+                          </div>
+
+                          <div class="mb-4 grid grid-cols-3 gap-2 text-center text-sm">
+                            <div class="rounded bg-[#faf9f8] p-2"><p class="font-semibold">8</p><p class="text-xs text-[#605e5c]">Managers</p></div>
+                            <div class="rounded bg-[#faf9f8] p-2"><p class="font-semibold">640</p><p class="text-xs text-[#605e5c]">Employees</p></div>
+                            <div class="rounded bg-[#faf9f8] p-2"><p class="font-semibold">12</p><p class="text-xs text-[#605e5c]">Departments</p></div>
+                          </div>
+
+                          <div class="flex flex-wrap gap-2 text-sm">
+                            <button class="rounded border border-[#8a8886] bg-white px-3 py-2 font-semibold hover:bg-msgray">Profile</button>
+                            <button class="rounded border border-[#8a8886] bg-white px-3 py-2 font-semibold hover:bg-msgray">Medical units</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -241,7 +442,7 @@
                 </table>
               </div>
             </div>
-          </div>
+          </section></main></div>
 
           <aside class="space-y-4">
             <section class="rounded border border-msborder bg-white shadow-sm">
@@ -277,10 +478,10 @@
               </div>
             </section>
           </aside>
-        </section>
-      </main>
+        
+      
     </div>
-  </div>
+  
 
 
 </body></html>

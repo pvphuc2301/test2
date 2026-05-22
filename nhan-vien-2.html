@@ -122,8 +122,26 @@
             </div>
 
             <div id="list" class="overflow-hidden rounded border border-msborder bg-white shadow-sm">
-              <div class="flex flex-col gap-3 border-b border-msborder px-4 py-3 lg:flex-row lg:items-center lg:justify-between">
-                <div class="flex flex-wrap gap-2">
+              <div class="flex flex-col gap-4 border-b border-msborder px-4 py-3 lg:flex-row lg:items-center lg:justify-between">
+                <div class="flex flex-wrap items-center gap-2">
+                  <div class="flex items-center rounded border border-msborder bg-[#faf9f8] p-1 shadow-sm">
+                    <button class="flex items-center gap-2 rounded bg-white px-3 py-2 text-sm font-semibold text-msblueDark shadow-sm">
+                      ☰ <span>List</span>
+                    </button>
+                    <button class="flex items-center gap-2 rounded px-3 py-2 text-sm font-semibold text-[#605e5c] hover:bg-white">
+                      🌳 <span>Tree</span>
+                    </button>
+                    <button class="flex items-center gap-2 rounded px-3 py-2 text-sm font-semibold text-[#605e5c] hover:bg-white">
+                      🪪 <span>Card</span>
+                    </button>
+                    <button class="flex items-center gap-2 rounded px-3 py-2 text-sm font-semibold text-[#605e5c] hover:bg-white">
+                      📊 <span>Chart</span>
+                    </button>
+                  </div>
+
+                  <div class="h-6 w-px bg-msborder"></div>
+
+                  <div class="flex flex-wrap gap-2">
                   <button class="rounded bg-msgray px-3 py-2 text-sm font-semibold hover:bg-msborder">Filter</button>
                   <button class="rounded bg-msgray px-3 py-2 text-sm font-semibold hover:bg-msborder">Sort</button>
                   <button class="rounded bg-msgray px-3 py-2 text-sm font-semibold hover:bg-msborder">Department</button>
@@ -131,6 +149,50 @@
                   <button class="rounded bg-msgray px-3 py-2 text-sm font-semibold hover:bg-msborder">Bulk actions</button>
                 </div>
                 <div class="flex items-center gap-2 rounded bg-msgray px-3 py-2 text-sm">🔎 <input class="bg-transparent outline-none" placeholder="Search employees"></div>
+              </div>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-2 text-sm">
+                  <span class="rounded bg-[#e5f1fb] px-2 py-1 font-semibold text-msblueDark">View: List</span>
+                  <span class="rounded bg-msgray px-2 py-1">1,248 employees</span>
+                  <button class="rounded border border-[#8a8886] bg-white px-3 py-2 font-semibold hover:bg-msgray">Customize columns</button>
+                </div>
+              </div>
+
+              <div class="border-b border-msborder bg-[#faf9f8] px-4 py-3">
+                <div class="grid gap-4 md:grid-cols-4">
+                  <div class="rounded border border-msborder bg-white p-3 shadow-sm">
+                    <div class="mb-2 flex items-center justify-between">
+                      <p class="font-semibold text-msblueDark">List View</p>
+                      <span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Active</span>
+                    </div>
+                    <p class="text-sm text-[#605e5c]">Hiển thị dạng bảng dữ liệu với filter, sort và bulk actions.</p>
+                  </div>
+
+                  <div class="rounded border border-msborder bg-white p-3 shadow-sm hover:shadow-ms">
+                    <div class="mb-2 flex items-center justify-between">
+                      <p class="font-semibold">Tree View</p>
+                      <span class="rounded bg-msgray px-2 py-1 text-xs font-semibold">Hierarchy</span>
+                    </div>
+                    <p class="text-sm text-[#605e5c]">Hiển thị nhân viên theo phòng ban hoặc cấp quản lý.</p>
+                  </div>
+
+                  <div class="rounded border border-msborder bg-white p-3 shadow-sm hover:shadow-ms">
+                    <div class="mb-2 flex items-center justify-between">
+                      <p class="font-semibold">Card View</p>
+                      <span class="rounded bg-msgray px-2 py-1 text-xs font-semibold">Profile</span>
+                    </div>
+                    <p class="text-sm text-[#605e5c]">Hiển thị dạng card hồ sơ nhân viên với avatar và trạng thái.</p>
+                  </div>
+
+                  <div class="rounded border border-msborder bg-white p-3 shadow-sm hover:shadow-ms">
+                    <div class="mb-2 flex items-center justify-between">
+                      <p class="font-semibold">Organization Chart</p>
+                      <span class="rounded bg-msgray px-2 py-1 text-xs font-semibold">Structure</span>
+                    </div>
+                    <p class="text-sm text-[#605e5c]">Hiển thị sơ đồ tổ chức và quan hệ quản lý.</p>
+                  </div>
+                </div>
               </div>
 
               <div class="overflow-x-auto">
@@ -241,7 +303,7 @@
                 </table>
               </div>
             </div>
-          </div>
+          </section></main></div>
 
           <aside class="space-y-4">
             <section class="rounded border border-msborder bg-white shadow-sm">
@@ -277,10 +339,10 @@
               </div>
             </section>
           </aside>
-        </section>
-      </main>
+        
+      
     </div>
-  </div>
+  
 
 
 </body></html>
