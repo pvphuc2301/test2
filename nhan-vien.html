@@ -1,0 +1,348 @@
+<html lang="vi"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employees Management - Microsoft Style</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            msblue: '#0078d4',
+            msblueDark: '#005a9e',
+            msgray: '#f3f2f1',
+            msborder: '#edebe9'
+          },
+          boxShadow: {
+            ms: '0 2px 8px rgba(0,0,0,0.12)'
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-[#faf9f8] text-[#323130]">
+  <div class="min-h-screen">
+    <header class="sticky top-0 z-50 border-b border-[#e1dfdd] bg-white">
+      <div class="flex h-14 items-center gap-4 px-4">
+        <button class="flex h-9 w-9 items-center justify-center rounded hover:bg-msgray">☰</button>
+        <div class="flex items-center gap-3">
+          <div class="flex h-8 w-8 items-center justify-center rounded bg-msblue text-sm font-bold text-white">HR</div>
+          <span class="text-sm font-semibold">Employees</span>
+        </div>
+        <div class="mx-auto hidden w-full max-w-2xl items-center gap-2 rounded bg-msgray px-3 py-2 md:flex">
+          <span class="text-[#605e5c]">🔍</span>
+          <input class="w-full bg-transparent text-sm outline-none" placeholder="Search employee, email, department, position...">
+        </div>
+        <button class="rounded px-3 py-2 text-sm hover:bg-msgray">🔔</button>
+        <button class="rounded px-3 py-2 text-sm hover:bg-msgray">⚙️</button>
+        <div class="flex h-8 w-8 items-center justify-center rounded-full bg-[#c7e0f4] text-sm font-bold text-msblueDark">E</div>
+      </div>
+    </header>
+
+    <div class="grid min-h-[calc(100vh-56px)] grid-cols-[240px_1fr]">
+      <aside class="border-r border-[#e1dfdd] bg-white px-3 py-4">
+        <button class="mb-5 flex w-full items-center justify-center gap-2 rounded bg-msblue px-4 py-2.5 text-sm font-semibold text-white hover:bg-msblueDark">+ New employee</button>
+        <nav class="space-y-1 text-sm">
+          <a class="flex items-center gap-3 rounded px-3 py-2 hover:bg-msgray" href="#">🏠 Dashboard</a>
+          <a class="flex items-center gap-3 rounded bg-[#e5f1fb] px-3 py-2 font-semibold text-msblueDark" href="#">👥 Employees</a>
+          <a class="flex items-center gap-3 rounded px-3 py-2 hover:bg-msgray" href="#">🏢 Departments</a>
+          <a class="flex items-center gap-3 rounded px-3 py-2 hover:bg-msgray" href="#">📅 Attendance</a>
+          <a class="flex items-center gap-3 rounded px-3 py-2 hover:bg-msgray" href="#">💰 Payroll</a>
+          <a class="flex items-center gap-3 rounded px-3 py-2 hover:bg-msgray" href="#">📝 Recruitment</a>
+          <a class="flex items-center gap-3 rounded px-3 py-2 hover:bg-msgray" href="#">📊 Reports</a>
+          <a class="flex items-center gap-3 rounded px-3 py-2 hover:bg-msgray" href="#">⚙️ Settings</a>
+        </nav>
+        <div class="mt-8 border-t border-msborder pt-4">
+          <p class="mb-2 px-3 text-xs font-semibold uppercase tracking-wide text-[#605e5c]">Employee views</p>
+          <nav class="space-y-1 text-sm">
+            <a class="flex items-center justify-between rounded bg-msgray px-3 py-2 font-semibold" href="#"><span>All employees</span><span class="text-xs text-[#605e5c]">1,248</span></a>
+            <a class="flex items-center justify-between rounded px-3 py-2 hover:bg-msgray" href="#"><span>Active</span><span class="text-xs text-[#605e5c]">1,186</span></a>
+            <a class="flex items-center justify-between rounded px-3 py-2 hover:bg-msgray" href="#"><span>Probation</span><span class="text-xs text-[#605e5c]">32</span></a>
+            <a class="flex items-center justify-between rounded px-3 py-2 hover:bg-msgray" href="#"><span>Missing documents</span><span class="text-xs text-[#a4262c]">27</span></a>
+            <a class="flex items-center justify-between rounded px-3 py-2 hover:bg-msgray" href="#"><span>Contract ending</span><span class="text-xs text-[#ca5010]">14</span></a>
+          </nav>
+        </div>
+      </aside>
+
+      <main class="min-w-0">
+        <section class="border-b border-[#e1dfdd] bg-white px-6 py-5">
+          <div class="mb-3 flex items-center gap-2 text-sm text-[#605e5c]"><span>HRM</span><span>/</span><span class="font-semibold text-[#323130]">Employees</span></div>
+          <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+            <div>
+              <h1 class="text-3xl font-semibold tracking-tight">Employee Management</h1>
+              <p class="mt-1 text-sm text-[#605e5c]">Quản lý hồ sơ nhân viên, hợp đồng, phòng ban, tài khoản, tài liệu, trạng thái làm việc và vòng đời nhân sự.</p>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <button class="rounded border border-[#8a8886] bg-white px-4 py-2 text-sm font-semibold hover:bg-msgray">Import Excel</button>
+              <button class="rounded border border-[#8a8886] bg-white px-4 py-2 text-sm font-semibold hover:bg-msgray">Export</button>
+              <button class="rounded border border-[#8a8886] bg-white px-4 py-2 text-sm font-semibold hover:bg-msgray">Bulk update</button>
+              <button class="rounded bg-msblue px-4 py-2 text-sm font-semibold text-white hover:bg-msblueDark">+ Add employee</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="border-b border-[#e1dfdd] bg-white px-6">
+          <nav class="flex gap-6 overflow-x-auto text-sm font-semibold">
+            <a href="#overview" class="border-b-2 border-msblue px-1 py-4 text-msblueDark">Overview</a>
+            <a href="#list" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Employee list</a>
+            <a href="#lifecycle" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Lifecycle</a>
+            <a href="#contracts" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Contracts</a>
+            <a href="#accounts" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Accounts</a>
+            <a href="#documents" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Documents</a>
+            <a href="#audit" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Activity</a>
+          </nav>
+        </section>
+
+        <section class="grid gap-6 px-6 py-5 xl:grid-cols-[1fr_360px]">
+          <div class="space-y-4">
+            <div id="overview" class="grid gap-4 md:grid-cols-4">
+              <div class="rounded border border-msborder bg-white p-4 shadow-sm"><p class="text-sm text-[#605e5c]">Total employees</p><p class="mt-2 text-3xl font-semibold">1,248</p></div>
+              <div class="rounded border border-msborder bg-white p-4 shadow-sm"><p class="text-sm text-[#605e5c]">Active</p><p class="mt-2 text-3xl font-semibold text-[#107c10]">1,186</p></div>
+              <div class="rounded border border-msborder bg-white p-4 shadow-sm"><p class="text-sm text-[#605e5c]">New this month</p><p class="mt-2 text-3xl font-semibold text-msblueDark">24</p></div>
+              <div class="rounded border border-msborder bg-white p-4 shadow-sm"><p class="text-sm text-[#605e5c]">Need action</p><p class="mt-2 text-3xl font-semibold text-[#ca5010]">41</p></div>
+            </div>
+
+            <div class="grid gap-4 lg:grid-cols-3">
+              <article class="rounded border border-msborder bg-white p-4 shadow-sm hover:shadow-ms">
+                <div class="mb-4 flex items-center justify-between"><div class="flex h-12 w-12 items-center justify-center rounded bg-[#e5f1fb] text-2xl">👥</div><span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Healthy</span></div>
+                <h3 class="font-semibold">Profile completion</h3><p class="mt-1 text-sm text-[#605e5c]">1,112 hồ sơ đầy đủ thông tin và tài liệu.</p>
+                <div class="mt-4 h-1.5 rounded bg-msgray"><div class="h-1.5 w-[89%] rounded bg-msblue"></div></div>
+              </article>
+              <article class="rounded border border-msborder bg-white p-4 shadow-sm hover:shadow-ms">
+                <div class="mb-4 flex items-center justify-between"><div class="flex h-12 w-12 items-center justify-center rounded bg-[#fff4ce] text-2xl">📄</div><span class="rounded bg-[#fff4ce] px-2 py-1 text-xs font-semibold text-[#8a6100]">Review</span></div>
+                <h3 class="font-semibold">Contract monitoring</h3><p class="mt-1 text-sm text-[#605e5c]">14 hợp đồng sắp hết hạn trong 30 ngày.</p>
+                <div class="mt-4 h-1.5 rounded bg-msgray"><div class="h-1.5 w-[32%] rounded bg-[#ca5010]"></div></div>
+              </article>
+              <article class="rounded border border-msborder bg-white p-4 shadow-sm hover:shadow-ms">
+                <div class="mb-4 flex items-center justify-between"><div class="flex h-12 w-12 items-center justify-center rounded bg-[#fde7e9] text-2xl">🔐</div><span class="rounded bg-[#e5f1fb] px-2 py-1 text-xs font-semibold text-msblueDark">SSO</span></div>
+                <h3 class="font-semibold">Account status</h3><p class="mt-1 text-sm text-[#605e5c]">37 tài khoản chưa kích hoạt hoặc thiếu role.</p>
+                <div class="mt-4 h-1.5 rounded bg-msgray"><div class="h-1.5 w-[70%] rounded bg-[#107c10]"></div></div>
+              </article>
+            </div>
+
+            <div id="list" class="overflow-hidden rounded border border-msborder bg-white shadow-sm">
+              <div class="flex flex-col gap-4 border-b border-msborder px-4 py-3 lg:flex-row lg:items-center lg:justify-between">
+                <div class="flex flex-wrap items-center gap-2">
+                  <div class="flex items-center rounded border border-msborder bg-[#faf9f8] p-1 shadow-sm">
+                    <button class="flex items-center gap-2 rounded bg-white px-3 py-2 text-sm font-semibold text-msblueDark shadow-sm">
+                      ☰ <span>List</span>
+                    </button>
+                    <button class="flex items-center gap-2 rounded px-3 py-2 text-sm font-semibold text-[#605e5c] hover:bg-white">
+                      🌳 <span>Tree</span>
+                    </button>
+                    <button class="flex items-center gap-2 rounded px-3 py-2 text-sm font-semibold text-[#605e5c] hover:bg-white">
+                      🪪 <span>Card</span>
+                    </button>
+                    <button class="flex items-center gap-2 rounded px-3 py-2 text-sm font-semibold text-[#605e5c] hover:bg-white">
+                      📊 <span>Chart</span>
+                    </button>
+                  </div>
+
+                  <div class="h-6 w-px bg-msborder"></div>
+
+                  <div class="flex flex-wrap gap-2">
+                  <button class="rounded bg-msgray px-3 py-2 text-sm font-semibold hover:bg-msborder">Filter</button>
+                  <button class="rounded bg-msgray px-3 py-2 text-sm font-semibold hover:bg-msborder">Sort</button>
+                  <button class="rounded bg-msgray px-3 py-2 text-sm font-semibold hover:bg-msborder">Department</button>
+                  <button class="rounded bg-msgray px-3 py-2 text-sm font-semibold hover:bg-msborder">Status</button>
+                  <button class="rounded bg-msgray px-3 py-2 text-sm font-semibold hover:bg-msborder">Bulk actions</button>
+                </div>
+                <div class="flex items-center gap-2 rounded bg-msgray px-3 py-2 text-sm">🔎 <input class="bg-transparent outline-none" placeholder="Search employees"></div>
+              </div>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-2 text-sm">
+                  <span class="rounded bg-[#e5f1fb] px-2 py-1 font-semibold text-msblueDark">View: List</span>
+                  <span class="rounded bg-msgray px-2 py-1">1,248 employees</span>
+                  <button class="rounded border border-[#8a8886] bg-white px-3 py-2 font-semibold hover:bg-msgray">Customize columns</button>
+                </div>
+              </div>
+
+              <div class="border-b border-msborder bg-[#faf9f8] px-4 py-3">
+                <div class="grid gap-4 md:grid-cols-4">
+                  <div class="rounded border border-msborder bg-white p-3 shadow-sm">
+                    <div class="mb-2 flex items-center justify-between">
+                      <p class="font-semibold text-msblueDark">List View</p>
+                      <span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Active</span>
+                    </div>
+                    <p class="text-sm text-[#605e5c]">Hiển thị dạng bảng dữ liệu với filter, sort và bulk actions.</p>
+                  </div>
+
+                  <div class="rounded border border-msborder bg-white p-3 shadow-sm hover:shadow-ms">
+                    <div class="mb-2 flex items-center justify-between">
+                      <p class="font-semibold">Tree View</p>
+                      <span class="rounded bg-msgray px-2 py-1 text-xs font-semibold">Hierarchy</span>
+                    </div>
+                    <p class="text-sm text-[#605e5c]">Hiển thị nhân viên theo phòng ban hoặc cấp quản lý.</p>
+                  </div>
+
+                  <div class="rounded border border-msborder bg-white p-3 shadow-sm hover:shadow-ms">
+                    <div class="mb-2 flex items-center justify-between">
+                      <p class="font-semibold">Card View</p>
+                      <span class="rounded bg-msgray px-2 py-1 text-xs font-semibold">Profile</span>
+                    </div>
+                    <p class="text-sm text-[#605e5c]">Hiển thị dạng card hồ sơ nhân viên với avatar và trạng thái.</p>
+                  </div>
+
+                  <div class="rounded border border-msborder bg-white p-3 shadow-sm hover:shadow-ms">
+                    <div class="mb-2 flex items-center justify-between">
+                      <p class="font-semibold">Organization Chart</p>
+                      <span class="rounded bg-msgray px-2 py-1 text-xs font-semibold">Structure</span>
+                    </div>
+                    <p class="text-sm text-[#605e5c]">Hiển thị sơ đồ tổ chức và quan hệ quản lý.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="overflow-x-auto">
+                <table class="w-full min-w-[1280px] text-left text-sm">
+                  <thead class="bg-[#faf9f8] text-xs font-semibold uppercase tracking-wide text-[#605e5c]">
+                    <tr class="border-b border-msborder">
+                      <th class="w-10 px-4 py-3"><input type="checkbox" class="h-4 w-4 accent-msblue"></th>
+                      <th class="px-4 py-3">Employee</th>
+                      <th class="px-4 py-3">Code</th>
+                      <th class="px-4 py-3">Department</th>
+                      <th class="px-4 py-3">Position</th>
+                      <th class="px-4 py-3">Level</th>
+                      <th class="px-4 py-3">Contract</th>
+                      <th class="px-4 py-3">Account</th>
+                      <th class="px-4 py-3">Profile</th>
+                      <th class="px-4 py-3">Status</th>
+                      <th class="px-4 py-3">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-msborder">
+                    <tr class="bg-[#f5fbff] hover:bg-[#e5f1fb]">
+                      <td class="px-4 py-3"><input type="checkbox" checked="" class="h-4 w-4 accent-msblue"></td>
+                      <td class="px-4 py-3"><div class="flex items-center gap-3"><div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#c7e0f4] font-semibold text-msblueDark">NT</div><div><p class="font-semibold text-msblueDark">Nguyễn Văn Thành</p><p class="text-xs text-[#605e5c]">thanh.nguyen@hospital.vn</p></div></div></td>
+                      <td class="px-4 py-3">NV000128</td><td class="px-4 py-3">Cardiology</td><td class="px-4 py-3">Doctor</td><td class="px-4 py-3">Specialist</td>
+                      <td class="px-4 py-3"><span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Active</span></td>
+                      <td class="px-4 py-3"><span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Enabled</span></td>
+                      <td class="px-4 py-3">12/14 docs</td><td class="px-4 py-3"><span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Active</span></td>
+                      <td class="px-4 py-3"><button class="rounded px-2 py-1 hover:bg-white">•••</button></td>
+                    </tr>
+                    <tr class="hover:bg-msgray">
+                      <td class="px-4 py-3"><input type="checkbox" class="h-4 w-4 accent-msblue"></td>
+                      <td class="px-4 py-3"><div class="flex items-center gap-3"><div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#fde7e9] font-semibold text-[#a4262c]">LT</div><div><p class="font-semibold">Lê Minh Trang</p><p class="text-xs text-[#605e5c]">trang.le@hospital.vn</p></div></div></td>
+                      <td class="px-4 py-3">NV000084</td><td class="px-4 py-3">Human Resource</td><td class="px-4 py-3">HR Manager</td><td class="px-4 py-3">Management</td>
+                      <td class="px-4 py-3"><span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Active</span></td>
+                      <td class="px-4 py-3"><span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Enabled</span></td>
+                      <td class="px-4 py-3">14/14 docs</td><td class="px-4 py-3"><span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Active</span></td>
+                      <td class="px-4 py-3"><button class="rounded px-2 py-1 hover:bg-msborder">•••</button></td>
+                    </tr>
+                    <tr class="hover:bg-msgray">
+                      <td class="px-4 py-3"><input type="checkbox" class="h-4 w-4 accent-msblue"></td>
+                      <td class="px-4 py-3"><div class="flex items-center gap-3"><div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#fff4ce] font-semibold text-[#8a6100]">PH</div><div><p class="font-semibold">Phạm Hữu Phúc</p><p class="text-xs text-[#605e5c]">phuc.pham@hospital.vn</p></div></div></td>
+                      <td class="px-4 py-3">NV000215</td><td class="px-4 py-3">IT</td><td class="px-4 py-3">System Engineer</td><td class="px-4 py-3">Specialist</td>
+                      <td class="px-4 py-3"><span class="rounded bg-[#fff4ce] px-2 py-1 text-xs font-semibold text-[#8a6100]">Probation</span></td>
+                      <td class="px-4 py-3"><span class="rounded bg-[#fde7e9] px-2 py-1 text-xs font-semibold text-[#a4262c]">Missing role</span></td>
+                      <td class="px-4 py-3">9/14 docs</td><td class="px-4 py-3"><span class="rounded bg-[#fff4ce] px-2 py-1 text-xs font-semibold text-[#8a6100]">Probation</span></td>
+                      <td class="px-4 py-3"><button class="rounded px-2 py-1 hover:bg-msborder">•••</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div id="lifecycle" class="rounded border border-msborder bg-white shadow-sm">
+              <div class="border-b border-msborder px-5 py-4"><h2 class="text-lg font-semibold">Employee lifecycle</h2><p class="mt-1 text-sm text-[#605e5c]">Theo dõi trạng thái nhân viên từ tuyển dụng đến nghỉ việc.</p></div>
+              <div class="grid gap-4 p-5 md:grid-cols-5">
+                <div class="rounded bg-[#e5f1fb] p-4"><p class="font-semibold text-msblueDark">Onboarding</p><p class="mt-2 text-2xl font-semibold">18</p><p class="text-sm text-[#605e5c]">New hires</p></div>
+                <div class="rounded bg-[#fff4ce] p-4"><p class="font-semibold text-[#8a6100]">Probation</p><p class="mt-2 text-2xl font-semibold">32</p><p class="text-sm text-[#605e5c]">Trial period</p></div>
+                <div class="rounded bg-[#dff6dd] p-4"><p class="font-semibold text-[#107c10]">Active</p><p class="mt-2 text-2xl font-semibold">1,186</p><p class="text-sm text-[#605e5c]">Working</p></div>
+                <div class="rounded bg-msgray p-4"><p class="font-semibold">Temporary leave</p><p class="mt-2 text-2xl font-semibold">7</p><p class="text-sm text-[#605e5c]">Paused</p></div>
+                <div class="rounded bg-[#fde7e9] p-4"><p class="font-semibold text-[#a4262c]">Offboarding</p><p class="mt-2 text-2xl font-semibold">5</p><p class="text-sm text-[#605e5c]">Leaving</p></div>
+              </div>
+            </div>
+
+            <div class="grid gap-4 lg:grid-cols-2">
+              <div id="contracts" class="rounded border border-msborder bg-white shadow-sm">
+                <div class="flex items-center justify-between border-b border-msborder px-5 py-4"><div><h2 class="text-lg font-semibold">Contract alerts</h2><p class="mt-1 text-sm text-[#605e5c]">Hợp đồng cần xử lý.</p></div><button class="rounded px-3 py-2 text-sm font-semibold text-msblueDark hover:bg-msgray">View all</button></div>
+                <div class="divide-y divide-msborder text-sm">
+                  <div class="flex justify-between px-5 py-4"><div><p class="font-semibold">14 contracts ending</p><p class="text-xs text-[#605e5c]">Within next 30 days</p></div><span class="rounded bg-[#fff4ce] px-2 py-1 text-xs font-semibold text-[#8a6100]">Review</span></div>
+                  <div class="flex justify-between px-5 py-4"><div><p class="font-semibold">6 pending signatures</p><p class="text-xs text-[#605e5c]">Need eSign confirmation</p></div><span class="rounded bg-[#e5f1fb] px-2 py-1 text-xs font-semibold text-msblueDark">eSign</span></div>
+                  <div class="flex justify-between px-5 py-4"><div><p class="font-semibold">3 missing contract files</p><p class="text-xs text-[#605e5c]">Attachment required</p></div><span class="rounded bg-[#fde7e9] px-2 py-1 text-xs font-semibold text-[#a4262c]">Missing</span></div>
+                </div>
+              </div>
+
+              <div id="accounts" class="rounded border border-msborder bg-white shadow-sm">
+                <div class="flex items-center justify-between border-b border-msborder px-5 py-4"><div><h2 class="text-lg font-semibold">System accounts</h2><p class="mt-1 text-sm text-[#605e5c]">Trạng thái tài khoản SSO.</p></div><button class="rounded px-3 py-2 text-sm font-semibold text-msblueDark hover:bg-msgray">Sync roles</button></div>
+                <div class="divide-y divide-msborder text-sm">
+                  <div class="flex justify-between px-5 py-4"><div><p class="font-semibold">1,174 enabled accounts</p><p class="text-xs text-[#605e5c]">Can access HRM/EMR/Report</p></div><span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">OK</span></div>
+                  <div class="flex justify-between px-5 py-4"><div><p class="font-semibold">37 missing roles</p><p class="text-xs text-[#605e5c]">Need permission assignment</p></div><span class="rounded bg-[#fff4ce] px-2 py-1 text-xs font-semibold text-[#8a6100]">Review</span></div>
+                  <div class="flex justify-between px-5 py-4"><div><p class="font-semibold">12 inactive users</p><p class="text-xs text-[#605e5c]">No login in 90 days</p></div><span class="rounded bg-msgray px-2 py-1 text-xs font-semibold">Inactive</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div id="documents" class="rounded border border-msborder bg-white shadow-sm">
+              <div class="flex items-center justify-between border-b border-msborder px-5 py-4"><div><h2 class="text-lg font-semibold">Document compliance</h2><p class="mt-1 text-sm text-[#605e5c]">Theo dõi hồ sơ nhân viên bắt buộc.</p></div><button class="rounded bg-msblue px-3 py-2 text-sm font-semibold text-white hover:bg-msblueDark">Request documents</button></div>
+              <div class="overflow-x-auto">
+                <table class="w-full min-w-[860px] text-left text-sm">
+                  <thead class="bg-[#faf9f8] text-xs font-semibold uppercase tracking-wide text-[#605e5c]"><tr><th class="px-5 py-3">Document type</th><th class="px-5 py-3">Required</th><th class="px-5 py-3">Completed</th><th class="px-5 py-3">Missing</th><th class="px-5 py-3">Status</th></tr></thead>
+                  <tbody class="divide-y divide-msborder">
+                    <tr><td class="px-5 py-3 font-semibold">CCCD/CMND</td><td class="px-5 py-3">1,248</td><td class="px-5 py-3">1,232</td><td class="px-5 py-3">16</td><td class="px-5 py-3"><span class="rounded bg-[#fff4ce] px-2 py-1 text-xs font-semibold text-[#8a6100]">Need follow-up</span></td></tr>
+                    <tr><td class="px-5 py-3 font-semibold">Hợp đồng lao động</td><td class="px-5 py-3">1,248</td><td class="px-5 py-3">1,221</td><td class="px-5 py-3">27</td><td class="px-5 py-3"><span class="rounded bg-[#fff4ce] px-2 py-1 text-xs font-semibold text-[#8a6100]">Review</span></td></tr>
+                    <tr><td class="px-5 py-3 font-semibold">Chứng chỉ hành nghề</td><td class="px-5 py-3">842</td><td class="px-5 py-3">836</td><td class="px-5 py-3">6</td><td class="px-5 py-3"><span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Good</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div id="audit" class="rounded border border-msborder bg-white shadow-sm">
+              <div class="flex items-center justify-between border-b border-msborder px-5 py-4"><div><h2 class="text-lg font-semibold">Recent employee activity</h2><p class="mt-1 text-sm text-[#605e5c]">Audit log thay đổi hồ sơ nhân viên.</p></div><button class="rounded px-3 py-2 text-sm font-semibold text-msblueDark hover:bg-msgray">Export log</button></div>
+              <div class="overflow-x-auto">
+                <table class="w-full min-w-[860px] text-left text-sm">
+                  <thead class="bg-[#faf9f8] text-xs font-semibold uppercase tracking-wide text-[#605e5c]"><tr><th class="px-5 py-3">Time</th><th class="px-5 py-3">Employee</th><th class="px-5 py-3">Action</th><th class="px-5 py-3">User</th><th class="px-5 py-3">Result</th></tr></thead>
+                  <tbody class="divide-y divide-msborder">
+                    <tr><td class="px-5 py-3">Today 09:12</td><td class="px-5 py-3 font-semibold">Nguyễn Văn Thành</td><td class="px-5 py-3">Updated profile</td><td class="px-5 py-3">HR Admin</td><td class="px-5 py-3"><span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Success</span></td></tr>
+                    <tr><td class="px-5 py-3">Yesterday</td><td class="px-5 py-3 font-semibold">Phạm Hữu Phúc</td><td class="px-5 py-3">Assigned role</td><td class="px-5 py-3">System Admin</td><td class="px-5 py-3"><span class="rounded bg-[#fff4ce] px-2 py-1 text-xs font-semibold text-[#8a6100]">Review</span></td></tr>
+                    <tr><td class="px-5 py-3">This week</td><td class="px-5 py-3 font-semibold">Lê Minh Trang</td><td class="px-5 py-3">Uploaded contract</td><td class="px-5 py-3">HR Manager</td><td class="px-5 py-3"><span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Success</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section></main></div>
+
+          <aside class="space-y-4">
+            <section class="rounded border border-msborder bg-white shadow-sm">
+              <div class="border-b border-msborder px-5 py-4"><h2 class="text-lg font-semibold">Selected employee</h2><p class="mt-1 text-sm text-[#605e5c]">Nhân viên đang chọn</p></div>
+              <div class="p-5">
+                <div class="mb-5 flex items-center gap-3"><div class="flex h-14 w-14 items-center justify-center rounded-full bg-[#c7e0f4] text-lg font-semibold text-msblueDark">NT</div><div><p class="font-semibold">Nguyễn Văn Thành</p><p class="text-sm text-[#605e5c]">NV000128 · Doctor</p></div></div>
+                <div class="space-y-3 text-sm">
+                  <div class="flex justify-between border-b border-msborder pb-3"><span class="text-[#605e5c]">Department</span><span class="font-semibold">Cardiology</span></div>
+                  <div class="flex justify-between border-b border-msborder pb-3"><span class="text-[#605e5c]">Contract</span><span class="font-semibold text-[#107c10]">Active</span></div>
+                  <div class="flex justify-between border-b border-msborder pb-3"><span class="text-[#605e5c]">Account</span><span class="font-semibold text-[#107c10]">Enabled</span></div>
+                  <div class="flex justify-between"><span class="text-[#605e5c]">Documents</span><span class="font-semibold text-[#ca5010]">12/14</span></div>
+                </div>
+                <div class="mt-5 grid grid-cols-2 gap-2"><button class="rounded border border-[#8a8886] bg-white px-4 py-2 text-sm font-semibold hover:bg-msgray">View</button><button class="rounded bg-msblue px-4 py-2 text-sm font-semibold text-white hover:bg-msblueDark">Edit</button></div>
+              </div>
+            </section>
+
+            <section class="rounded border border-msborder bg-white shadow-sm">
+              <div class="border-b border-msborder px-5 py-4"><h2 class="text-lg font-semibold">Need attention</h2></div>
+              <div class="space-y-3 p-5 text-sm">
+                <div class="rounded bg-[#fde7e9] p-3"><p class="font-semibold text-[#a4262c]">27 missing documents</p><p class="mt-1 text-[#605e5c]">Hồ sơ nhân viên chưa đủ tài liệu bắt buộc.</p></div>
+                <div class="rounded bg-[#fff4ce] p-3"><p class="font-semibold text-[#8a6100]">14 contracts ending</p><p class="mt-1 text-[#605e5c]">Cần gia hạn hoặc tạo hợp đồng mới.</p></div>
+                <div class="rounded bg-[#e5f1fb] p-3"><p class="font-semibold text-msblueDark">37 account issues</p><p class="mt-1 text-[#605e5c]">Thiếu role hoặc chưa kích hoạt tài khoản.</p></div>
+              </div>
+            </section>
+
+            <section class="rounded border border-msborder bg-white shadow-sm">
+              <div class="flex items-center justify-between border-b border-msborder px-5 py-4"><h2 class="text-lg font-semibold">Quick actions</h2></div>
+              <div class="grid gap-2 p-5 text-sm">
+                <button class="rounded border border-[#8a8886] bg-white px-4 py-2 text-left font-semibold hover:bg-msgray">Request missing documents</button>
+                <button class="rounded border border-[#8a8886] bg-white px-4 py-2 text-left font-semibold hover:bg-msgray">Send activation email</button>
+                <button class="rounded border border-[#8a8886] bg-white px-4 py-2 text-left font-semibold hover:bg-msgray">Generate contract</button>
+                <button class="rounded border border-[#8a8886] bg-white px-4 py-2 text-left font-semibold hover:bg-msgray">Move department</button>
+              </div>
+            </section>
+          </aside>
+        
+      
+    </div>
+  
+
+
+</body></html>
