@@ -1,0 +1,867 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IIS Deploy Manager - Documentation Portal</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&amp;family=Outfit:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #0b0f19;
+            --bg-sidebar: #0f172a;
+            --bg-card: #1e293b;
+            --border-color: #334155;
+            --text-primary: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-primary: #6366f1;
+            --accent-secondary: #8b5cf6;
+            --accent-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            --emerald: #10b981;
+            --amber: #f59e0b;
+            --rose: #f43f5e;
+            --code-bg: #090d16;
+            --sidebar-width: 280px;
+            --toc-width: 240px;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            display: flex;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        /* --- Sidebar Navigation --- */
+        aside.sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            z-index: 10;
+        }
+        .logo-area {
+            margin-bottom: 30px;
+        }
+        .logo-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .logo-sub {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+        .search-container {
+            position: relative;
+            margin-bottom: 24px;
+        }
+        .search-input {
+            width: 100%;
+            background-color: #0b0f19;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-primary);
+            padding: 10px 12px 10px 36px;
+            font-family: inherit;
+            font-size: 0.875rem;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .search-input:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            width: 16px;
+            height: 16px;
+            pointer-events: none;
+        }
+        .nav-sections {
+            overflow-y: auto;
+            flex-grow: 1;
+            padding-right: 4px;
+        }
+        .nav-sections::-webkit-scrollbar {
+            width: 5px;
+        }
+        .nav-sections::-webkit-scrollbar-thumb {
+            background-color: var(--border-color);
+            border-radius: 3px;
+        }
+        .nav-group-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            font-weight: 700;
+            margin: 20px 0 8px 0;
+        }
+        .nav-group-title:first-child {
+            margin-top: 0;
+        }
+        .nav-item {
+            display: block;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.925rem;
+            padding: 6px 12px;
+            border-left: 2px solid transparent;
+            margin-bottom: 4px;
+            transition: color 0.2s, border-color 0.2s, background-color 0.2s;
+            border-radius: 0 4px 4px 0;
+        }
+        .nav-item:hover {
+            color: var(--text-primary);
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+        .nav-item.active {
+            color: var(--text-primary);
+            font-weight: 500;
+            border-left-color: var(--accent-primary);
+            background-color: rgba(99, 102, 241, 0.08);
+        }
+        /* --- Main Content Layout --- */
+        main.content {
+            margin-left: var(--sidebar-width);
+            margin-right: var(--toc-width);
+            padding: 60px 80px;
+            flex-grow: 1;
+            max-width: 960px;
+        }
+        section {
+            margin-bottom: 80px;
+            scroll-margin-top: 60px;
+        }
+        h1, h2, h3, h4 {
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        h1 {
+            font-size: 2.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+            margin-bottom: 2rem;
+            font-weight: 700;
+        }
+        h2 {
+            font-size: 1.75rem;
+            border-bottom: 1px solid #1e293b;
+            padding-bottom: 8px;
+            margin-top: 3.5rem;
+            margin-bottom: 1.5rem;
+        }
+        h3 {
+            font-size: 1.25rem;
+            margin-top: 2rem;
+        }
+        p {
+            color: #cbd5e1;
+            margin-bottom: 1.25rem;
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        ul, ol {
+            margin-left: 24px;
+            margin-bottom: 1.25rem;
+            color: #cbd5e1;
+        }
+        li {
+            margin-bottom: 6px;
+        }
+        strong {
+            color: #ffffff;
+            font-weight: 600;
+        }
+        /* --- Custom Styles & Badges --- */
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 4px;
+            text-transform: uppercase;
+            margin-right: 6px;
+        }
+        .badge-info { background-color: rgba(99, 102, 241, 0.15); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.3); }
+        .badge-success { background-color: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+        .badge-warning { background-color: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+        .badge-danger { background-color: rgba(244, 63, 94, 0.15); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.3); }
+        .alert-box {
+            background-color: #0f172a;
+            border-left: 4px solid var(--accent-primary);
+            border-radius: 0 8px 8px 0;
+            padding: 16px 20px;
+            margin: 24px 0;
+        }
+        .alert-box.warning { border-left-color: var(--amber); background-color: rgba(245, 158, 11, 0.03); }
+        .alert-box.danger { border-left-color: var(--rose); background-color: rgba(244, 63, 94, 0.03); }
+        .alert-title {
+            font-weight: 600;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            font-size: 0.95rem;
+        }
+        .alert-title span {
+            margin-right: 8px;
+        }
+        /* --- Code block styling --- */
+        code:not(pre code) {
+            background-color: rgba(255, 255, 255, 0.07);
+            color: #e2e8f0;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+        }
+        .code-container {
+            position: relative;
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #0d1321;
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .code-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        .copy-btn {
+            background-color: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+        .copy-btn:hover {
+            color: var(--text-primary);
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        pre {
+            padding: 16px;
+            overflow-x: auto;
+            margin: 0;
+        }
+        pre code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            color: #a5f3fc;
+            line-height: 1.5;
+            display: block;
+        }
+        /* --- Tables --- */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+            font-size: 0.95rem;
+        }
+        th, td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        th {
+            background-color: #0f172a;
+            color: #ffffff;
+            font-weight: 600;
+        }
+        tr:hover {
+            background-color: rgba(255, 255, 255, 0.01);
+        }
+        /* --- Right Table of Contents Sidebar --- */
+        aside.toc {
+            width: var(--toc-width);
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            background-color: var(--bg-main);
+            border-left: 1px solid #1e293b;
+            padding: 60px 24px;
+            z-index: 10;
+        }
+        .toc-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        .toc-list {
+            list-style: none;
+            margin-left: 0;
+        }
+        .toc-item {
+            margin-bottom: 10px;
+        }
+        .toc-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.2s;
+            display: block;
+        }
+        .toc-link:hover {
+            color: var(--text-primary);
+        }
+        .toc-link.active {
+            color: var(--accent-primary);
+            font-weight: 500;
+        }
+        /* --- Toast Notification --- */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background-color: var(--bg-card);
+            color: white;
+            border-left: 4px solid var(--emerald);
+            padding: 12px 20px;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transform: translateY(150%);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 100;
+        }
+        .toast.show {
+            transform: translateY(0);
+        }
+        /* --- Responsive Tweaks --- */
+        @media (max-width: 1200px) {
+            aside.toc {
+                display: none;
+            }
+            main.content {
+                margin-right: 0;
+            }
+        }
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            aside.sidebar {
+                width: 100%;
+                position: relative;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+            main.content {
+                margin-left: 0;
+                padding: 40px 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Left Sidebar -->
+    <aside class="sidebar">
+        <div class="logo-area">
+            <div class="logo-title">IIS DEPLOY MANAGER</div>
+            <div class="logo-sub">Technical &amp; User Guide</div>
+        </div>
+        <div class="search-container">
+            <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+            <input type="text" id="doc-search" class="search-input" placeholder="Search documentation...">
+        </div>
+        <nav class="nav-sections" id="nav-menu">
+            <div class="nav-group-title">Overview</div>
+            <a href="#intro" class="nav-item">Introduction</a>
+            <a href="#quickstart" class="nav-item">Quick Start</a>
+            <div class="nav-group-title">User Guide</div>
+            <a href="#configuration" class="nav-item">Configuring Applications</a>
+            <a href="#cli-ref" class="nav-item">CLI Command Reference</a>
+            <a href="#wpf-ui" class="nav-item">WPF Dashboard</a>
+            <a href="#remotes" class="nav-item">Remote Connections</a>
+            <a href="#approval-workflow" class="nav-item">Manual Approvals</a>
+            <div class="nav-group-title">Technical Guide</div>
+            <a href="#architecture" class="nav-item">System Architecture</a>
+            <a href="#executors" class="nav-item">Execution Abstraction</a>
+            <a href="#rollback-lifecycle" class="nav-item">Rollback Mechanics</a>
+            <a href="#security" class="nav-item">Secrets &amp; Security</a>
+            <a href="#logsink" class="nav-item">Log Streaming Sink</a>
+            <div class="nav-group-title">Troubleshooting</div>
+            <a href="#errors" class="nav-item">Common Issues &amp; FAQs</a>
+        </nav>
+    </aside>
+    <!-- Main Content Area -->
+    <main class="content">
+        <!-- Introduction -->
+        <section id="intro">
+            <h1>IIS Deploy Manager</h1>
+            <p><strong>IIS Deploy Manager</strong> is an enterprise-grade deployment coordinator designed to build, package, backup, deploy, and verify IIS web applications. Supporting both a lightweight Command Line Interface (CLI) for CI/CD pipelines and a modern visual dashboard (WPF) for manual management, it enables rolling or parallel multi-server deployments with automatic rollbacks.</p>
+            
+            <div class="alert-box">
+                <div class="alert-title"><span>💡</span> Key Capabilities</div>
+                <ul>
+                    <li>Supports ASP.NET Core, Angular, and Static HTML applications.</li>
+                    <li>Remote deployments using secure PowerShell Remoting (WinRM) or SSH.</li>
+                    <li>Environment variable credential expansion to prevent commit of plaintext secrets.</li>
+                    <li>Automatic rollback of all servers in a deployment group if any server fails its health check.</li>
+                    <li>Modal approvals workflow before bringing application servers offline.</li>
+                </ul>
+            </div>
+        </section>
+        <!-- Quick Start -->
+        <section id="quickstart">
+            <h2>Quick Start Guide</h2>
+            <p>Deploy your first application in minutes by setting up a local configuration file.</p>
+            
+            <h3>1. Prepare the Configuration</h3>
+            <p>Create a file named <code>deploy-config.json</code> in your project directory:</p>
+            
+            <div class="code-container">
+                <div class="code-header">
+                    <span class="code-title">deploy-config.json</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code>{
+  "apps": [
+    {
+      "name": "My Web API",
+      "type": "aspnetcore",
+      "environment": "production",
+      "sourcePath": "C:\\Projects\\MyWebAPI",
+      "publishPath": "C:\\Publish\\MyWebAPI",
+      "deployPath": "C:\\inetpub\\wwwroot\\myapi",
+      "siteName": "MyWebApiSite",
+      "appPoolName": "MyWebApiPool",
+      "backupPath": "C:\\Backups\\MyWebAPI",
+      "healthCheckUrl": "http://localhost/health",
+      "requireApproval": false
+    }
+  ]
+}</code></pre>
+            </div>
+            <h3>2. Run Deployment</h3>
+            <p>Open a terminal (PowerShell or Command Prompt) and execute the CLI deployer:</p>
+            <div class="code-container">
+                <div class="code-header">
+                    <span class="code-title">Command Line</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code># Build, publish, backup, deploy, and verify the application
+dotnet run --project IISDeployManager -- deploy "My Web API"
+# Deploy while bypassing the build and publish steps
+dotnet run --project IISDeployManager -- deploy "My Web API" --skip-build</code></pre>
+            </div>
+        </section>
+        <!-- Configuration -->
+        <section id="configuration">
+            <h2>Configuring Applications</h2>
+            <p>Application configurations are stored in JSON. Every application schema in the <code>apps</code> array contains the following fields:</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 25%">Field Name</th>
+                        <th style="width: 15%">Type</th>
+                        <th style="width: 20%">Default/Allowed</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>name</strong></td>
+                        <td>String</td>
+                        <td>Required</td>
+                        <td>Unique, user-friendly name identifying the application.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>type</strong></td>
+                        <td>String</td>
+                        <td><code>aspnetcore</code>, <code>angular</code>, <code>static</code></td>
+                        <td>The project framework. Controls the default build and publish command sequence.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>environment</strong></td>
+                        <td>String</td>
+                        <td>Required</td>
+                        <td>Deploy target stage (e.g. <code>production</code>, <code>staging</code>, <code>test</code>).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>sourcePath</strong></td>
+                        <td>String</td>
+                        <td>Required</td>
+                        <td>Local filesystem directory containing the application source files.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>publishPath</strong></td>
+                        <td>String</td>
+                        <td>Required</td>
+                        <td>Local workspace path where compiled/built files are assembled before copying.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>deployPath</strong></td>
+                        <td>String</td>
+                        <td>Required</td>
+                        <td>Destination filesystem directory on target environment (IIS physical path).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>siteName</strong></td>
+                        <td>String</td>
+                        <td>Required</td>
+                        <td>IIS Website Name used to check website status and health.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>appPoolName</strong></td>
+                        <td>String</td>
+                        <td>Required</td>
+                        <td>IIS Application Pool name (is stopped during copies to prevent file locking).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>backupPath</strong></td>
+                        <td>String</td>
+                        <td>Required</td>
+                        <td>Root folder where prior backup archives will be stored.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>exclude</strong></td>
+                        <td>Array&lt;Str&gt;</td>
+                        <td><code>[]</code></td>
+                        <td>Array of relative filenames/folders to exclude during replication (e.g., <code>Logs</code>).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>healthCheckUrl</strong></td>
+                        <td>String</td>
+                        <td><code>null</code></td>
+                        <td>URL to query via HTTP GET to verify successful startup (returns HTTP 200).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>requireApproval</strong></td>
+                        <td>Boolean</td>
+                        <td><code>false</code></td>
+                        <td>If true, pauses the deployment and prompts for manual approval before taking pool offline.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>deploymentStrategy</strong></td>
+                        <td>String</td>
+                        <td><code>sequential</code>, <code>parallel</code></td>
+                        <td>Defines rolling (sequential) or parallel execution across multiple remote target servers.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>servers</strong></td>
+                        <td>Array&lt;Obj&gt;</td>
+                        <td><code>[]</code></td>
+                        <td>A list of target servers. If empty, the tool executes locally (localhost).</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        <!-- CLI Command Reference -->
+        <section id="cli-ref">
+            <h2>CLI Command Reference</h2>
+            <p>The CLI provides a set of command-line operations designed to integrate with build pipelines or execute rapid management operations.</p>
+            
+            <h3>Commands</h3>
+            <ul>
+                <li><code>deploy &lt;app-name&gt; [--skip-build] [--config &lt;path&gt;]</code>: Deploys the designated application.</li>
+                <li><code>rollback &lt;app-name&gt; --version &lt;version-id&gt; [--config &lt;path&gt;]</code>: Performs rollback of the website on all nodes.</li>
+                <li><code>status &lt;app-name&gt; [--config &lt;path&gt;]</code>: Pulls health check status, running versions, and deployment history.</li>
+                <li><code>list</code>: Lists all applications declared in the configuration file.</li>
+            </ul>
+            <div class="code-container">
+                <div class="code-header">
+                    <span class="code-title">CLI Examples</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code># Query the current version and deployment history of an API
+dotnet run --project IISDeployManager -- status "EMR API"
+# Revert "EMR API" to the specific backup version timestamp
+dotnet run --project IISDeployManager -- rollback "EMR API" --version EMR_API_20260522_143000</code></pre>
+            </div>
+        </section>
+        <!-- WPF UI -->
+        <section id="wpf-ui">
+            <h2>WPF Dashboard</h2>
+            <p>The desktop application `IISDeployManager.Wpf` provides an administrative graphical interface suited for operations groups.</p>
+            
+            <h3>Dashboard Tabs</h3>
+            <ol>
+                <li>
+                    <strong>Dashboard:</strong> 
+                    Allows selecting applications, launching deployments (with a skip-build checkbox option), displaying status attributes (active version, health checks, and last messages), and initiating rollbacks by double-clicking or selecting prior versions in the history table.
+                </li>
+                <li>
+                    <strong>Configuration Editor:</strong> 
+                    Offers full CRUD controls for editing applications without editing JSON files directly. It features validation prompts, strategy setup controls, and a direct target servers JSON input editor.
+                </li>
+                <li>
+                    <strong>Live Console Logs:</strong> 
+                    Displays a real-time console log stream captured from the underlying deployment engines, complete with levels, server addresses, and scroll-to-end features.
+                </li>
+            </ol>
+        </section>
+        <!-- Remote Connections -->
+        <section id="remotes">
+            <h2>Remote Target Connections</h2>
+            <p>IIS Deploy Manager supports remote targets by mapping <code>servers</code> configs to different connection engines. Add remote servers using the following properties:</p>
+            
+            <div class="code-container">
+                <div class="code-header">
+                    <span class="code-title">Server Schema Configuration</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code>{
+  "address": "192.168.1.50",
+  "connectionType": "winrm", // "local", "winrm", or "ssh"
+  "username": "Administrator",
+  "password": "%IIS_PROD_PASSWORD%", // Expanded dynamically from env variables
+  "winrmPort": 5985,                 // Optional (default: 5985 / 5986)
+  "sshKeyPath": null                 // Optional path to private key (for SSH connection)
+}</code></pre>
+            </div>
+            <h3>Supported Channels</h3>
+            <ul>
+                <li><strong>WinRM (Windows Remote Management):</strong> Standard channels utilizing PowerShell Remoting. Best suited for remote Windows servers. Requires target host to have WS-Management enabled (<code>winrm quickconfig</code>).</li>
+                <li><strong>SSH (Secure Shell):</strong> Executes commands over standard SSH connections. Used for cross-platform replication or filesystems. Relies on <code>SSH.NET</code>. Copying uses SFTP to upload zip packages, extracting remotely via <code>unzip</code>, and deleting the archive.</li>
+                <li><strong>Local:</strong> If <code>servers</code> list is empty, default local command prompt execution is used on <code>localhost</code>.</li>
+            </ul>
+        </section>
+        <!-- Manual Approvals -->
+        <section id="approval-workflow">
+            <h2>Manual Approvals Workflow</h2>
+            <p>When deploying to sensitive environments (e.g. <code>production</code>), you can prevent automated failures or unscheduled downtime by enabling approvals.</p>
+            
+            <div class="alert-box warning">
+                <div class="alert-title"><span>⚠️</span> Approval Execution Point</div>
+                <p>If <code>"requireApproval": true</code> is set, the build and publish steps run first. Right before the pipeline shuts down the target IIS App Pool and initiates backup scripts, the pipeline pauses and prompts for approval. This guarantees that if the project fails to compile, it fails gracefully without affecting active services.</p>
+            </div>
+            <h3>Interactive Displays</h3>
+            <ul>
+                <li><strong>CLI Interface:</strong> Blocks execution and prints a highlighted prompt <code>Deployment of "App Name" requires approval. Approve? (y/n):</code>. Pressing <code>y</code> resumes execution; other inputs abort the run.</li>
+                <li><strong>WPF GUI Dashboard:</strong> Automatically switches log panels and pops up a modal approval card. It displays the target environment details, deployment strategy, project type, and lists all targeted servers, prompting confirmation via "APPROVE &amp; DEPLOY" or "REJECT DEPLOYMENT" actions.</li>
+            </ul>
+        </section>
+        <!-- System Architecture -->
+        <section id="architecture">
+            <h2>Technical Architecture</h2>
+            <p>The codebase is written in C# .NET 8.0, partitioned into a core execution engine library and two client projects sharing identical services.</p>
+            
+            <div class="alert-box">
+                <div class="alert-title"><span>🏗️</span> Project Layout</div>
+                <ul>
+                    <li><strong><code>IISDeployManager.csproj</code> (Core &amp; CLI):</strong> Defines command processors, configuration loading, pipeline flows, and CLI interfaces.</li>
+                    <li><strong><code>IISDeployManager.Wpf.csproj</code> (UI Client):</strong> Implements the WPF GUI desktop workspace and visual configuration forms.</li>
+                    <li><strong>Config file paths:</strong> Both modules automatically search parent directories up to 5 levels to locate <code>deploy-config.json</code>, maintaining unified database coordination.</li>
+                </ul>
+            </div>
+        </section>
+        <!-- Execution Abstraction -->
+        <section id="executors">
+            <h2>Execution Abstraction</h2>
+            <p>To support multiple deployment protocols seamlessly, all filesystem, execution, and copying interactions are routed through the <code>ICommandExecutor</code> interface.</p>
+            <div class="code-container">
+                <div class="code-header">
+                    <span class="code-title">ICommandExecutor.cs</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code>public interface ICommandExecutor : IDisposable
+{
+    Task&lt;(bool Success, string Output)&gt; RunCommandAsync(string command, string? workingDirectory = null);
+    Task<bool> CopyFilesAsync(string localSourcePath, string remoteDestPath, List&lt;string&gt; excludePatterns);
+    Task<bool> DirectoryExistsAsync(string path);
+    Task<bool> FileExistsAsync(string path);
+    Task<bool> CreateDirectoryAsync(string path);
+}</bool></bool></bool></bool></code></pre>
+            </div>
+            <h3>Implementation Details</h3>
+            <ul>
+                <li><strong>LocalExecutor:</strong> Hooks into <code>System.Diagnostics.Process</code> to run local commands on cmd.exe. Implements local directory and copy operations.</li>
+                <li><strong>WinRmExecutor:</strong> Encapsulates remote PowerShell execution, dynamically converting string passwords to <code>SecureString</code>. Executes tasks via <code>Invoke-Command -Session</code> and uses <code>Copy-Item -ToSession</code> for copying.</li>
+                <li><strong>SshExecutor:</strong> Integrates <code>SSH.NET</code>'s <code>SshClient</code> and <code>SftpClient</code>. Runs shell commands directly. Copied files are zipped locally, uploaded via SFTP, and unzipped on the target server.</li>
+            </ul>
+        </section>
+        <!-- Rollback Mechanics -->
+        <section id="rollback-lifecycle">
+            <h2>Rollback Mechanics</h2>
+            <p>Rollbacks are triggered either manually through command scripts and dashboard events, or automatically when a multi-server deploy encounters a failure.</p>
+            
+            <h3>Automatic Rollback Workflow</h3>
+            <ol>
+                <li>The pipeline deploys to target servers according to the strategy.</li>
+                <li>If the health check fails on Server N (or any server in parallel mode), the deployment halts.</li>
+                <li>The pipeline invokes the rollback workflow on all servers where the deployment completed successfully.</li>
+                <li>On each target server, the executor stops the app pool, restores the backup directory corresponding to the backup ID, and restarts the app pool.</li>
+                <li>A post-rollback health check verifies the status of the restored application.</li>
+            </ol>
+        </section>
+        <!-- Security -->
+        <section id="security">
+            <h2>Secrets &amp; Security</h2>
+            <p>Protecting credentials is a priority. Plaintext secrets should never be checked into code repositories.</p>
+            
+            <div class="code-container">
+                <div class="code-header">
+                    <span class="code-title">Environment Variables Configuration Example</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code>{
+  "address": "web-prod-01",
+  "connectionType": "winrm",
+  "username": "%IIS_DEPLOY_USER%",
+  "password": "%IIS_DEPLOY_PASSWORD%"
+}</code></pre>
+            </div>
+            <p>Upon parsing configuration profiles, the <code>DeploymentService</code> invokes <code>Environment.ExpandEnvironmentVariables</code>, translating placeholders into environment variables stored on the executing system.</p>
+        </section>
+        <!-- Log Streaming Sink -->
+        <section id="logsink">
+            <h2>Log Streaming Sink</h2>
+            <p>To support real-time logging in WPF without causing locks or application lag, a custom logging channel is implemented.</p>
+            
+            <h3>WpfLogSink.cs</h3>
+            <p>The <code>WpfLogSink</code> implements Serilog's <code>ILogEventSink</code>:</p>
+            <ul>
+                <li>Pipes log lines out through a static C# event handler (<code>OnLogMessage</code>).</li>
+                <li>Utilizes <code>Dispatcher.BeginInvoke</code> to safely marshal updates onto the WPF GUI thread without blocking background tasks.</li>
+                <li>Implements buffer limiting: when the text lines exceed 2,000, it automatically discards the oldest 500 lines to prevent memory bloat.</li>
+            </ul>
+        </section>
+        <!-- Troubleshooting & FAQs -->
+        <section id="errors">
+            <h2>Troubleshooting &amp; FAQs</h2>
+            
+            <div class="alert-box danger">
+                <div class="alert-title"><span>❌</span> WinRM Connection Failures</div>
+                <p><strong>Symptom:</strong> Connection fails with credentials errors or "Access Denied" during Invoke-Command.</p>
+                <p><strong>Solution:</strong> WinRM requires administrative privileges on target machines. Enable WS-Management on the target machine (<code>winrm quickconfig</code>) and add the target IP to TrustedHosts if executing in non-domain configurations: <code>Set-Item WSMan:\localhost\Client\TrustedHosts -Value &lt;IP-Address&gt; -Force</code>.</p>
+            </div>
+            <div class="alert-box danger">
+                <div class="alert-title"><span>❌</span> SSH File Locking / Access Denied</div>
+                <p><strong>Symptom:</strong> Copy fails on remote SSH targets or folder unzip is blocked.</p>
+                <p><strong>Solution:</strong> Ensure the user has write permissions to the deployment folder on the target Linux/Windows system. For Linux servers, verify that the <code>unzip</code> tool is installed, as it is required to extract SFTP zip packages.</p>
+            </div>
+            <div class="alert-box warning">
+                <div class="alert-title"><span>⚠️</span> IIS App Pool Locking Files</div>
+                <p><strong>Symptom:</strong> Copied binaries (DLLs) fail to copy due to locked files, even though App Pool stop commands succeeded.</p>
+                <p><strong>Solution:</strong> WinRM or local executors sometimes return before the IIS App Pool process (w3wp.exe) has fully terminated. The pipeline includes an automatic delay, but for large applications, configure the app pool's shutdown limit settings to allow faster termination.</p>
+            </div>
+        </section>
+    </main>
+    <!-- Right Table of Contents -->
+    <aside class="toc">
+        <div class="toc-title">ON THIS PAGE</div>
+        <ul class="toc-list">
+            <li class="toc-item"><a href="#intro" class="toc-link">Introduction</a></li>
+            <li class="toc-item"><a href="#quickstart" class="toc-link">Quick Start</a></li>
+            <li class="toc-item"><a href="#configuration" class="toc-link">Configuration Fields</a></li>
+            <li class="toc-item"><a href="#cli-ref" class="toc-link">CLI Commands</a></li>
+            <li class="toc-item"><a href="#wpf-ui" class="toc-link">WPF Dashboard</a></li>
+            <li class="toc-item"><a href="#remotes" class="toc-link">Remote Setup</a></li>
+            <li class="toc-item"><a href="#approval-workflow" class="toc-link">Manual Approvals</a></li>
+            <li class="toc-item"><a href="#architecture" class="toc-link">System Architecture</a></li>
+            <li class="toc-item"><a href="#executors" class="toc-link">Execution Abstraction</a></li>
+            <li class="toc-item"><a href="#rollback-lifecycle" class="toc-link">Rollback Lifecycle</a></li>
+            <li class="toc-item"><a href="#security" class="toc-link">Secrets &amp; Security</a></li>
+            <li class="toc-item"><a href="#logsink" class="toc-link">Log Sink</a></li>
+            <li class="toc-item"><a href="#errors" class="toc-link">Troubleshooting</a></li>
+        </ul>
+    </aside>
+    <!-- Toast Notification element -->
+    <div id="copy-toast" class="toast">Code copied to clipboard!</div>
+    <!-- JS Logic -->
+    <script>
+        // Copy to clipboard function
+        function copyCode(btn) {
+            const pre = btn.parentElement.nextElementSibling;
+            const code = pre.querySelector('code').innerText;
+            
+            navigator.clipboard.writeText(code).then(() => {
+                showToast();
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+            });
+        }
+        function showToast() {
+            const toast = document.getElementById('copy-toast');
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+        // Quick Search Filter function
+        const searchInput = document.getElementById('doc-search');
+        searchInput.addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase();
+            const sections = document.querySelectorAll('main.content section');
+            const navItems = document.querySelectorAll('#nav-menu .nav-item');
+            sections.forEach(section => {
+                const text = section.innerText.toLowerCase();
+                const id = section.getAttribute('id');
+                const navLink = document.querySelector(`#nav-menu a[href="#${id}"]`);
+                if (text.includes(query)) {
+                    section.style.display = 'block';
+                    if (navLink) navLink.style.display = 'block';
+                } else {
+                    section.style.display = 'none';
+                    if (navLink) navLink.style.display = 'none';
+                }
+            });
+        });
+        // Scrollspy active state matching
+        window.addEventListener('DOMContentLoaded', () => {
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    const id = entry.target.getAttribute('id');
+                    const tocLink = document.querySelector(`.toc-link[href="#${id}"]`);
+                    const navLink = document.querySelector(`.nav-item[href="#${id}"]`);
+                    if (entry.intersectionRatio > 0) {
+                        document.querySelectorAll('.toc-link').forEach(link => link.classList.remove('active'));
+                        document.querySelectorAll('.nav-item').forEach(link => link.classList.remove('active'));
+                        if (tocLink) tocLink.classList.add('active');
+                        if (navLink) navLink.style.display !== 'none' && navLink.classList.add('active');
+                    }
+                });
+            }, { rootMargin: '0px 0px -60% 0px' });
+            document.querySelectorAll('main.content section').forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+
+</body></html>
