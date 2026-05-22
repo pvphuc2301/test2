@@ -1,0 +1,493 @@
+<html lang="vi"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Department Management - Microsoft Style</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            msblue: '#0078d4',
+            msblueDark: '#005a9e',
+            msgray: '#f3f2f1',
+            msborder: '#edebe9'
+          },
+          boxShadow: {
+            ms: '0 2px 8px rgba(0,0,0,0.12)'
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-[#faf9f8] text-[#323130]">
+  <div class="min-h-screen">
+    <header class="sticky top-0 z-40 border-b border-[#e1dfdd] bg-white">
+      <div class="flex h-14 items-center gap-4 px-4">
+        <button class="flex h-9 w-9 items-center justify-center rounded hover:bg-msgray">☰</button>
+        <div class="flex items-center gap-3">
+          <div class="flex h-8 w-8 items-center justify-center rounded bg-msblue text-sm font-bold text-white">HR</div>
+          <span class="text-sm font-semibold">HRM Portal</span>
+        </div>
+
+        <div class="mx-auto hidden w-full max-w-2xl items-center gap-2 rounded bg-msgray px-3 py-2 md:flex">
+          <span class="text-[#605e5c]">🔍</span>
+          <input class="w-full bg-transparent text-sm outline-none" placeholder="Search department, employee, manager...">
+        </div>
+
+        <button class="rounded px-3 py-2 text-sm hover:bg-msgray">🔔</button>
+        <button class="rounded px-3 py-2 text-sm hover:bg-msgray">⚙️</button>
+        <div class="flex h-8 w-8 items-center justify-center rounded-full bg-[#c7e0f4] text-sm font-bold text-msblueDark">E</div>
+      </div>
+    </header>
+
+    <div class="grid min-h-[calc(100vh-56px)] grid-cols-[240px_1fr]">
+      <aside class="border-r border-[#e1dfdd] bg-white px-3 py-4">
+        <button class="mb-5 flex w-full items-center justify-center gap-2 rounded bg-msblue px-4 py-2.5 text-sm font-semibold text-white hover:bg-msblueDark">
+          + New department
+        </button>
+
+        <nav class="space-y-1 text-sm">
+          <a class="flex items-center gap-3 rounded px-3 py-2 hover:bg-msgray" href="#">🏠 Dashboard</a>
+          <a class="flex items-center gap-3 rounded px-3 py-2 hover:bg-msgray" href="#">👥 Employees</a>
+          <a class="flex items-center gap-3 rounded bg-[#e5f1fb] px-3 py-2 font-semibold text-msblueDark" href="#">🏢 Departments</a>
+          <a class="flex items-center gap-3 rounded px-3 py-2 hover:bg-msgray" href="#">📅 Attendance</a>
+          <a class="flex items-center gap-3 rounded px-3 py-2 hover:bg-msgray" href="#">💰 Payroll</a>
+          <a class="flex items-center gap-3 rounded px-3 py-2 hover:bg-msgray" href="#">📝 Recruitment</a>
+          <a class="flex items-center gap-3 rounded px-3 py-2 hover:bg-msgray" href="#">📊 Reports</a>
+          <a class="flex items-center gap-3 rounded px-3 py-2 hover:bg-msgray" href="#">⚙️ Settings</a>
+        </nav>
+
+        <div class="mt-8 border-t border-msborder pt-4">
+          <p class="mb-2 px-3 text-xs font-semibold uppercase tracking-wide text-[#605e5c]">Department views</p>
+          <nav class="space-y-1 text-sm">
+            <a class="flex items-center justify-between rounded bg-msgray px-3 py-2 font-semibold" href="#"><span>All departments</span><span class="text-xs text-[#605e5c]">32</span></a>
+            <a class="flex items-center justify-between rounded px-3 py-2 hover:bg-msgray" href="#"><span>Medical block</span><span class="text-xs text-[#605e5c]">14</span></a>
+            <a class="flex items-center justify-between rounded px-3 py-2 hover:bg-msgray" href="#"><span>Admin block</span><span class="text-xs text-[#605e5c]">9</span></a>
+            <a class="flex items-center justify-between rounded px-3 py-2 hover:bg-msgray" href="#"><span>Support block</span><span class="text-xs text-[#605e5c]">9</span></a>
+          </nav>
+        </div>
+      </aside>
+
+      <main class="min-w-0">
+        <section class="border-b border-[#e1dfdd] bg-white px-6 py-5">
+          <div class="mb-3 flex items-center gap-2 text-sm text-[#605e5c]">
+            <span>HRM</span>
+            <span>/</span>
+            <span class="font-semibold text-[#323130]">Departments</span>
+          </div>
+
+          <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+            <div>
+              <h1 class="text-3xl font-semibold tracking-tight">Department Management</h1>
+              <p class="mt-1 text-sm text-[#605e5c]">Quản lý cơ cấu tổ chức, phòng ban, nhân sự, trưởng bộ phận, vị trí tuyển dụng và ngân sách.</p>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <button class="rounded border border-[#8a8886] bg-white px-4 py-2 text-sm font-semibold hover:bg-msgray">Import</button>
+              <button class="rounded border border-[#8a8886] bg-white px-4 py-2 text-sm font-semibold hover:bg-msgray">Export</button>
+              <button class="rounded border border-[#8a8886] bg-white px-4 py-2 text-sm font-semibold hover:bg-msgray">Org chart</button>
+              <button class="rounded bg-msblue px-4 py-2 text-sm font-semibold text-white hover:bg-msblueDark">+ New department</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="border-b border-[#e1dfdd] bg-white px-6">
+          <nav class="flex gap-6 overflow-x-auto text-sm font-semibold">
+            <a href="#overview" class="border-b-2 border-msblue px-1 py-4 text-msblueDark">Overview</a>
+            <a href="#list" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Department list</a>
+            <a href="#org" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Org chart</a>
+            <a href="#positions" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Positions</a>
+            <a href="#budget" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Budget</a>
+            <a href="#documents" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Documents</a>
+            <a href="#settings" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Settings</a>
+          </nav>
+        </section>
+
+        <section class="grid gap-6 px-6 py-5 xl:grid-cols-[1fr_360px]">
+          <div class="space-y-4">
+            <div id="overview" class="grid gap-4 md:grid-cols-4">
+              <div class="rounded border border-msborder bg-white p-4 shadow-sm">
+                <p class="text-sm text-[#605e5c]">Departments</p>
+                <p class="mt-2 text-3xl font-semibold">32</p>
+              </div>
+              <div class="rounded border border-msborder bg-white p-4 shadow-sm">
+                <p class="text-sm text-[#605e5c]">Employees</p>
+                <p class="mt-2 text-3xl font-semibold">1,248</p>
+              </div>
+              <div class="rounded border border-msborder bg-white p-4 shadow-sm">
+                <p class="text-sm text-[#605e5c]">Open positions</p>
+                <p class="mt-2 text-3xl font-semibold text-[#ca5010]">18</p>
+              </div>
+              <div class="rounded border border-msborder bg-white p-4 shadow-sm">
+                <p class="text-sm text-[#605e5c]">Budget usage</p>
+                <p class="mt-2 text-3xl font-semibold text-msblueDark">76%</p>
+              </div>
+            </div>
+
+            <div class="grid gap-4 lg:grid-cols-3">
+              <article class="rounded border border-msborder bg-white p-4 shadow-sm hover:shadow-ms">
+                <div class="mb-4 flex items-center justify-between">
+                  <div class="flex h-12 w-12 items-center justify-center rounded bg-[#e5f1fb] text-2xl">🏥</div>
+                  <span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Active</span>
+                </div>
+                <h3 class="font-semibold">Medical Departments</h3>
+                <p class="mt-1 text-sm text-[#605e5c]">14 khoa/phòng chuyên môn, 842 nhân sự.</p>
+              </article>
+
+              <article class="rounded border border-msborder bg-white p-4 shadow-sm hover:shadow-ms">
+                <div class="mb-4 flex items-center justify-between">
+                  <div class="flex h-12 w-12 items-center justify-center rounded bg-[#fff4ce] text-2xl">👥</div>
+                  <span class="rounded bg-[#fff4ce] px-2 py-1 text-xs font-semibold text-[#8a6100]">Review</span>
+                </div>
+                <h3 class="font-semibold">Administration</h3>
+                <p class="mt-1 text-sm text-[#605e5c]">9 phòng ban hành chính, 238 nhân sự.</p>
+              </article>
+
+              <article class="rounded border border-msborder bg-white p-4 shadow-sm hover:shadow-ms">
+                <div class="mb-4 flex items-center justify-between">
+                  <div class="flex h-12 w-12 items-center justify-center rounded bg-[#fde7e9] text-2xl">🛠</div>
+                  <span class="rounded bg-[#e5f1fb] px-2 py-1 text-xs font-semibold text-msblueDark">Support</span>
+                </div>
+                <h3 class="font-semibold">Support Services</h3>
+                <p class="mt-1 text-sm text-[#605e5c]">IT, bảo trì, kho, CSKH và vận hành.</p>
+              </article>
+            </div>
+
+            <div id="list" class="overflow-hidden rounded border border-msborder bg-white shadow-sm">
+              <div class="flex flex-col gap-3 border-b border-msborder px-4 py-3 lg:flex-row lg:items-center lg:justify-between">
+                <div class="flex flex-wrap gap-2">
+                  <button class="rounded bg-msgray px-3 py-2 text-sm font-semibold hover:bg-msborder">Filter</button>
+                  <button class="rounded bg-msgray px-3 py-2 text-sm font-semibold hover:bg-msborder">Sort</button>
+                  <button class="rounded bg-msgray px-3 py-2 text-sm font-semibold hover:bg-msborder">Group by block</button>
+                  <button class="rounded bg-msgray px-3 py-2 text-sm font-semibold hover:bg-msborder">Bulk edit</button>
+                </div>
+                <div class="flex items-center gap-2 rounded bg-msgray px-3 py-2 text-sm">
+                  🔎 <input class="bg-transparent outline-none" placeholder="Search departments">
+                </div>
+              </div>
+
+              <div class="overflow-x-auto">
+                <table class="w-full min-w-[980px] text-left text-sm">
+                  <thead class="bg-[#faf9f8] text-xs font-semibold uppercase tracking-wide text-[#605e5c]">
+                    <tr class="border-b border-msborder">
+                      <th class="w-10 px-4 py-3"><input type="checkbox" class="h-4 w-4 accent-msblue"></th>
+                      <th class="px-4 py-3">Department</th>
+                      <th class="px-4 py-3">Code</th>
+                      <th class="px-4 py-3">Manager</th>
+                      <th class="px-4 py-3">Employees</th>
+                      <th class="px-4 py-3">Open positions</th>
+                      <th class="px-4 py-3">Status</th>
+                      <th class="px-4 py-3">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-msborder">
+                    <tr class="bg-[#f5fbff] hover:bg-[#e5f1fb]">
+                      <td class="px-4 py-3"><input type="checkbox" checked="" class="h-4 w-4 accent-msblue"></td>
+                      <td class="px-4 py-3">
+                        <div class="flex items-center gap-3">
+                          <div class="flex h-10 w-10 items-center justify-center rounded bg-[#c7e0f4] font-semibold text-msblueDark">TM</div>
+                          <div>
+                            <p class="font-semibold text-msblueDark">Khoa Tim mạch</p>
+                            <p class="text-xs text-[#605e5c]">Medical block / Level 2</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td class="px-4 py-3">CARD</td>
+                      <td class="px-4 py-3">Lê Minh Trang</td>
+                      <td class="px-4 py-3">126</td>
+                      <td class="px-4 py-3">4</td>
+                      <td class="px-4 py-3"><span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Active</span></td>
+                      <td class="px-4 py-3"><button class="rounded px-2 py-1 hover:bg-white">•••</button></td>
+                    </tr>
+                    <tr class="hover:bg-msgray">
+                      <td class="px-4 py-3"><input type="checkbox" class="h-4 w-4 accent-msblue"></td>
+                      <td class="px-4 py-3">
+                        <div class="flex items-center gap-3">
+                          <div class="flex h-10 w-10 items-center justify-center rounded bg-[#fde7e9] font-semibold text-[#a4262c]">NS</div>
+                          <div>
+                            <p class="font-semibold">Phòng Nhân sự</p>
+                            <p class="text-xs text-[#605e5c]">Administration / Level 1</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td class="px-4 py-3">HR</td>
+                      <td class="px-4 py-3">Nguyễn Hoài An</td>
+                      <td class="px-4 py-3">32</td>
+                      <td class="px-4 py-3">2</td>
+                      <td class="px-4 py-3"><span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Active</span></td>
+                      <td class="px-4 py-3"><button class="rounded px-2 py-1 hover:bg-msborder">•••</button></td>
+                    </tr>
+                    <tr class="hover:bg-msgray">
+                      <td class="px-4 py-3"><input type="checkbox" class="h-4 w-4 accent-msblue"></td>
+                      <td class="px-4 py-3">
+                        <div class="flex items-center gap-3">
+                          <div class="flex h-10 w-10 items-center justify-center rounded bg-[#fff4ce] font-semibold text-[#8a6100]">IT</div>
+                          <div>
+                            <p class="font-semibold">Phòng Công nghệ thông tin</p>
+                            <p class="text-xs text-[#605e5c]">Support Services / Level 1</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td class="px-4 py-3">IT</td>
+                      <td class="px-4 py-3">Phạm Hữu Phúc</td>
+                      <td class="px-4 py-3">28</td>
+                      <td class="px-4 py-3">3</td>
+                      <td class="px-4 py-3"><span class="rounded bg-[#fff4ce] px-2 py-1 text-xs font-semibold text-[#8a6100]">Review</span></td>
+                      <td class="px-4 py-3"><button class="rounded px-2 py-1 hover:bg-msborder">•••</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div id="org" class="rounded border border-msborder bg-white shadow-sm">
+              <div class="flex items-center justify-between border-b border-msborder px-5 py-4">
+                <div>
+                  <h2 class="text-lg font-semibold">Organization chart</h2>
+                  <p class="mt-1 text-sm text-[#605e5c]">Cây tổ chức theo khối, phòng ban và cấp quản lý.</p>
+                </div>
+                <button class="rounded px-3 py-2 text-sm font-semibold text-msblueDark hover:bg-msgray">Open full chart</button>
+              </div>
+              <div class="overflow-x-auto p-5">
+                <div class="min-w-[760px] text-sm">
+                  <div class="mx-auto w-64 rounded border border-msborder bg-[#e5f1fb] p-4 text-center">
+                    <p class="font-semibold text-msblueDark">Ban Giám Đốc</p>
+                    <p class="text-xs text-[#605e5c]">Executive board</p>
+                  </div>
+                  <div class="mx-auto h-8 w-px bg-[#c8c6c4]"></div>
+                  <div class="grid grid-cols-3 gap-4">
+                    <div class="rounded border border-msborder bg-white p-4 text-center shadow-sm">
+                      <p class="font-semibold">Khối Y tế</p>
+                      <p class="mt-1 text-xs text-[#605e5c]">14 departments · 842 employees</p>
+                    </div>
+                    <div class="rounded border border-msborder bg-white p-4 text-center shadow-sm">
+                      <p class="font-semibold">Khối Hành chính</p>
+                      <p class="mt-1 text-xs text-[#605e5c]">9 departments · 238 employees</p>
+                    </div>
+                    <div class="rounded border border-msborder bg-white p-4 text-center shadow-sm">
+                      <p class="font-semibold">Khối Hỗ trợ</p>
+                      <p class="mt-1 text-xs text-[#605e5c]">9 departments · 168 employees</p>
+                    </div>
+                  </div>
+                  <div class="mt-4 grid grid-cols-3 gap-4">
+                    <div class="rounded bg-[#faf9f8] p-3 text-center">Khoa Tim mạch</div>
+                    <div class="rounded bg-[#faf9f8] p-3 text-center">Phòng Nhân sự</div>
+                    <div class="rounded bg-[#faf9f8] p-3 text-center">Phòng IT</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div id="positions" class="rounded border border-msborder bg-white shadow-sm">
+              <div class="flex items-center justify-between border-b border-msborder px-5 py-4">
+                <div>
+                  <h2 class="text-lg font-semibold">Positions and headcount</h2>
+                  <p class="mt-1 text-sm text-[#605e5c]">Quản lý định biên, vị trí hiện có và vị trí đang tuyển.</p>
+                </div>
+                <button class="rounded bg-msblue px-3 py-2 text-sm font-semibold text-white hover:bg-msblueDark">+ Add position</button>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full min-w-[760px] text-left text-sm">
+                  <thead class="bg-[#faf9f8] text-xs font-semibold uppercase tracking-wide text-[#605e5c]">
+                    <tr>
+                      <th class="px-5 py-3">Position</th>
+                      <th class="px-5 py-3">Department</th>
+                      <th class="px-5 py-3">Planned</th>
+                      <th class="px-5 py-3">Current</th>
+                      <th class="px-5 py-3">Vacant</th>
+                      <th class="px-5 py-3">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-msborder">
+                    <tr>
+                      <td class="px-5 py-3 font-semibold">Doctor</td>
+                      <td class="px-5 py-3">Khoa Tim mạch</td>
+                      <td class="px-5 py-3">48</td>
+                      <td class="px-5 py-3">44</td>
+                      <td class="px-5 py-3">4</td>
+                      <td class="px-5 py-3"><span class="rounded bg-[#fff4ce] px-2 py-1 text-xs font-semibold text-[#8a6100]">Hiring</span></td>
+                    </tr>
+                    <tr>
+                      <td class="px-5 py-3 font-semibold">HR Specialist</td>
+                      <td class="px-5 py-3">Phòng Nhân sự</td>
+                      <td class="px-5 py-3">12</td>
+                      <td class="px-5 py-3">10</td>
+                      <td class="px-5 py-3">2</td>
+                      <td class="px-5 py-3"><span class="rounded bg-[#fff4ce] px-2 py-1 text-xs font-semibold text-[#8a6100]">Hiring</span></td>
+                    </tr>
+                    <tr>
+                      <td class="px-5 py-3 font-semibold">System Engineer</td>
+                      <td class="px-5 py-3">Phòng IT</td>
+                      <td class="px-5 py-3">9</td>
+                      <td class="px-5 py-3">8</td>
+                      <td class="px-5 py-3">1</td>
+                      <td class="px-5 py-3"><span class="rounded bg-[#e5f1fb] px-2 py-1 text-xs font-semibold text-msblueDark">Review</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div id="budget" class="rounded border border-msborder bg-white shadow-sm">
+              <div class="flex items-center justify-between border-b border-msborder px-5 py-4">
+                <div>
+                  <h2 class="text-lg font-semibold">Budget overview</h2>
+                  <p class="mt-1 text-sm text-[#605e5c]">Theo dõi ngân sách nhân sự theo phòng ban.</p>
+                </div>
+                <button class="rounded px-3 py-2 text-sm font-semibold text-msblueDark hover:bg-msgray">Budget settings</button>
+              </div>
+              <div class="grid gap-4 p-5 md:grid-cols-3">
+                <div class="rounded bg-[#faf9f8] p-4">
+                  <p class="text-sm text-[#605e5c]">Annual budget</p>
+                  <p class="mt-2 text-2xl font-semibold">68.4B₫</p>
+                </div>
+                <div class="rounded bg-[#faf9f8] p-4">
+                  <p class="text-sm text-[#605e5c]">Used</p>
+                  <p class="mt-2 text-2xl font-semibold text-msblueDark">52.1B₫</p>
+                </div>
+                <div class="rounded bg-[#faf9f8] p-4">
+                  <p class="text-sm text-[#605e5c]">Remaining</p>
+                  <p class="mt-2 text-2xl font-semibold text-[#107c10]">16.3B₫</p>
+                </div>
+              </div>
+              <div class="space-y-4 border-t border-msborder p-5 text-sm">
+                <div>
+                  <div class="mb-2 flex justify-between"><span class="font-semibold">Khoa Tim mạch</span><span>82%</span></div>
+                  <div class="h-1.5 rounded bg-msgray"><div class="h-1.5 w-[82%] rounded bg-msblue"></div></div>
+                </div>
+                <div>
+                  <div class="mb-2 flex justify-between"><span class="font-semibold">Phòng Nhân sự</span><span>61%</span></div>
+                  <div class="h-1.5 rounded bg-msgray"><div class="h-1.5 w-[61%] rounded bg-[#107c10]"></div></div>
+                </div>
+                <div>
+                  <div class="mb-2 flex justify-between"><span class="font-semibold">Phòng IT</span><span>74%</span></div>
+                  <div class="h-1.5 rounded bg-msgray"><div class="h-1.5 w-[74%] rounded bg-[#ca5010]"></div></div>
+                </div>
+              </div>
+            </div>
+
+            <div id="documents" class="rounded border border-msborder bg-white shadow-sm">
+              <div class="flex items-center justify-between border-b border-msborder px-5 py-4">
+                <div>
+                  <h2 class="text-lg font-semibold">Department documents</h2>
+                  <p class="mt-1 text-sm text-[#605e5c]">Quyết định thành lập, sơ đồ tổ chức, mô tả chức năng và quy trình nội bộ.</p>
+                </div>
+                <button class="rounded bg-msblue px-3 py-2 text-sm font-semibold text-white hover:bg-msblueDark">Upload</button>
+              </div>
+              <div class="divide-y divide-msborder text-sm">
+                <div class="flex items-center justify-between px-5 py-4 hover:bg-msgray">
+                  <div><p class="font-semibold">Quyết định thành lập khoa Tim mạch.pdf</p><p class="text-xs text-[#605e5c]">Legal document · v1.0</p></div>
+                  <button class="text-msblueDark hover:underline">Open</button>
+                </div>
+                <div class="flex items-center justify-between px-5 py-4 hover:bg-msgray">
+                  <div><p class="font-semibold">Mô tả chức năng phòng Nhân sự.docx</p><p class="text-xs text-[#605e5c]">Function description · v2.3</p></div>
+                  <button class="text-msblueDark hover:underline">Open</button>
+                </div>
+                <div class="flex items-center justify-between px-5 py-4 hover:bg-msgray">
+                  <div><p class="font-semibold">Sơ đồ tổ chức bệnh viện.xlsx</p><p class="text-xs text-[#605e5c]">Organization chart · v4.1</p></div>
+                  <button class="text-msblueDark hover:underline">Open</button>
+                </div>
+              </div>
+            </div>
+
+            <div id="settings" class="rounded border border-msborder bg-white shadow-sm">
+              <div class="border-b border-msborder px-5 py-4">
+                <h2 class="text-lg font-semibold">Department settings</h2>
+                <p class="mt-1 text-sm text-[#605e5c]">Cấu hình mã phòng ban, cấp duyệt, phân quyền và quy tắc nhân sự.</p>
+              </div>
+              <div class="grid gap-4 p-5 md:grid-cols-2">
+                <label class="flex items-start gap-3 rounded border border-msborder bg-[#faf9f8] p-4">
+                  <input type="checkbox" checked="" class="mt-1 h-4 w-4 accent-msblue">
+                  <span><span class="block font-semibold">Require manager approval</span><span class="block text-sm text-[#605e5c]">Yêu cầu trưởng bộ phận duyệt thay đổi nhân sự.</span></span>
+                </label>
+                <label class="flex items-start gap-3 rounded border border-msborder bg-[#faf9f8] p-4">
+                  <input type="checkbox" checked="" class="mt-1 h-4 w-4 accent-msblue">
+                  <span><span class="block font-semibold">Enable budget tracking</span><span class="block text-sm text-[#605e5c]">Theo dõi ngân sách theo phòng ban.</span></span>
+                </label>
+                <label class="flex items-start gap-3 rounded border border-msborder bg-[#faf9f8] p-4">
+                  <input type="checkbox" class="mt-1 h-4 w-4 accent-msblue">
+                  <span><span class="block font-semibold">Auto-generate department code</span><span class="block text-sm text-[#605e5c]">Tự sinh mã phòng ban khi tạo mới.</span></span>
+                </label>
+                <label class="flex items-start gap-3 rounded border border-msborder bg-[#faf9f8] p-4">
+                  <input type="checkbox" checked="" class="mt-1 h-4 w-4 accent-msblue">
+                  <span><span class="block font-semibold">Sync to Auth Server</span><span class="block text-sm text-[#605e5c]">Đồng bộ claim phòng ban cho phân quyền.</span></span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <aside class="space-y-4">
+            <section class="rounded border border-msborder bg-white shadow-sm">
+              <div class="border-b border-msborder px-5 py-4">
+                <h2 class="text-lg font-semibold">Selected department</h2>
+              </div>
+              <div class="p-5">
+                <div class="mb-5 flex items-center gap-3">
+                  <div class="flex h-14 w-14 items-center justify-center rounded bg-[#c7e0f4] text-lg font-semibold text-msblueDark">TM</div>
+                  <div>
+                    <p class="font-semibold">Khoa Tim mạch</p>
+                    <p class="text-sm text-[#605e5c]">CARD · Medical block</p>
+                  </div>
+                </div>
+                <div class="space-y-3 text-sm">
+                  <div class="flex justify-between border-b border-msborder pb-3"><span class="text-[#605e5c]">Manager</span><span class="font-semibold">Lê Minh Trang</span></div>
+                  <div class="flex justify-between border-b border-msborder pb-3"><span class="text-[#605e5c]">Employees</span><span class="font-semibold">126</span></div>
+                  <div class="flex justify-between border-b border-msborder pb-3"><span class="text-[#605e5c]">Open positions</span><span class="font-semibold text-[#ca5010]">4</span></div>
+                  <div class="flex justify-between"><span class="text-[#605e5c]">Status</span><span class="font-semibold text-[#107c10]">Active</span></div>
+                </div>
+                <div class="mt-5 grid grid-cols-2 gap-2">
+                  <button class="rounded border border-[#8a8886] bg-white px-4 py-2 text-sm font-semibold hover:bg-msgray">View</button>
+                  <button class="rounded bg-msblue px-4 py-2 text-sm font-semibold text-white hover:bg-msblueDark">Edit</button>
+                </div>
+              </div>
+            </section>
+
+            <section class="rounded border border-msborder bg-white shadow-sm">
+              <div class="flex items-center justify-between border-b border-msborder px-5 py-4">
+                <h2 class="text-lg font-semibold">Insights</h2>
+                <a href="#" class="text-sm font-semibold text-msblueDark hover:underline">Details</a>
+              </div>
+              <div class="space-y-3 p-5 text-sm">
+                <div class="rounded bg-[#fff4ce] p-3">
+                  <p class="font-semibold text-[#8a6100]">Headcount gap</p>
+                  <p class="mt-1 text-[#605e5c]">Khoa Tim mạch thiếu 4 vị trí so với định biên.</p>
+                </div>
+                <div class="rounded bg-[#e5f1fb] p-3">
+                  <p class="font-semibold text-msblueDark">Budget alert</p>
+                  <p class="mt-1 text-[#605e5c]">Ngân sách IT đã sử dụng 74%.</p>
+                </div>
+                <div class="rounded bg-[#dff6dd] p-3">
+                  <p class="font-semibold text-[#107c10]">Stable structure</p>
+                  <p class="mt-1 text-[#605e5c]">28/32 phòng ban đã có trưởng bộ phận.</p>
+                </div>
+              </div>
+            </section>
+
+            <section class="rounded border border-msborder bg-white shadow-sm">
+              <div class="border-b border-msborder px-5 py-4">
+                <h2 class="text-lg font-semibold">Recent activity</h2>
+              </div>
+              <div class="space-y-5 p-5 text-sm">
+                <div class="flex gap-3">
+                  <div class="mt-1 h-2.5 w-2.5 rounded-full bg-msblue"></div>
+                  <div><p class="font-semibold">Updated department manager</p><p class="text-[#605e5c]">HR Admin · Today 09:15</p></div>
+                </div>
+                <div class="flex gap-3">
+                  <div class="mt-1 h-2.5 w-2.5 rounded-full bg-[#107c10]"></div>
+                  <div><p class="font-semibold">Added 2 open positions</p><p class="text-[#605e5c]">Recruitment · Yesterday</p></div>
+                </div>
+                <div class="flex gap-3">
+                  <div class="mt-1 h-2.5 w-2.5 rounded-full bg-[#ca5010]"></div>
+                  <div><p class="font-semibold">Budget threshold warning</p><p class="text-[#605e5c]">System · This week</p></div>
+                </div>
+              </div>
+            </section>
+          </aside>
+        </section>
+      </main>
+    </div>
+  </div>
+
+
+</body></html>
