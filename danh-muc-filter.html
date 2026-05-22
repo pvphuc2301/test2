@@ -1,0 +1,255 @@
+<html lang="vi"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Filter Panel - Cấu hình danh mục</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            msblue: '#0078d4',
+            msblueDark: '#005a9e',
+            msgray: '#f3f2f1',
+            msborder: '#edebe9'
+          },
+          boxShadow: {
+            ms: '0 2px 8px rgba(0,0,0,0.12)',
+            panel: '-8px 0 24px rgba(0,0,0,0.12)'
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-[#faf9f8] text-[#323130]">
+  <div class="min-h-screen">
+    <header class="sticky top-0 z-50 border-b border-[#e1dfdd] bg-white">
+      <div class="flex h-14 items-center gap-4 px-4">
+        <button class="flex h-9 w-9 items-center justify-center rounded hover:bg-msgray">☰</button>
+        <div class="flex items-center gap-3">
+          <div class="flex h-8 w-8 items-center justify-center rounded bg-msblue text-sm font-bold text-white">HR</div>
+          <span class="text-sm font-semibold">Cấu hình danh mục</span>
+        </div>
+        <div class="mx-auto hidden w-full max-w-2xl items-center gap-2 rounded bg-msgray px-3 py-2 md:flex">
+          <span class="text-[#605e5c]">🔍</span>
+          <input class="w-full bg-transparent text-sm outline-none" placeholder="Tìm danh mục, mã, tên, nhóm dữ liệu...">
+        </div>
+        <button class="rounded px-3 py-2 text-sm hover:bg-msgray">🔔</button>
+        <div class="flex h-8 w-8 items-center justify-center rounded-full bg-[#c7e0f4] text-sm font-bold text-msblueDark">E</div>
+      </div>
+    </header>
+
+    <main class="relative min-h-[calc(100vh-56px)]">
+      <section class="border-b border-[#e1dfdd] bg-white px-6 py-5">
+        <div class="mb-3 flex items-center gap-2 text-sm text-[#605e5c]">
+          <span>HRM</span><span>/</span><span>Settings</span><span>/</span><span class="font-semibold text-[#323130]">Danh mục</span>
+        </div>
+        <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <h1 class="text-3xl font-semibold tracking-tight">Cấu hình danh mục</h1>
+            <p class="mt-1 text-sm text-[#605e5c]">Màn hình sau khi người dùng nhấn nút Filter.</p>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <button class="rounded border border-[#8a8886] bg-white px-4 py-2 text-sm font-semibold hover:bg-msgray">Import Excel</button>
+            <button class="rounded border border-[#8a8886] bg-white px-4 py-2 text-sm font-semibold hover:bg-msgray">Export</button>
+            <button class="rounded bg-msblue px-4 py-2 text-sm font-semibold text-white hover:bg-msblueDark">+ Thêm giá trị</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="px-6 py-5 pr-[430px]">
+        <div class="mb-4 grid gap-4 md:grid-cols-4">
+          <div class="rounded border border-msborder bg-white p-4 shadow-sm">
+            <p class="text-sm text-[#605e5c]">Tổng giá trị</p>
+            <p class="mt-2 text-3xl font-semibold">428</p>
+          </div>
+          <div class="rounded border border-msborder bg-white p-4 shadow-sm">
+            <p class="text-sm text-[#605e5c]">Kết quả sau lọc</p>
+            <p class="mt-2 text-3xl font-semibold text-msblueDark">126</p>
+          </div>
+          <div class="rounded border border-msborder bg-white p-4 shadow-sm">
+            <p class="text-sm text-[#605e5c]">Đang hoạt động</p>
+            <p class="mt-2 text-3xl font-semibold text-[#107c10]">118</p>
+          </div>
+          <div class="rounded border border-msborder bg-white p-4 shadow-sm">
+            <p class="text-sm text-[#605e5c]">Bị khóa</p>
+            <p class="mt-2 text-3xl font-semibold text-[#ca5010]">8</p>
+          </div>
+        </div>
+
+        <div class="overflow-hidden rounded border border-msborder bg-white shadow-sm">
+          <div class="flex flex-col gap-3 border-b border-msborder px-4 py-3 lg:flex-row lg:items-center lg:justify-between">
+            <div class="flex flex-wrap gap-2">
+              <button class="rounded bg-msblue px-3 py-2 text-sm font-semibold text-white">Filter · 4</button>
+              <button class="rounded bg-msgray px-3 py-2 text-sm font-semibold hover:bg-msborder">Sort</button>
+              <button class="rounded bg-msgray px-3 py-2 text-sm font-semibold hover:bg-msborder">Bulk edit</button>
+              <button class="rounded bg-msgray px-3 py-2 text-sm font-semibold hover:bg-msborder">Deactivate</button>
+            </div>
+            <div class="flex flex-wrap items-center gap-2 text-sm">
+              <span class="rounded bg-[#e5f1fb] px-2 py-1 font-semibold text-msblueDark">Nhóm: Nhân sự</span>
+              <span class="rounded bg-[#dff6dd] px-2 py-1 font-semibold text-[#107c10]">Active</span>
+              <span class="rounded bg-[#fff4ce] px-2 py-1 font-semibold text-[#8a6100]">Có sử dụng</span>
+              <button class="text-msblueDark hover:underline">Clear all</button>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full min-w-[1000px] text-left text-sm">
+              <thead class="bg-[#faf9f8] text-xs font-semibold uppercase tracking-wide text-[#605e5c]">
+                <tr class="border-b border-msborder">
+                  <th class="w-10 px-4 py-3"><input type="checkbox" class="h-4 w-4 accent-msblue"></th>
+                  <th class="px-4 py-3">Mã</th>
+                  <th class="px-4 py-3">Tên hiển thị</th>
+                  <th class="px-4 py-3">Nhóm</th>
+                  <th class="px-4 py-3">Module sử dụng</th>
+                  <th class="px-4 py-3">Trạng thái</th>
+                  <th class="px-4 py-3">Cập nhật</th>
+                  <th class="px-4 py-3">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-msborder">
+                <tr class="bg-[#f5fbff] hover:bg-[#e5f1fb]">
+                  <td class="px-4 py-3"><input type="checkbox" checked="" class="h-4 w-4 accent-msblue"></td>
+                  <td class="px-4 py-3 font-semibold text-msblueDark">MANAGEMENT</td>
+                  <td class="px-4 py-3">Quản lý</td>
+                  <td class="px-4 py-3">Cấp bậc chức vụ</td>
+                  <td class="px-4 py-3">Employee, Payroll</td>
+                  <td class="px-4 py-3"><span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Active</span></td>
+                  <td class="px-4 py-3 text-[#605e5c]">Hôm nay</td>
+                  <td class="px-4 py-3"><button class="rounded px-2 py-1 hover:bg-white">•••</button></td>
+                </tr>
+                <tr class="hover:bg-msgray">
+                  <td class="px-4 py-3"><input type="checkbox" class="h-4 w-4 accent-msblue"></td>
+                  <td class="px-4 py-3 font-semibold">SPECIALIST</td>
+                  <td class="px-4 py-3">Chuyên viên / Chuyên môn</td>
+                  <td class="px-4 py-3">Cấp bậc chức vụ</td>
+                  <td class="px-4 py-3">Employee, Recruitment</td>
+                  <td class="px-4 py-3"><span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Active</span></td>
+                  <td class="px-4 py-3 text-[#605e5c]">Hôm qua</td>
+                  <td class="px-4 py-3"><button class="rounded px-2 py-1 hover:bg-msborder">•••</button></td>
+                </tr>
+                <tr class="hover:bg-msgray">
+                  <td class="px-4 py-3"><input type="checkbox" class="h-4 w-4 accent-msblue"></td>
+                  <td class="px-4 py-3 font-semibold">STAFF</td>
+                  <td class="px-4 py-3">Nhân viên</td>
+                  <td class="px-4 py-3">Cấp bậc chức vụ</td>
+                  <td class="px-4 py-3">Employee</td>
+                  <td class="px-4 py-3"><span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Active</span></td>
+                  <td class="px-4 py-3 text-[#605e5c]">Tuần này</td>
+                  <td class="px-4 py-3"><button class="rounded px-2 py-1 hover:bg-msborder">•••</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <div class="fixed inset-0 top-14 bg-black/20"></div>
+
+      <aside class="fixed right-0 top-14 z-40 flex h-[calc(100vh-56px)] w-[400px] flex-col border-l border-msborder bg-white shadow-panel">
+        <div class="flex items-center justify-between border-b border-msborder px-5 py-4">
+          <div>
+            <h2 class="text-lg font-semibold">Filter</h2>
+            <p class="mt-1 text-sm text-[#605e5c]">Lọc dữ liệu danh mục</p>
+          </div>
+          <button class="flex h-9 w-9 items-center justify-center rounded hover:bg-msgray">✕</button>
+        </div>
+
+        <div class="flex-1 overflow-auto p-5">
+          <div class="mb-5 rounded bg-[#e5f1fb] p-3 text-sm text-msblueDark">
+            <p class="font-semibold">4 điều kiện đang áp dụng</p>
+            <p class="mt-1">Kết quả hiện tại: 126 giá trị phù hợp.</p>
+          </div>
+
+          <div class="space-y-5">
+            <div>
+              <label class="mb-2 block text-sm font-semibold">Nhóm danh mục</label>
+              <select class="w-full rounded border border-[#8a8886] bg-white px-3 py-2 text-sm outline-none focus:border-msblue focus:ring-1 focus:ring-msblue">
+                <option>Nhân sự</option>
+                <option>Phòng ban</option>
+                <option>Hợp đồng</option>
+                <option>Chấm công</option>
+                <option>Payroll</option>
+                <option>Tuyển dụng</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="mb-2 block text-sm font-semibold">Danh mục</label>
+              <select class="w-full rounded border border-[#8a8886] bg-white px-3 py-2 text-sm outline-none focus:border-msblue focus:ring-1 focus:ring-msblue">
+                <option>Cấp bậc chức vụ</option>
+                <option>Loại hợp đồng</option>
+                <option>Trạng thái nhân viên</option>
+                <option>Lý do nghỉ việc</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="mb-2 block text-sm font-semibold">Trạng thái</label>
+              <div class="space-y-2 rounded border border-msborder p-3">
+                <label class="flex items-center gap-3 text-sm"><input type="checkbox" checked="" class="h-4 w-4 accent-msblue"> Active</label>
+                <label class="flex items-center gap-3 text-sm"><input type="checkbox" class="h-4 w-4 accent-msblue"> Inactive</label>
+                <label class="flex items-center gap-3 text-sm"><input type="checkbox" class="h-4 w-4 accent-msblue"> Locked</label>
+                <label class="flex items-center gap-3 text-sm"><input type="checkbox" class="h-4 w-4 accent-msblue"> Pending approval</label>
+              </div>
+            </div>
+
+            <div>
+              <label class="mb-2 block text-sm font-semibold">Nơi sử dụng</label>
+              <div class="space-y-2 rounded border border-msborder p-3">
+                <label class="flex items-center gap-3 text-sm"><input type="checkbox" checked="" class="h-4 w-4 accent-msblue"> Employee Profile</label>
+                <label class="flex items-center gap-3 text-sm"><input type="checkbox" checked="" class="h-4 w-4 accent-msblue"> Payroll</label>
+                <label class="flex items-center gap-3 text-sm"><input type="checkbox" class="h-4 w-4 accent-msblue"> Recruitment</label>
+                <label class="flex items-center gap-3 text-sm"><input type="checkbox" class="h-4 w-4 accent-msblue"> Attendance</label>
+              </div>
+            </div>
+
+            <div>
+              <label class="mb-2 block text-sm font-semibold">Ngày cập nhật</label>
+              <div class="grid grid-cols-2 gap-3">
+                <input type="date" class="w-full rounded border border-[#8a8886] bg-white px-3 py-2 text-sm outline-none focus:border-msblue focus:ring-1 focus:ring-msblue">
+                <input type="date" class="w-full rounded border border-[#8a8886] bg-white px-3 py-2 text-sm outline-none focus:border-msblue focus:ring-1 focus:ring-msblue">
+              </div>
+            </div>
+
+            <div>
+              <label class="mb-2 block text-sm font-semibold">Người tạo / cập nhật</label>
+              <input class="w-full rounded border border-[#8a8886] bg-white px-3 py-2 text-sm outline-none focus:border-msblue focus:ring-1 focus:ring-msblue" placeholder="Tìm người dùng">
+            </div>
+
+            <div>
+              <label class="mb-2 block text-sm font-semibold">Tùy chọn nâng cao</label>
+              <div class="space-y-2 rounded border border-msborder p-3">
+                <label class="flex items-start gap-3 text-sm">
+                  <input type="checkbox" checked="" class="mt-1 h-4 w-4 accent-msblue">
+                  <span><span class="block font-semibold">Chỉ hiển thị giá trị đang được sử dụng</span><span class="block text-xs text-[#605e5c]">Ẩn các giá trị chưa phát sinh dữ liệu.</span></span>
+                </label>
+                <label class="flex items-start gap-3 text-sm">
+                  <input type="checkbox" class="mt-1 h-4 w-4 accent-msblue">
+                  <span><span class="block font-semibold">Ẩn giá trị hệ thống</span><span class="block text-xs text-[#605e5c]">Không hiển thị dữ liệu mặc định không cho sửa.</span></span>
+                </label>
+                <label class="flex items-start gap-3 text-sm">
+                  <input type="checkbox" class="mt-1 h-4 w-4 accent-msblue">
+                  <span><span class="block font-semibold">Có cảnh báo validation</span><span class="block text-xs text-[#605e5c]">Chỉ hiển thị giá trị thiếu mô tả, trùng tên hoặc sai thứ tự.</span></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="border-t border-msborder bg-white p-4">
+          <div class="mb-3 flex items-center justify-between text-sm">
+            <button class="font-semibold text-msblueDark hover:underline">Save this filter</button>
+            <button class="font-semibold text-msblueDark hover:underline">Reset</button>
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <button class="rounded border border-[#8a8886] bg-white px-4 py-2 text-sm font-semibold hover:bg-msgray">Clear</button>
+            <button class="rounded bg-msblue px-4 py-2 text-sm font-semibold text-white hover:bg-msblueDark">Apply filter</button>
+          </div>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+</body></html>
