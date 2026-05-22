@@ -103,13 +103,13 @@
 
         <section class="border-b border-[#e1dfdd] bg-white px-6">
           <nav class="flex gap-6 overflow-x-auto text-sm font-semibold">
-            <a href="#" class="border-b-2 border-msblue px-1 py-4 text-msblueDark">Overview</a>
-            <a href="#" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Job</a>
-            <a href="#" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Contract</a>
-            <a href="#" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Payroll</a>
-            <a href="#" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Attendance</a>
-            <a href="#" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Documents</a>
-            <a href="#" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Activity</a>
+            <a href="#overview" class="border-b-2 border-msblue px-1 py-4 text-msblueDark">Overview</a>
+            <a href="#job" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Job</a>
+            <a href="#contract" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Contract</a>
+            <a href="#payroll" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Payroll</a>
+            <a href="#attendance" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Attendance</a>
+            <a href="#documents" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Documents</a>
+            <a href="#activity" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Activity</a>
           </nav>
         </section>
 
@@ -175,7 +175,7 @@
               </div>
             </div>
 
-            <div class="rounded border border-msborder bg-white shadow-sm">
+            <div id="job" class="rounded border border-msborder bg-white shadow-sm">
               <div class="flex items-center justify-between border-b border-msborder px-5 py-4">
                 <div>
                   <h2 class="text-lg font-semibold">Job details</h2>
@@ -183,36 +183,9 @@
                 </div>
                 <button class="rounded px-3 py-2 text-sm font-semibold text-msblueDark hover:bg-msgray">Change position</button>
               </div>
-
-              <div class="grid gap-x-8 gap-y-5 p-5 md:grid-cols-2">
-                <div>
-                  <p class="text-xs font-semibold uppercase tracking-wide text-[#605e5c]">Department</p>
-                  <p class="mt-1 font-semibold">Cardiology Department</p>
-                </div>
-                <div>
-                  <p class="text-xs font-semibold uppercase tracking-wide text-[#605e5c]">Position</p>
-                  <p class="mt-1 font-semibold">Doctor</p>
-                </div>
-                <div>
-                  <p class="text-xs font-semibold uppercase tracking-wide text-[#605e5c]">Level</p>
-                  <p class="mt-1 font-semibold">Specialist</p>
-                </div>
-                <div>
-                  <p class="text-xs font-semibold uppercase tracking-wide text-[#605e5c]">Manager</p>
-                  <p class="mt-1 font-semibold text-msblueDark">Lê Minh Trang</p>
-                </div>
-                <div>
-                  <p class="text-xs font-semibold uppercase tracking-wide text-[#605e5c]">Start date</p>
-                  <p class="mt-1 font-semibold">12/03/2022</p>
-                </div>
-                <div>
-                  <p class="text-xs font-semibold uppercase tracking-wide text-[#605e5c]">Work location</p>
-                  <p class="mt-1 font-semibold">Main hospital</p>
-                </div>
-              </div>
             </div>
 
-            <div class="grid gap-4 lg:grid-cols-2">
+            <div id="contract" class="grid gap-4 lg:grid-cols-2">
               <div class="rounded border border-msborder bg-white shadow-sm">
                 <div class="flex items-center justify-between border-b border-msborder px-5 py-4">
                   <h2 class="text-lg font-semibold">Contract</h2>
@@ -255,10 +228,132 @@
               </div>
             </div>
 
-            <div class="rounded border border-msborder bg-white shadow-sm">
+            <div id="payroll" class="rounded border border-msborder bg-white shadow-sm">
+              <div class="flex items-center justify-between border-b border-msborder px-5 py-4">
+                <div>
+                  <h2 class="text-lg font-semibold">Payroll</h2>
+                  <p class="mt-1 text-sm text-[#605e5c]">Thông tin lương, phụ cấp và bảo hiểm.</p>
+                </div>
+                <button class="rounded px-3 py-2 text-sm font-semibold text-msblueDark hover:bg-msgray">Payroll history</button>
+              </div>
+
+              <div class="grid gap-4 p-5 md:grid-cols-4">
+                <div class="rounded bg-[#faf9f8] p-4">
+                  <p class="text-xs uppercase tracking-wide text-[#605e5c]">Base salary</p>
+                  <p class="mt-2 text-xl font-semibold">35,000,000₫</p>
+                </div>
+                <div class="rounded bg-[#faf9f8] p-4">
+                  <p class="text-xs uppercase tracking-wide text-[#605e5c]">Allowance</p>
+                  <p class="mt-2 text-xl font-semibold">5,000,000₫</p>
+                </div>
+                <div class="rounded bg-[#faf9f8] p-4">
+                  <p class="text-xs uppercase tracking-wide text-[#605e5c]">Insurance</p>
+                  <p class="mt-2 text-xl font-semibold">Enabled</p>
+                </div>
+                <div class="rounded bg-[#faf9f8] p-4">
+                  <p class="text-xs uppercase tracking-wide text-[#605e5c]">Bank account</p>
+                  <p class="mt-2 text-xl font-semibold">**** 8899</p>
+                </div>
+              </div>
+
+              <div class="overflow-x-auto border-t border-msborder">
+                <table class="w-full min-w-[720px] text-left text-sm">
+                  <thead class="bg-[#faf9f8] text-xs font-semibold uppercase tracking-wide text-[#605e5c]">
+                    <tr>
+                      <th class="px-5 py-3">Period</th>
+                      <th class="px-5 py-3">Gross</th>
+                      <th class="px-5 py-3">Deduction</th>
+                      <th class="px-5 py-3">Net</th>
+                      <th class="px-5 py-3">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-msborder">
+                    <tr>
+                      <td class="px-5 py-3 font-semibold">05/2026</td>
+                      <td class="px-5 py-3">40,000,000₫</td>
+                      <td class="px-5 py-3">4,200,000₫</td>
+                      <td class="px-5 py-3 font-semibold">35,800,000₫</td>
+                      <td class="px-5 py-3"><span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Paid</span></td>
+                    </tr>
+                    <tr>
+                      <td class="px-5 py-3 font-semibold">04/2026</td>
+                      <td class="px-5 py-3">39,500,000₫</td>
+                      <td class="px-5 py-3">4,100,000₫</td>
+                      <td class="px-5 py-3 font-semibold">35,400,000₫</td>
+                      <td class="px-5 py-3"><span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Paid</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div id="attendance" class="rounded border border-msborder bg-white shadow-sm">
+              <div class="flex items-center justify-between border-b border-msborder px-5 py-4">
+                <div>
+                  <h2 class="text-lg font-semibold">Attendance</h2>
+                  <p class="mt-1 text-sm text-[#605e5c]">Thông tin chấm công, lịch làm việc và nghỉ phép.</p>
+                </div>
+                <button class="rounded px-3 py-2 text-sm font-semibold text-msblueDark hover:bg-msgray">View calendar</button>
+              </div>
+
+              <div class="grid gap-4 p-5 md:grid-cols-4">
+                <div class="rounded bg-[#faf9f8] p-4">
+                  <p class="text-xs uppercase tracking-wide text-[#605e5c]">Working days</p>
+                  <p class="mt-2 text-2xl font-semibold">22</p>
+                </div>
+                <div class="rounded bg-[#faf9f8] p-4">
+                  <p class="text-xs uppercase tracking-wide text-[#605e5c]">Late check-in</p>
+                  <p class="mt-2 text-2xl font-semibold text-[#ca5010]">1</p>
+                </div>
+                <div class="rounded bg-[#faf9f8] p-4">
+                  <p class="text-xs uppercase tracking-wide text-[#605e5c]">Leave balance</p>
+                  <p class="mt-2 text-2xl font-semibold text-msblueDark">8</p>
+                </div>
+                <div class="rounded bg-[#faf9f8] p-4">
+                  <p class="text-xs uppercase tracking-wide text-[#605e5c]">Overtime</p>
+                  <p class="mt-2 text-2xl font-semibold">12h</p>
+                </div>
+              </div>
+
+              <div class="overflow-x-auto border-t border-msborder">
+                <table class="w-full min-w-[720px] text-left text-sm">
+                  <thead class="bg-[#faf9f8] text-xs font-semibold uppercase tracking-wide text-[#605e5c]">
+                    <tr>
+                      <th class="px-5 py-3">Date</th>
+                      <th class="px-5 py-3">Check in</th>
+                      <th class="px-5 py-3">Check out</th>
+                      <th class="px-5 py-3">Work hours</th>
+                      <th class="px-5 py-3">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-msborder">
+                    <tr>
+                      <td class="px-5 py-3 font-semibold">23/05/2026</td>
+                      <td class="px-5 py-3">07:58</td>
+                      <td class="px-5 py-3">17:12</td>
+                      <td class="px-5 py-3">8h 14m</td>
+                      <td class="px-5 py-3"><span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Present</span></td>
+                    </tr>
+                    <tr>
+                      <td class="px-5 py-3 font-semibold">22/05/2026</td>
+                      <td class="px-5 py-3">08:15</td>
+                      <td class="px-5 py-3">17:00</td>
+                      <td class="px-5 py-3">7h 45m</td>
+                      <td class="px-5 py-3"><span class="rounded bg-[#fff4ce] px-2 py-1 text-xs font-semibold text-[#8a6100]">Late</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div id="documents" class="rounded border border-msborder bg-white shadow-sm">
               <div class="flex items-center justify-between border-b border-msborder px-5 py-4">
                 <div>
                   <h2 class="text-lg font-semibold">Documents</h2>
+                  <p class="mt-1 text-sm text-[#605e5c]">Hồ sơ, bằng cấp, chứng chỉ và quyết định liên quan.</p>
+                </div>
+                <button class="rounded bg-msblue px-3 py-2 text-sm font-semibold text-white hover:bg-msblueDark">Upload</button>
+              </div>
                   <p class="mt-1 text-sm text-[#605e5c]">Hồ sơ, bằng cấp, chứng chỉ và quyết định liên quan.</p>
                 </div>
                 <button class="rounded bg-msblue px-3 py-2 text-sm font-semibold text-white hover:bg-msblueDark">Upload</button>
@@ -300,7 +395,7 @@
                   </tbody>
                 </table>
               </div>
-            </div>
+            </section></main></div>
           </div>
 
           <aside class="space-y-4">
@@ -324,7 +419,7 @@
               </div>
             </section>
 
-            <section class="rounded border border-msborder bg-white shadow-sm">
+            <section id="activity" class="rounded border border-msborder bg-white shadow-sm">
               <div class="flex items-center justify-between border-b border-msborder px-5 py-4">
                 <h2 class="text-lg font-semibold">Activity</h2>
                 <a href="#" class="text-sm font-semibold text-msblueDark hover:underline">See all</a>
@@ -378,9 +473,10 @@
               </div>
             </section>
           </aside>
-        </section>
-      </main>
-    </div>
-  </div>
+        
+      
+    
+  
+
 
 </body></html>
