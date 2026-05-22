@@ -1,0 +1,398 @@
+<html lang="vi"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cấu hình danh mục - HRM</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            msblue: '#0078d4',
+            msblueDark: '#005a9e',
+            msgray: '#f3f2f1',
+            msborder: '#edebe9'
+          },
+          boxShadow: {
+            ms: '0 2px 8px rgba(0,0,0,0.12)'
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-[#faf9f8] text-[#323130]">
+  <div class="min-h-screen">
+    <header class="sticky top-0 z-50 border-b border-[#e1dfdd] bg-white">
+      <div class="flex h-14 items-center gap-4 px-4">
+        <button class="flex h-9 w-9 items-center justify-center rounded hover:bg-msgray">☰</button>
+        <div class="flex items-center gap-3">
+          <div class="flex h-8 w-8 items-center justify-center rounded bg-msblue text-sm font-bold text-white">HR</div>
+          <span class="text-sm font-semibold">Cấu hình danh mục</span>
+        </div>
+
+        <div class="mx-auto hidden w-full max-w-2xl items-center gap-2 rounded bg-msgray px-3 py-2 md:flex">
+          <span class="text-[#605e5c]">🔍</span>
+          <input class="w-full bg-transparent text-sm outline-none" placeholder="Tìm danh mục, mã, tên, nhóm dữ liệu...">
+        </div>
+
+        <button class="rounded px-3 py-2 text-sm hover:bg-msgray">🔔</button>
+        <button class="rounded px-3 py-2 text-sm hover:bg-msgray">⚙️</button>
+        <div class="flex h-8 w-8 items-center justify-center rounded-full bg-[#c7e0f4] text-sm font-bold text-msblueDark">E</div>
+      </div>
+    </header>
+
+    <div class="grid min-h-[calc(100vh-56px)] grid-cols-[250px_1fr]">
+      <aside class="border-r border-[#e1dfdd] bg-white px-3 py-4">
+        <button class="mb-5 flex w-full items-center justify-center gap-2 rounded bg-msblue px-4 py-2.5 text-sm font-semibold text-white hover:bg-msblueDark">
+          + Tạo danh mục
+        </button>
+
+        <nav class="space-y-1 text-sm">
+          <a class="flex items-center gap-3 rounded px-3 py-2 hover:bg-msgray" href="#">🏠 Dashboard</a>
+          <a class="flex items-center gap-3 rounded px-3 py-2 hover:bg-msgray" href="#">👥 Employees</a>
+          <a class="flex items-center gap-3 rounded px-3 py-2 hover:bg-msgray" href="#">🏢 Departments</a>
+          <a class="flex items-center gap-3 rounded bg-[#e5f1fb] px-3 py-2 font-semibold text-msblueDark" href="#">📚 Danh mục</a>
+          <a class="flex items-center gap-3 rounded px-3 py-2 hover:bg-msgray" href="#">🔐 Phân quyền</a>
+          <a class="flex items-center gap-3 rounded px-3 py-2 hover:bg-msgray" href="#">⚙️ Settings</a>
+          <a class="flex items-center gap-3 rounded px-3 py-2 hover:bg-msgray" href="#">⚙️ Danh mục</a>
+        </nav>
+
+        <div class="mt-8 border-t border-msborder pt-4">
+          <p class="mb-2 px-3 text-xs font-semibold uppercase tracking-wide text-[#605e5c]">Nhóm danh mục</p>
+          <nav class="space-y-1 text-sm">
+            <a class="flex items-center justify-between rounded bg-msgray px-3 py-2 font-semibold" href="#"><span>Nhân sự</span><span class="text-xs text-[#605e5c]">12</span></a>
+            <a class="flex items-center justify-between rounded px-3 py-2 hover:bg-msgray" href="#"><span>Phòng ban</span><span class="text-xs text-[#605e5c]">8</span></a>
+            <a class="flex items-center justify-between rounded px-3 py-2 hover:bg-msgray" href="#"><span>Hợp đồng</span><span class="text-xs text-[#605e5c]">6</span></a>
+            <a class="flex items-center justify-between rounded px-3 py-2 hover:bg-msgray" href="#"><span>Chấm công</span><span class="text-xs text-[#605e5c]">9</span></a>
+            <a class="flex items-center justify-between rounded px-3 py-2 hover:bg-msgray" href="#"><span>Payroll</span><span class="text-xs text-[#605e5c]">10</span></a>
+            <a class="flex items-center justify-between rounded px-3 py-2 hover:bg-msgray" href="#"><span>Tuyển dụng</span><span class="text-xs text-[#605e5c]">7</span></a>
+          </nav>
+        </div>
+      </aside>
+
+      <main class="min-w-0">
+        <section class="border-b border-[#e1dfdd] bg-white px-6 py-5">
+          <div class="mb-3 flex items-center gap-2 text-sm text-[#605e5c]">
+            <span>HRM</span><span>/</span><span>Settings</span><span>/</span><span class="font-semibold text-[#323130]">Danh mục</span>
+          </div>
+
+          <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+            <div>
+              <h1 class="text-3xl font-semibold tracking-tight">Cấu hình danh mục</h1>
+              <p class="mt-1 text-sm text-[#605e5c]">Quản lý các danh mục dùng chung: chức vụ, cấp bậc, loại hợp đồng, trạng thái nhân viên, ca làm việc, phụ cấp và lý do nghỉ.</p>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <button class="rounded border border-[#8a8886] bg-white px-4 py-2 text-sm font-semibold hover:bg-msgray">Import Excel</button>
+              <button class="rounded border border-[#8a8886] bg-white px-4 py-2 text-sm font-semibold hover:bg-msgray">Export</button>
+              <button class="rounded border border-[#8a8886] bg-white px-4 py-2 text-sm font-semibold hover:bg-msgray">Audit log</button>
+              <button class="rounded bg-msblue px-4 py-2 text-sm font-semibold text-white hover:bg-msblueDark">+ Thêm giá trị</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="border-b border-[#e1dfdd] bg-white px-6">
+          <nav class="flex gap-6 overflow-x-auto text-sm font-semibold">
+            <a href="#overview" class="border-b-2 border-msblue px-1 py-4 text-msblueDark">Tổng quan</a>
+            <a href="#categories" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Danh mục</a>
+            <a href="#values" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Giá trị</a>
+            <a href="#dependencies" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Phụ thuộc</a>
+            <a href="#permissions" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Phân quyền</a>
+            <a href="#import" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Import</a>
+            <a href="#audit" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Lịch sử</a>
+          </nav>
+        </section>
+
+        <section class="grid gap-6 px-6 py-5 xl:grid-cols-[1fr_360px]">
+          <div class="space-y-4">
+            <div id="overview" class="grid gap-4 md:grid-cols-4">
+              <div class="rounded border border-msborder bg-white p-4 shadow-sm">
+                <p class="text-sm text-[#605e5c]">Tổng danh mục</p>
+                <p class="mt-2 text-3xl font-semibold">52</p>
+              </div>
+              <div class="rounded border border-msborder bg-white p-4 shadow-sm">
+                <p class="text-sm text-[#605e5c]">Giá trị đang dùng</p>
+                <p class="mt-2 text-3xl font-semibold text-[#107c10]">428</p>
+              </div>
+              <div class="rounded border border-msborder bg-white p-4 shadow-sm">
+                <p class="text-sm text-[#605e5c]">Chờ duyệt</p>
+                <p class="mt-2 text-3xl font-semibold text-[#ca5010]">6</p>
+              </div>
+              <div class="rounded border border-msborder bg-white p-4 shadow-sm">
+                <p class="text-sm text-[#605e5c]">Bị khóa</p>
+                <p class="mt-2 text-3xl font-semibold">14</p>
+              </div>
+            </div>
+
+            <div id="categories" class="grid gap-4 lg:grid-cols-3">
+              <article class="rounded border-2 border-msblue bg-white p-4 shadow-ms">
+                <div class="mb-4 flex items-center justify-between">
+                  <div class="flex h-12 w-12 items-center justify-center rounded bg-[#e5f1fb] text-2xl">🎖</div>
+                  <span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Active</span>
+                </div>
+                <h3 class="font-semibold text-msblueDark">Cấp bậc chức vụ</h3>
+                <p class="mt-1 text-sm text-[#605e5c]">Executive, Director, Management, Specialist, Staff, Internship.</p>
+                <p class="mt-3 text-xs text-[#605e5c]">6 giá trị · Dùng trong Employee Profile</p>
+              </article>
+
+              <article class="rounded border border-msborder bg-white p-4 shadow-sm hover:shadow-ms">
+                <div class="mb-4 flex items-center justify-between">
+                  <div class="flex h-12 w-12 items-center justify-center rounded bg-[#fff4ce] text-2xl">📄</div>
+                  <span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Active</span>
+                </div>
+                <h3 class="font-semibold">Loại hợp đồng</h3>
+                <p class="mt-1 text-sm text-[#605e5c]">Thử việc, xác định thời hạn, không xác định thời hạn, cộng tác viên.</p>
+                <p class="mt-3 text-xs text-[#605e5c]">4 giá trị · Dùng trong Contract</p>
+              </article>
+
+              <article class="rounded border border-msborder bg-white p-4 shadow-sm hover:shadow-ms">
+                <div class="mb-4 flex items-center justify-between">
+                  <div class="flex h-12 w-12 items-center justify-center rounded bg-[#fde7e9] text-2xl">📅</div>
+                  <span class="rounded bg-[#fff4ce] px-2 py-1 text-xs font-semibold text-[#8a6100]">Review</span>
+                </div>
+                <h3 class="font-semibold">Loại ca làm việc</h3>
+                <p class="mt-1 text-sm text-[#605e5c]">Ca hành chính, ca trực, ca đêm, ca xoay vòng.</p>
+                <p class="mt-3 text-xs text-[#605e5c]">8 giá trị · Dùng trong Attendance</p>
+              </article>
+            </div>
+
+            <div id="values" class="overflow-hidden rounded border border-msborder bg-white shadow-sm">
+              <div class="flex flex-col gap-3 border-b border-msborder px-4 py-3 lg:flex-row lg:items-center lg:justify-between">
+                <div class="flex flex-wrap gap-2">
+                  <button class="rounded bg-msgray px-3 py-2 text-sm font-semibold hover:bg-msborder">Filter</button>
+                  <button class="rounded bg-msgray px-3 py-2 text-sm font-semibold hover:bg-msborder">Sort</button>
+                  <button class="rounded bg-msgray px-3 py-2 text-sm font-semibold hover:bg-msborder">Bulk edit</button>
+                  <button class="rounded bg-msgray px-3 py-2 text-sm font-semibold hover:bg-msborder">Deactivate</button>
+                </div>
+                <div class="flex items-center gap-2 rounded bg-msgray px-3 py-2 text-sm">🔎 <input class="bg-transparent outline-none" placeholder="Tìm giá trị danh mục"></div>
+              </div>
+
+              <div class="overflow-x-auto">
+                <table class="w-full min-w-[1100px] text-left text-sm">
+                  <thead class="bg-[#faf9f8] text-xs font-semibold uppercase tracking-wide text-[#605e5c]">
+                    <tr class="border-b border-msborder">
+                      <th class="w-10 px-4 py-3"><input type="checkbox" class="h-4 w-4 accent-msblue"></th>
+                      <th class="px-4 py-3">Mã</th>
+                      <th class="px-4 py-3">Tên hiển thị</th>
+                      <th class="px-4 py-3">Tên tiếng Anh</th>
+                      <th class="px-4 py-3">Thứ tự</th>
+                      <th class="px-4 py-3">Dùng mặc định</th>
+                      <th class="px-4 py-3">Trạng thái</th>
+                      <th class="px-4 py-3">Sử dụng</th>
+                      <th class="px-4 py-3">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-msborder">
+                    <tr class="bg-[#f5fbff] hover:bg-[#e5f1fb]">
+                      <td class="px-4 py-3"><input type="checkbox" checked="" class="h-4 w-4 accent-msblue"></td>
+                      <td class="px-4 py-3 font-semibold text-msblueDark">EXECUTIVE</td>
+                      <td class="px-4 py-3">Điều hành cấp cao</td>
+                      <td class="px-4 py-3">Executive</td>
+                      <td class="px-4 py-3">1</td>
+                      <td class="px-4 py-3">Không</td>
+                      <td class="px-4 py-3"><span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Active</span></td>
+                      <td class="px-4 py-3">8 nhân viên</td>
+                      <td class="px-4 py-3"><button class="rounded px-2 py-1 hover:bg-white">•••</button></td>
+                    </tr>
+                    <tr class="hover:bg-msgray">
+                      <td class="px-4 py-3"><input type="checkbox" class="h-4 w-4 accent-msblue"></td>
+                      <td class="px-4 py-3 font-semibold">DIRECTOR</td>
+                      <td class="px-4 py-3">Giám đốc / Trưởng khối</td>
+                      <td class="px-4 py-3">Director</td>
+                      <td class="px-4 py-3">2</td>
+                      <td class="px-4 py-3">Không</td>
+                      <td class="px-4 py-3"><span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Active</span></td>
+                      <td class="px-4 py-3">24 nhân viên</td>
+                      <td class="px-4 py-3"><button class="rounded px-2 py-1 hover:bg-msborder">•••</button></td>
+                    </tr>
+                    <tr class="hover:bg-msgray">
+                      <td class="px-4 py-3"><input type="checkbox" class="h-4 w-4 accent-msblue"></td>
+                      <td class="px-4 py-3 font-semibold">MANAGEMENT</td>
+                      <td class="px-4 py-3">Quản lý</td>
+                      <td class="px-4 py-3">Management</td>
+                      <td class="px-4 py-3">3</td>
+                      <td class="px-4 py-3">Không</td>
+                      <td class="px-4 py-3"><span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Active</span></td>
+                      <td class="px-4 py-3">126 nhân viên</td>
+                      <td class="px-4 py-3"><button class="rounded px-2 py-1 hover:bg-msborder">•••</button></td>
+                    </tr>
+                    <tr class="hover:bg-msgray">
+                      <td class="px-4 py-3"><input type="checkbox" class="h-4 w-4 accent-msblue"></td>
+                      <td class="px-4 py-3 font-semibold">STAFF</td>
+                      <td class="px-4 py-3">Nhân viên</td>
+                      <td class="px-4 py-3">Staff</td>
+                      <td class="px-4 py-3">5</td>
+                      <td class="px-4 py-3">Có</td>
+                      <td class="px-4 py-3"><span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Active</span></td>
+                      <td class="px-4 py-3">682 nhân viên</td>
+                      <td class="px-4 py-3"><button class="rounded px-2 py-1 hover:bg-msborder">•••</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="grid gap-4 lg:grid-cols-2">
+              <div class="rounded border border-msborder bg-white shadow-sm">
+                <div class="border-b border-msborder px-5 py-4">
+                  <h2 class="text-lg font-semibold">Thêm / sửa giá trị</h2>
+                  <p class="mt-1 text-sm text-[#605e5c]">Form cập nhật giá trị cho danh mục đang chọn.</p>
+                </div>
+                <div class="grid gap-4 p-5 md:grid-cols-2">
+                  <div>
+                    <label class="mb-1 block text-sm font-semibold">Mã giá trị</label>
+                    <input value="SPECIALIST" class="w-full rounded border border-[#8a8886] bg-white px-3 py-2 text-sm outline-none focus:border-msblue focus:ring-1 focus:ring-msblue">
+                  </div>
+                  <div>
+                    <label class="mb-1 block text-sm font-semibold">Thứ tự</label>
+                    <input value="4" class="w-full rounded border border-[#8a8886] bg-white px-3 py-2 text-sm outline-none focus:border-msblue focus:ring-1 focus:ring-msblue">
+                  </div>
+                  <div>
+                    <label class="mb-1 block text-sm font-semibold">Tên tiếng Việt</label>
+                    <input value="Chuyên viên / Chuyên môn" class="w-full rounded border border-[#8a8886] bg-white px-3 py-2 text-sm outline-none focus:border-msblue focus:ring-1 focus:ring-msblue">
+                  </div>
+                  <div>
+                    <label class="mb-1 block text-sm font-semibold">Tên tiếng Anh</label>
+                    <input value="Specialist" class="w-full rounded border border-[#8a8886] bg-white px-3 py-2 text-sm outline-none focus:border-msblue focus:ring-1 focus:ring-msblue">
+                  </div>
+                  <div class="md:col-span-2">
+                    <label class="mb-1 block text-sm font-semibold">Mô tả</label>
+                    <textarea class="h-20 w-full rounded border border-[#8a8886] bg-white px-3 py-2 text-sm outline-none focus:border-msblue focus:ring-1 focus:ring-msblue">Nhóm nhân sự có chuyên môn độc lập, không giữ vai trò quản lý trực tiếp.</textarea>
+                  </div>
+                  <label class="flex items-start gap-3 rounded border border-msborder bg-[#faf9f8] p-4">
+                    <input type="checkbox" checked="" class="mt-1 h-4 w-4 accent-msblue">
+                    <span><span class="block font-semibold">Đang hoạt động</span><span class="block text-sm text-[#605e5c]">Cho phép chọn trong form nhân viên.</span></span>
+                  </label>
+                  <label class="flex items-start gap-3 rounded border border-msborder bg-[#faf9f8] p-4">
+                    <input type="checkbox" class="mt-1 h-4 w-4 accent-msblue">
+                    <span><span class="block font-semibold">Giá trị mặc định</span><span class="block text-sm text-[#605e5c]">Tự chọn khi tạo mới.</span></span>
+                  </label>
+                </div>
+                <div class="flex justify-end gap-2 border-t border-msborder px-5 py-4">
+                  <button class="rounded border border-[#8a8886] bg-white px-4 py-2 text-sm font-semibold hover:bg-msgray">Hủy</button>
+                  <button class="rounded bg-msblue px-4 py-2 text-sm font-semibold text-white hover:bg-msblueDark">Lưu</button>
+                </div>
+              </div>
+
+              <div id="dependencies" class="rounded border border-msborder bg-white shadow-sm">
+                <div class="border-b border-msborder px-5 py-4">
+                  <h2 class="text-lg font-semibold">Phụ thuộc dữ liệu</h2>
+                  <p class="mt-1 text-sm text-[#605e5c]">Kiểm tra nơi danh mục đang được sử dụng.</p>
+                </div>
+                <div class="divide-y divide-msborder text-sm">
+                  <div class="flex items-center justify-between px-5 py-4"><div><p class="font-semibold">Employee Profile</p><p class="text-xs text-[#605e5c]">Trường cấp bậc chức vụ</p></div><span class="font-semibold">840 records</span></div>
+                  <div class="flex items-center justify-between px-5 py-4"><div><p class="font-semibold">Payroll Rule</p><p class="text-xs text-[#605e5c]">Điều kiện phụ cấp theo cấp bậc</p></div><span class="font-semibold">12 rules</span></div>
+                  <div class="flex items-center justify-between px-5 py-4"><div><p class="font-semibold">Recruitment</p><p class="text-xs text-[#605e5c]">Cấp bậc vị trí tuyển dụng</p></div><span class="font-semibold">18 jobs</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div id="permissions" class="rounded border border-msborder bg-white shadow-sm">
+              <div class="flex items-center justify-between border-b border-msborder px-5 py-4">
+                <div>
+                  <h2 class="text-lg font-semibold">Phân quyền chỉnh sửa danh mục</h2>
+                  <p class="mt-1 text-sm text-[#605e5c]">Ai được xem, thêm, sửa, khóa hoặc xóa giá trị danh mục.</p>
+                </div>
+                <button class="rounded px-3 py-2 text-sm font-semibold text-msblueDark hover:bg-msgray">Manage roles</button>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full min-w-[760px] text-left text-sm">
+                  <thead class="bg-[#faf9f8] text-xs font-semibold uppercase tracking-wide text-[#605e5c]"><tr><th class="px-5 py-3">Role</th><th class="px-5 py-3">View</th><th class="px-5 py-3">Create</th><th class="px-5 py-3">Edit</th><th class="px-5 py-3">Delete</th></tr></thead>
+                  <tbody class="divide-y divide-msborder">
+                    <tr><td class="px-5 py-3 font-semibold">HRM.Admin</td><td class="px-5 py-3">✓</td><td class="px-5 py-3">✓</td><td class="px-5 py-3">✓</td><td class="px-5 py-3">✓</td></tr>
+                    <tr><td class="px-5 py-3 font-semibold">HRM.Manager</td><td class="px-5 py-3">✓</td><td class="px-5 py-3">-</td><td class="px-5 py-3">-</td><td class="px-5 py-3">-</td></tr>
+                    <tr><td class="px-5 py-3 font-semibold">HRM.ConfigEditor</td><td class="px-5 py-3">✓</td><td class="px-5 py-3">✓</td><td class="px-5 py-3">✓</td><td class="px-5 py-3">-</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div id="import" class="rounded border border-dashed border-[#8a8886] bg-white p-5 shadow-sm">
+              <div class="flex flex-col items-center justify-center bg-[#faf9f8] px-6 py-10 text-center">
+                <div class="text-5xl">📥</div>
+                <h3 class="mt-4 text-lg font-semibold">Import danh mục từ Excel</h3>
+                <p class="mt-2 max-w-md text-sm leading-6 text-[#605e5c]">Hỗ trợ import mã, tên, thứ tự, trạng thái, mô tả và nhóm danh mục. Hệ thống sẽ validate trùng mã trước khi lưu.</p>
+                <div class="mt-5 flex gap-2">
+                  <button class="rounded border border-[#8a8886] bg-white px-4 py-2 text-sm font-semibold hover:bg-msgray">Tải file mẫu</button>
+                  <button class="rounded bg-msblue px-4 py-2 text-sm font-semibold text-white hover:bg-msblueDark">Chọn file</button>
+                </div>
+              </div>
+            </div>
+
+            <div id="audit" class="rounded border border-msborder bg-white shadow-sm">
+              <div class="flex items-center justify-between border-b border-msborder px-5 py-4">
+                <div>
+                  <h2 class="text-lg font-semibold">Lịch sử thay đổi</h2>
+                  <p class="mt-1 text-sm text-[#605e5c]">Audit log cho danh mục đang chọn.</p>
+                </div>
+                <button class="rounded px-3 py-2 text-sm font-semibold text-msblueDark hover:bg-msgray">Export log</button>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full min-w-[860px] text-left text-sm">
+                  <thead class="bg-[#faf9f8] text-xs font-semibold uppercase tracking-wide text-[#605e5c]"><tr><th class="px-5 py-3">Thời gian</th><th class="px-5 py-3">Người dùng</th><th class="px-5 py-3">Hành động</th><th class="px-5 py-3">Giá trị</th><th class="px-5 py-3">Kết quả</th></tr></thead>
+                  <tbody class="divide-y divide-msborder">
+                    <tr><td class="px-5 py-3">Hôm nay 09:12</td><td class="px-5 py-3 font-semibold">HR Admin</td><td class="px-5 py-3">Cập nhật tên hiển thị</td><td class="px-5 py-3">SPECIALIST</td><td class="px-5 py-3"><span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Success</span></td></tr>
+                    <tr><td class="px-5 py-3">Hôm qua</td><td class="px-5 py-3 font-semibold">System Admin</td><td class="px-5 py-3">Import Excel</td><td class="px-5 py-3">JOB_LEVEL</td><td class="px-5 py-3"><span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Success</span></td></tr>
+                    <tr><td class="px-5 py-3">Tuần này</td><td class="px-5 py-3 font-semibold">HR Manager</td><td class="px-5 py-3">Khóa giá trị</td><td class="px-5 py-3">OLD_LEVEL</td><td class="px-5 py-3"><span class="rounded bg-[#fff4ce] px-2 py-1 text-xs font-semibold text-[#8a6100]">Review</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <aside class="space-y-4">
+            <section class="rounded border border-msborder bg-white shadow-sm">
+              <div class="border-b border-msborder px-5 py-4">
+                <h2 class="text-lg font-semibold">Danh mục đang chọn</h2>
+                <p class="mt-1 text-sm text-[#605e5c]">Cấp bậc chức vụ</p>
+              </div>
+              <div class="p-5">
+                <div class="mb-5 flex items-center gap-3">
+                  <div class="flex h-14 w-14 items-center justify-center rounded bg-[#c7e0f4] text-lg font-semibold text-msblueDark">JL</div>
+                  <div>
+                    <p class="font-semibold">JOB_LEVEL</p>
+                    <p class="text-sm text-[#605e5c]">Employee Profile</p>
+                  </div>
+                </div>
+                <div class="space-y-3 text-sm">
+                  <div class="flex justify-between border-b border-msborder pb-3"><span class="text-[#605e5c]">Số giá trị</span><span class="font-semibold">6</span></div>
+                  <div class="flex justify-between border-b border-msborder pb-3"><span class="text-[#605e5c]">Đang sử dụng</span><span class="font-semibold">840 records</span></div>
+                  <div class="flex justify-between border-b border-msborder pb-3"><span class="text-[#605e5c]">Cho phép xóa</span><span class="font-semibold text-[#a4262c]">Không</span></div>
+                  <div class="flex justify-between"><span class="text-[#605e5c]">Trạng thái</span><span class="font-semibold text-[#107c10]">Active</span></div>
+                </div>
+                <div class="mt-5 grid grid-cols-2 gap-2">
+                  <button class="rounded border border-[#8a8886] bg-white px-4 py-2 text-sm font-semibold hover:bg-msgray">Cấu hình</button>
+                  <button class="rounded bg-msblue px-4 py-2 text-sm font-semibold text-white hover:bg-msblueDark">Thêm</button>
+                </div>
+              </div>
+            </section>
+
+            <section class="rounded border border-msborder bg-white shadow-sm">
+              <div class="border-b border-msborder px-5 py-4">
+                <h2 class="text-lg font-semibold">Validation</h2>
+              </div>
+              <div class="space-y-3 p-5 text-sm">
+                <div class="rounded bg-[#dff6dd] p-3"><p class="font-semibold text-[#107c10]">Không có mã trùng</p><p class="mt-1 text-[#605e5c]">Tất cả mã trong danh mục là duy nhất.</p></div>
+                <div class="rounded bg-[#fff4ce] p-3"><p class="font-semibold text-[#8a6100]">1 giá trị chưa có mô tả</p><p class="mt-1 text-[#605e5c]">Nên bổ sung để dễ hiểu khi cấu hình.</p></div>
+                <div class="rounded bg-[#e5f1fb] p-3"><p class="font-semibold text-msblueDark">Đang dùng ở 3 module</p><p class="mt-1 text-[#605e5c]">Employee, Payroll, Recruitment.</p></div>
+              </div>
+            </section>
+
+            <section class="rounded border border-msborder bg-white shadow-sm">
+              <div class="flex items-center justify-between border-b border-msborder px-5 py-4">
+                <h2 class="text-lg font-semibold">Thay đổi gần đây</h2>
+                <a href="#audit" class="text-sm font-semibold text-msblueDark hover:underline">Xem log</a>
+              </div>
+              <div class="space-y-5 p-5 text-sm">
+                <div class="flex gap-3"><div class="mt-1 h-2.5 w-2.5 rounded-full bg-msblue"></div><div><p class="font-semibold">Cập nhật SPECIALIST</p><p class="text-[#605e5c]">HR Admin · Hôm nay</p></div></div>
+                <div class="flex gap-3"><div class="mt-1 h-2.5 w-2.5 rounded-full bg-[#107c10]"></div><div><p class="font-semibold">Import JOB_LEVEL</p><p class="text-[#605e5c]">System Admin · Hôm qua</p></div></div>
+                <div class="flex gap-3"><div class="mt-1 h-2.5 w-2.5 rounded-full bg-[#ca5010]"></div><div><p class="font-semibold">Khóa OLD_LEVEL</p><p class="text-[#605e5c]">HR Manager · Tuần này</p></div></div>
+              </div>
+            </section>
+          </aside>
+        </section>
+      </main>
+    </div>
+  </div>
+
+</body></html>

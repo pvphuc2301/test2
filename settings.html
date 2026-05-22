@@ -1,0 +1,316 @@
+<html lang="vi"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HRM Settings - Microsoft Style</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            msblue: '#0078d4',
+            msblueDark: '#005a9e',
+            msgray: '#f3f2f1',
+            msborder: '#edebe9'
+          },
+          boxShadow: {
+            ms: '0 2px 8px rgba(0,0,0,0.12)'
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-[#faf9f8] text-[#323130]">
+  <div class="min-h-screen">
+    <header class="sticky top-0 z-50 border-b border-[#e1dfdd] bg-white">
+      <div class="flex h-14 items-center gap-4 px-4">
+        <button class="flex h-9 w-9 items-center justify-center rounded hover:bg-msgray">☰</button>
+        <div class="flex items-center gap-3">
+          <div class="flex h-8 w-8 items-center justify-center rounded bg-msblue text-sm font-bold text-white">HR</div>
+          <span class="text-sm font-semibold">HRM Settings</span>
+        </div>
+
+        <div class="mx-auto hidden w-full max-w-2xl items-center gap-2 rounded bg-msgray px-3 py-2 md:flex">
+          <span class="text-[#605e5c]">🔍</span>
+          <input class="w-full bg-transparent text-sm outline-none" placeholder="Search settings, roles, workflow, integrations...">
+        </div>
+
+        <button class="rounded px-3 py-2 text-sm hover:bg-msgray">🔔</button>
+        <button class="rounded px-3 py-2 text-sm hover:bg-msgray">❔</button>
+        <div class="flex h-8 w-8 items-center justify-center rounded-full bg-[#c7e0f4] text-sm font-bold text-msblueDark">E</div>
+      </div>
+    </header>
+
+    <div class="grid min-h-[calc(100vh-56px)] grid-cols-[240px_1fr]">
+      <aside class="border-r border-[#e1dfdd] bg-white px-3 py-4">
+        <nav class="space-y-1 text-sm">
+          <a class="flex items-center gap-3 rounded px-3 py-2 hover:bg-msgray" href="#">🏠 Dashboard</a>
+          <a class="flex items-center gap-3 rounded px-3 py-2 hover:bg-msgray" href="#">👥 Employees</a>
+          <a class="flex items-center gap-3 rounded px-3 py-2 hover:bg-msgray" href="#">🏢 Departments</a>
+          <a class="flex items-center gap-3 rounded px-3 py-2 hover:bg-msgray" href="#">📅 Attendance</a>
+          <a class="flex items-center gap-3 rounded px-3 py-2 hover:bg-msgray" href="#">💰 Payroll</a>
+          <a class="flex items-center gap-3 rounded px-3 py-2 hover:bg-msgray" href="https://pvphuc2301.github.io/test2/recruitment.html">📝 Recruitment</a>
+          <a class="flex items-center gap-3 rounded px-3 py-2 hover:bg-msgray" href="#">📊 Reports</a>
+          <a class="flex items-center gap-3 rounded bg-[#e5f1fb] px-3 py-2 font-semibold text-msblueDark" href="#">⚙️ Settings</a>
+        </nav>
+
+        <div class="mt-8 border-t border-msborder pt-4">
+          <p class="mb-2 px-3 text-xs font-semibold uppercase tracking-wide text-[#605e5c]">Settings groups</p>
+          <nav class="space-y-1 text-sm">
+            <a href="#organization" class="flex items-center justify-between rounded bg-msgray px-3 py-2 font-semibold"><span>Organization</span></a>
+            <a href="#employee" class="flex items-center justify-between rounded px-3 py-2 hover:bg-msgray"><span>Employee profile</span></a>
+            <a href="#security" class="flex items-center justify-between rounded px-3 py-2 hover:bg-msgray"><span>Security &amp; roles</span></a>
+            <a href="#workflow" class="flex items-center justify-between rounded px-3 py-2 hover:bg-msgray"><span>Workflow</span></a>
+            <a href="#integrations" class="flex items-center justify-between rounded px-3 py-2 hover:bg-msgray"><span>Integrations</span></a>
+            <a href="#audit" class="flex items-center justify-between rounded px-3 py-2 hover:bg-msgray"><span>Audit log</span></a>
+          </nav>
+        </div>
+      </aside>
+
+      <main class="min-w-0">
+        <section class="border-b border-[#e1dfdd] bg-white px-6 py-5">
+          <div class="mb-3 flex items-center gap-2 text-sm text-[#605e5c]">
+            <span>HRM</span><span>/</span><span class="font-semibold text-[#323130]">Settings</span>
+          </div>
+
+          <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+            <div>
+              <h1 class="text-3xl font-semibold tracking-tight">Settings</h1>
+              <p class="mt-1 text-sm text-[#605e5c]">Cấu hình hệ thống HRM, phân quyền, workflow, payroll, recruitment, notification và tích hợp.</p>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <button class="rounded border border-[#8a8886] bg-white px-4 py-2 text-sm font-semibold hover:bg-msgray">Reset defaults</button>
+              <button class="rounded border border-[#8a8886] bg-white px-4 py-2 text-sm font-semibold hover:bg-msgray">Export config</button>
+              <button class="rounded bg-msblue px-4 py-2 text-sm font-semibold text-white hover:bg-msblueDark">Save changes</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="border-b border-[#e1dfdd] bg-white px-6">
+          <nav class="flex gap-6 overflow-x-auto text-sm font-semibold">
+            <a href="#organization" class="border-b-2 border-msblue px-1 py-4 text-msblueDark">Organization</a>
+            <a href="#employee" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Employee</a>
+            <a href="#security" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Security</a>
+            <a href="#workflow" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Workflow</a>
+            <a href="#payroll" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Payroll</a>
+            <a href="#recruitment" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Recruitment</a>
+            <a href="#integrations" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Integrations</a>
+            <a href="#audit" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Audit</a>
+          </nav>
+        </section>
+
+        <section class="grid gap-6 px-6 py-5 xl:grid-cols-[1fr_360px]">
+          <div class="space-y-4">
+            <div id="organization" class="rounded border border-msborder bg-white shadow-sm">
+              <div class="border-b border-msborder px-5 py-4">
+                <h2 class="text-lg font-semibold">Organization settings</h2>
+                <p class="mt-1 text-sm text-[#605e5c]">Thông tin đơn vị, mã hệ thống và cấu trúc tổ chức.</p>
+              </div>
+              <div class="grid gap-4 p-5 md:grid-cols-2">
+                <div>
+                  <label class="mb-1 block text-sm font-semibold">Organization name</label>
+                  <input value="Bệnh viện Tim Tâm Đức" class="w-full rounded border border-[#8a8886] bg-white px-3 py-2 text-sm outline-none focus:border-msblue focus:ring-1 focus:ring-msblue">
+                </div>
+                <div>
+                  <label class="mb-1 block text-sm font-semibold">Organization code</label>
+                  <input value="TDU-HOSPITAL" class="w-full rounded border border-[#8a8886] bg-white px-3 py-2 text-sm outline-none focus:border-msblue focus:ring-1 focus:ring-msblue">
+                </div>
+                <div>
+                  <label class="mb-1 block text-sm font-semibold">Default working location</label>
+                  <select class="w-full rounded border border-[#8a8886] bg-white px-3 py-2 text-sm outline-none focus:border-msblue focus:ring-1 focus:ring-msblue">
+                    <option>Main hospital</option>
+                    <option>Branch 1</option>
+                    <option>Remote</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="mb-1 block text-sm font-semibold">Department code format</label>
+                  <input value="{BLOCK}-{DEPT}-{SEQ}" class="w-full rounded border border-[#8a8886] bg-white px-3 py-2 text-sm outline-none focus:border-msblue focus:ring-1 focus:ring-msblue">
+                </div>
+              </div>
+            </div>
+
+            <div id="employee" class="rounded border border-msborder bg-white shadow-sm">
+              <div class="flex items-center justify-between border-b border-msborder px-5 py-4">
+                <div>
+                  <h2 class="text-lg font-semibold">Employee profile settings</h2>
+                  <p class="mt-1 text-sm text-[#605e5c]">Cấu hình mã nhân viên, trường bắt buộc và hồ sơ đính kèm.</p>
+                </div>
+                <button class="rounded px-3 py-2 text-sm font-semibold text-msblueDark hover:bg-msgray">Manage fields</button>
+              </div>
+              <div class="grid gap-4 p-5 md:grid-cols-2">
+                <label class="flex items-start gap-3 rounded border border-msborder bg-[#faf9f8] p-4">
+                  <input type="checkbox" checked="" class="mt-1 h-4 w-4 accent-msblue">
+                  <span><span class="block font-semibold">Auto-generate employee code</span><span class="block text-sm text-[#605e5c]">Tự sinh mã nhân viên theo format.</span></span>
+                </label>
+                <label class="flex items-start gap-3 rounded border border-msborder bg-[#faf9f8] p-4">
+                  <input type="checkbox" checked="" class="mt-1 h-4 w-4 accent-msblue">
+                  <span><span class="block font-semibold">Require unique email</span><span class="block text-sm text-[#605e5c]">Không cho phép trùng email nội bộ.</span></span>
+                </label>
+                <label class="flex items-start gap-3 rounded border border-msborder bg-[#faf9f8] p-4">
+                  <input type="checkbox" checked="" class="mt-1 h-4 w-4 accent-msblue">
+                  <span><span class="block font-semibold">Require identity document</span><span class="block text-sm text-[#605e5c]">Bắt buộc CCCD/CMND khi tạo hồ sơ.</span></span>
+                </label>
+                <label class="flex items-start gap-3 rounded border border-msborder bg-[#faf9f8] p-4">
+                  <input type="checkbox" class="mt-1 h-4 w-4 accent-msblue">
+                  <span><span class="block font-semibold">Allow duplicate phone</span><span class="block text-sm text-[#605e5c]">Cho phép dùng chung số điện thoại.</span></span>
+                </label>
+              </div>
+            </div>
+
+            <div id="security" class="rounded border border-msborder bg-white shadow-sm">
+              <div class="flex items-center justify-between border-b border-msborder px-5 py-4">
+                <div>
+                  <h2 class="text-lg font-semibold">Security &amp; roles</h2>
+                  <p class="mt-1 text-sm text-[#605e5c]">Phân quyền, vai trò mặc định và đồng bộ Auth Server.</p>
+                </div>
+                <button class="rounded bg-msblue px-3 py-2 text-sm font-semibold text-white hover:bg-msblueDark">Manage roles</button>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full min-w-[760px] text-left text-sm">
+                  <thead class="bg-[#faf9f8] text-xs font-semibold uppercase tracking-wide text-[#605e5c]">
+                    <tr><th class="px-5 py-3">Role</th><th class="px-5 py-3">Scope</th><th class="px-5 py-3">Users</th><th class="px-5 py-3">Status</th></tr>
+                  </thead>
+                  <tbody class="divide-y divide-msborder">
+                    <tr><td class="px-5 py-3 font-semibold">HRM.Admin</td><td class="px-5 py-3">All HRM modules</td><td class="px-5 py-3">5</td><td class="px-5 py-3"><span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Active</span></td></tr>
+                    <tr><td class="px-5 py-3 font-semibold">HRM.Manager</td><td class="px-5 py-3">Department data</td><td class="px-5 py-3">32</td><td class="px-5 py-3"><span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Active</span></td></tr>
+                    <tr><td class="px-5 py-3 font-semibold">HRM.Payroll</td><td class="px-5 py-3">Payroll only</td><td class="px-5 py-3">8</td><td class="px-5 py-3"><span class="rounded bg-[#fff4ce] px-2 py-1 text-xs font-semibold text-[#8a6100]">Review</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div id="workflow" class="rounded border border-msborder bg-white shadow-sm">
+              <div class="border-b border-msborder px-5 py-4">
+                <h2 class="text-lg font-semibold">Workflow settings</h2>
+                <p class="mt-1 text-sm text-[#605e5c]">Cấu hình luồng duyệt cho nghỉ phép, payroll, tuyển dụng và thay đổi hồ sơ.</p>
+              </div>
+              <div class="grid gap-4 p-5 md:grid-cols-4">
+                <div class="rounded bg-[#dff6dd] p-4"><p class="font-semibold text-[#107c10]">Leave approval</p><p class="mt-1 text-sm text-[#605e5c]">Manager → HR</p></div>
+                <div class="rounded bg-[#fff4ce] p-4"><p class="font-semibold text-[#8a6100]">Payroll approval</p><p class="mt-1 text-sm text-[#605e5c]">Manager → Finance</p></div>
+                <div class="rounded bg-[#e5f1fb] p-4"><p class="font-semibold text-msblueDark">Recruitment</p><p class="mt-1 text-sm text-[#605e5c]">HR → Dept Head</p></div>
+                <div class="rounded bg-msgray p-4"><p class="font-semibold">Profile changes</p><p class="mt-1 text-sm text-[#605e5c]">HR Admin only</p></div>
+              </div>
+            </div>
+
+            <div id="payroll" class="rounded border border-msborder bg-white shadow-sm">
+              <div class="border-b border-msborder px-5 py-4">
+                <h2 class="text-lg font-semibold">Payroll settings</h2>
+                <p class="mt-1 text-sm text-[#605e5c]">Cấu hình kỳ lương, chấm công, bảo hiểm, thuế và phiếu lương.</p>
+              </div>
+              <div class="grid gap-4 p-5 md:grid-cols-2">
+                <div>
+                  <label class="mb-1 block text-sm font-semibold">Payroll cycle</label>
+                  <select class="w-full rounded border border-[#8a8886] bg-white px-3 py-2 text-sm outline-none focus:border-msblue focus:ring-1 focus:ring-msblue"><option>Monthly</option><option>Bi-weekly</option></select>
+                </div>
+                <div>
+                  <label class="mb-1 block text-sm font-semibold">Payment day</label>
+                  <input value="25" class="w-full rounded border border-[#8a8886] bg-white px-3 py-2 text-sm outline-none focus:border-msblue focus:ring-1 focus:ring-msblue">
+                </div>
+                <label class="flex items-start gap-3 rounded border border-msborder bg-[#faf9f8] p-4">
+                  <input type="checkbox" checked="" class="mt-1 h-4 w-4 accent-msblue">
+                  <span><span class="block font-semibold">Auto import attendance</span><span class="block text-sm text-[#605e5c]">Tự động lấy dữ liệu chấm công.</span></span>
+                </label>
+                <label class="flex items-start gap-3 rounded border border-msborder bg-[#faf9f8] p-4">
+                  <input type="checkbox" class="mt-1 h-4 w-4 accent-msblue">
+                  <span><span class="block font-semibold">Send payslip email</span><span class="block text-sm text-[#605e5c]">Gửi phiếu lương cho nhân viên.</span></span>
+                </label>
+              </div>
+            </div>
+
+            <div id="recruitment" class="rounded border border-msborder bg-white shadow-sm">
+              <div class="border-b border-msborder px-5 py-4">
+                <h2 class="text-lg font-semibold">Recruitment settings</h2>
+                <p class="mt-1 text-sm text-[#605e5c]">Cấu hình pipeline, form ứng tuyển, offer và onboarding.</p>
+              </div>
+              <div class="grid gap-4 p-5 md:grid-cols-2">
+                <label class="flex items-start gap-3 rounded border border-msborder bg-[#faf9f8] p-4"><input type="checkbox" checked="" class="mt-1 h-4 w-4 accent-msblue"><span><span class="block font-semibold">Require CV upload</span><span class="block text-sm text-[#605e5c]">Ứng viên phải có CV.</span></span></label>
+                <label class="flex items-start gap-3 rounded border border-msborder bg-[#faf9f8] p-4"><input type="checkbox" checked="" class="mt-1 h-4 w-4 accent-msblue"><span><span class="block font-semibold">Enable interview scorecard</span><span class="block text-sm text-[#605e5c]">Dùng bảng điểm phỏng vấn.</span></span></label>
+                <label class="flex items-start gap-3 rounded border border-msborder bg-[#faf9f8] p-4"><input type="checkbox" checked="" class="mt-1 h-4 w-4 accent-msblue"><span><span class="block font-semibold">Auto-create employee after hire</span><span class="block text-sm text-[#605e5c]">Tự tạo hồ sơ nhân viên sau khi nhận offer.</span></span></label>
+                <label class="flex items-start gap-3 rounded border border-msborder bg-[#faf9f8] p-4"><input type="checkbox" class="mt-1 h-4 w-4 accent-msblue"><span><span class="block font-semibold">Public career page</span><span class="block text-sm text-[#605e5c]">Bật trang tuyển dụng công khai.</span></span></label>
+              </div>
+            </div>
+
+            <div id="integrations" class="rounded border border-msborder bg-white shadow-sm">
+              <div class="flex items-center justify-between border-b border-msborder px-5 py-4">
+                <div>
+                  <h2 class="text-lg font-semibold">Integrations</h2>
+                  <p class="mt-1 text-sm text-[#605e5c]">Kết nối Auth Server, Email, SMS/Zalo, chấm công và ngân hàng.</p>
+                </div>
+                <button class="rounded bg-msblue px-3 py-2 text-sm font-semibold text-white hover:bg-msblueDark">+ Add integration</button>
+              </div>
+              <div class="divide-y divide-msborder text-sm">
+                <div class="flex items-center justify-between px-5 py-4"><div><p class="font-semibold">Auth Server</p><p class="text-xs text-[#605e5c]">SSO, roles, claims synchronization</p></div><span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Connected</span></div>
+                <div class="flex items-center justify-between px-5 py-4"><div><p class="font-semibold">Email SMTP</p><p class="text-xs text-[#605e5c]">Notification and payslip email</p></div><span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Connected</span></div>
+                <div class="flex items-center justify-between px-5 py-4"><div><p class="font-semibold">Attendance Device</p><p class="text-xs text-[#605e5c]">Fingerprint / face attendance sync</p></div><span class="rounded bg-[#fff4ce] px-2 py-1 text-xs font-semibold text-[#8a6100]">Review</span></div>
+                <div class="flex items-center justify-between px-5 py-4"><div><p class="font-semibold">Bank Payroll Export</p><p class="text-xs text-[#605e5c]">Export salary payment file</p></div><span class="rounded bg-msgray px-2 py-1 text-xs font-semibold">Not configured</span></div>
+              </div>
+            </div>
+
+            <div id="audit" class="rounded border border-msborder bg-white shadow-sm">
+              <div class="flex items-center justify-between border-b border-msborder px-5 py-4">
+                <div>
+                  <h2 class="text-lg font-semibold">Audit log</h2>
+                  <p class="mt-1 text-sm text-[#605e5c]">Lịch sử thay đổi cấu hình hệ thống.</p>
+                </div>
+                <button class="rounded px-3 py-2 text-sm font-semibold text-msblueDark hover:bg-msgray">Export log</button>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full min-w-[860px] text-left text-sm">
+                  <thead class="bg-[#faf9f8] text-xs font-semibold uppercase tracking-wide text-[#605e5c]"><tr><th class="px-5 py-3">Time</th><th class="px-5 py-3">User</th><th class="px-5 py-3">Action</th><th class="px-5 py-3">Module</th><th class="px-5 py-3">Result</th></tr></thead>
+                  <tbody class="divide-y divide-msborder">
+                    <tr><td class="px-5 py-3">Today 09:12</td><td class="px-5 py-3 font-semibold">HR Admin</td><td class="px-5 py-3">Updated payroll settings</td><td class="px-5 py-3">Payroll</td><td class="px-5 py-3"><span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Success</span></td></tr>
+                    <tr><td class="px-5 py-3">Yesterday</td><td class="px-5 py-3 font-semibold">System Admin</td><td class="px-5 py-3">Synced roles to Auth Server</td><td class="px-5 py-3">Security</td><td class="px-5 py-3"><span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Success</span></td></tr>
+                    <tr><td class="px-5 py-3">This week</td><td class="px-5 py-3 font-semibold">HR Manager</td><td class="px-5 py-3">Changed recruitment pipeline</td><td class="px-5 py-3">Recruitment</td><td class="px-5 py-3"><span class="rounded bg-[#fff4ce] px-2 py-1 text-xs font-semibold text-[#8a6100]">Review</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <aside class="space-y-4">
+            <section class="rounded border border-msborder bg-white shadow-sm">
+              <div class="border-b border-msborder px-5 py-4">
+                <h2 class="text-lg font-semibold">System health</h2>
+                <p class="mt-1 text-sm text-[#605e5c]">Tình trạng cấu hình hiện tại.</p>
+              </div>
+              <div class="space-y-3 p-5 text-sm">
+                <div class="rounded bg-[#dff6dd] p-3"><p class="font-semibold text-[#107c10]">Security configured</p><p class="mt-1 text-[#605e5c]">Roles and Auth sync are active.</p></div>
+                <div class="rounded bg-[#fff4ce] p-3"><p class="font-semibold text-[#8a6100]">Attendance integration review</p><p class="mt-1 text-[#605e5c]">Thiết bị chấm công cần kiểm tra kết nối.</p></div>
+                <div class="rounded bg-msgray p-3"><p class="font-semibold">Bank export not configured</p><p class="mt-1 text-[#605e5c]">Cần cấu hình mẫu file chi lương.</p></div>
+              </div>
+            </section>
+
+            <section class="rounded border border-msborder bg-white shadow-sm">
+              <div class="border-b border-msborder px-5 py-4">
+                <h2 class="text-lg font-semibold">Configuration summary</h2>
+              </div>
+              <div class="space-y-3 p-5 text-sm">
+                <div class="flex justify-between border-b border-msborder pb-3"><span class="text-[#605e5c]">Organization</span><span class="font-semibold">Configured</span></div>
+                <div class="flex justify-between border-b border-msborder pb-3"><span class="text-[#605e5c]">Employee profile</span><span class="font-semibold">12 fields</span></div>
+                <div class="flex justify-between border-b border-msborder pb-3"><span class="text-[#605e5c]">Roles</span><span class="font-semibold">18 roles</span></div>
+                <div class="flex justify-between border-b border-msborder pb-3"><span class="text-[#605e5c]">Workflows</span><span class="font-semibold">4 active</span></div>
+                <div class="flex justify-between"><span class="text-[#605e5c]">Integrations</span><span class="font-semibold text-[#ca5010]">3/4 ready</span></div>
+              </div>
+            </section>
+
+            <section class="rounded border border-msborder bg-white shadow-sm">
+              <div class="flex items-center justify-between border-b border-msborder px-5 py-4">
+                <h2 class="text-lg font-semibold">Recent changes</h2>
+                <a href="#audit" class="text-sm font-semibold text-msblueDark hover:underline">See audit</a>
+              </div>
+              <div class="space-y-5 p-5 text-sm">
+                <div class="flex gap-3"><div class="mt-1 h-2.5 w-2.5 rounded-full bg-msblue"></div><div><p class="font-semibold">Payroll settings updated</p><p class="text-[#605e5c]">Today 09:12</p></div></div>
+                <div class="flex gap-3"><div class="mt-1 h-2.5 w-2.5 rounded-full bg-[#107c10]"></div><div><p class="font-semibold">Roles synced</p><p class="text-[#605e5c]">Yesterday</p></div></div>
+                <div class="flex gap-3"><div class="mt-1 h-2.5 w-2.5 rounded-full bg-[#ca5010]"></div><div><p class="font-semibold">Recruitment pipeline changed</p><p class="text-[#605e5c]">This week</p></div></div>
+              </div>
+            </section>
+          </aside>
+        </section>
+      </main>
+    </div>
+  </div>
+
+
+</body></html>

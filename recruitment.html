@@ -1,0 +1,288 @@
+<html lang="vi"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recruitment Management - Microsoft Style</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            msblue: '#0078d4',
+            msblueDark: '#005a9e',
+            msgray: '#f3f2f1',
+            msborder: '#edebe9'
+          },
+          boxShadow: {
+            ms: '0 2px 8px rgba(0,0,0,0.12)'
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-[#faf9f8] text-[#323130]">
+  <div class="min-h-screen">
+    <header class="sticky top-0 z-50 border-b border-[#e1dfdd] bg-white">
+      <div class="flex h-14 items-center gap-4 px-4">
+        <button class="flex h-9 w-9 items-center justify-center rounded hover:bg-msgray">☰</button>
+        <div class="flex items-center gap-3">
+          <div class="flex h-8 w-8 items-center justify-center rounded bg-msblue text-sm font-bold text-white">HR</div>
+          <span class="text-sm font-semibold">Recruitment</span>
+        </div>
+
+        <div class="mx-auto hidden w-full max-w-2xl items-center gap-2 rounded bg-msgray px-3 py-2 md:flex">
+          <span class="text-[#605e5c]">🔍</span>
+          <input class="w-full bg-transparent text-sm outline-none" placeholder="Search candidate, job, department, interview...">
+        </div>
+
+        <button class="rounded px-3 py-2 text-sm hover:bg-msgray">🔔</button>
+        <button class="rounded px-3 py-2 text-sm hover:bg-msgray">⚙️</button>
+        <div class="flex h-8 w-8 items-center justify-center rounded-full bg-[#c7e0f4] text-sm font-bold text-msblueDark">E</div>
+      </div>
+    </header>
+
+    <div class="grid min-h-[calc(100vh-56px)] grid-cols-[240px_1fr]">
+      <aside class="border-r border-[#e1dfdd] bg-white px-3 py-4">
+        <button class="mb-5 flex w-full items-center justify-center gap-2 rounded bg-msblue px-4 py-2.5 text-sm font-semibold text-white hover:bg-msblueDark">
+          + New job opening
+        </button>
+
+        <nav class="space-y-1 text-sm">
+          <a class="flex items-center gap-3 rounded px-3 py-2 hover:bg-msgray" href="#">🏠 Dashboard</a>
+          <a class="flex items-center gap-3 rounded px-3 py-2 hover:bg-msgray" href="#">👥 Employees</a>
+          <a class="flex items-center gap-3 rounded px-3 py-2 hover:bg-msgray" href="#">🏢 Departments</a>
+          <a class="flex items-center gap-3 rounded px-3 py-2 hover:bg-msgray" href="#">📅 Attendance</a>
+          <a class="flex items-center gap-3 rounded px-3 py-2 hover:bg-msgray" href="#">💰 Payroll</a>
+          <a class="flex items-center gap-3 rounded bg-[#e5f1fb] px-3 py-2 font-semibold text-msblueDark" href="#">📝 Recruitment</a>
+          <a class="flex items-center gap-3 rounded px-3 py-2 hover:bg-msgray" href="#">📊 Reports</a>
+          <a class="flex items-center gap-3 rounded px-3 py-2 hover:bg-msgray" href="#">⚙️ Settings</a>
+        </nav>
+
+        <div class="mt-8 border-t border-msborder pt-4">
+          <p class="mb-2 px-3 text-xs font-semibold uppercase tracking-wide text-[#605e5c]">Recruitment views</p>
+          <nav class="space-y-1 text-sm">
+            <a class="flex items-center justify-between rounded bg-msgray px-3 py-2 font-semibold" href="#"><span>All candidates</span><span class="text-xs text-[#605e5c]">186</span></a>
+            <a class="flex items-center justify-between rounded px-3 py-2 hover:bg-msgray" href="#"><span>Interview today</span><span class="text-xs text-[#605e5c]">8</span></a>
+            <a class="flex items-center justify-between rounded px-3 py-2 hover:bg-msgray" href="#"><span>Offer pending</span><span class="text-xs text-[#605e5c]">5</span></a>
+            <a class="flex items-center justify-between rounded px-3 py-2 hover:bg-msgray" href="#"><span>Rejected</span><span class="text-xs text-[#605e5c]">42</span></a>
+          </nav>
+        </div>
+      </aside>
+
+      <main class="min-w-0">
+        <section class="border-b border-[#e1dfdd] bg-white px-6 py-5">
+          <div class="mb-3 flex items-center gap-2 text-sm text-[#605e5c]">
+            <span>HRM</span><span>/</span><span class="font-semibold text-[#323130]">Recruitment</span>
+          </div>
+
+          <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+            <div>
+              <h1 class="text-3xl font-semibold tracking-tight">Recruitment Management</h1>
+              <p class="mt-1 text-sm text-[#605e5c]">Quản lý nhu cầu tuyển dụng, ứng viên, phỏng vấn, đánh giá, offer và onboarding.</p>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <button class="rounded border border-[#8a8886] bg-white px-4 py-2 text-sm font-semibold hover:bg-msgray">Import CV</button>
+              <button class="rounded border border-[#8a8886] bg-white px-4 py-2 text-sm font-semibold hover:bg-msgray">Schedule interview</button>
+              <button class="rounded border border-[#8a8886] bg-white px-4 py-2 text-sm font-semibold hover:bg-msgray">Export</button>
+              <button class="rounded bg-msblue px-4 py-2 text-sm font-semibold text-white hover:bg-msblueDark">+ Add candidate</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="border-b border-[#e1dfdd] bg-white px-6">
+          <nav class="flex gap-6 overflow-x-auto text-sm font-semibold">
+            <a href="#overview" class="border-b-2 border-msblue px-1 py-4 text-msblueDark">Overview</a>
+            <a href="#pipeline" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Pipeline</a>
+            <a href="#jobs" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Job openings</a>
+            <a href="#candidates" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Candidates</a>
+            <a href="#interviews" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Interviews</a>
+            <a href="#offers" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Offers</a>
+            <a href="#sources" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Sources</a>
+          </nav>
+        </section>
+
+        <section class="grid gap-6 px-6 py-5 xl:grid-cols-[1fr_360px]">
+          <div class="space-y-4">
+            <div id="overview" class="grid gap-4 md:grid-cols-4">
+              <div class="rounded border border-msborder bg-white p-4 shadow-sm">
+                <p class="text-sm text-[#605e5c]">Open jobs</p>
+                <p class="mt-2 text-3xl font-semibold">18</p>
+              </div>
+              <div class="rounded border border-msborder bg-white p-4 shadow-sm">
+                <p class="text-sm text-[#605e5c]">Candidates</p>
+                <p class="mt-2 text-3xl font-semibold">186</p>
+              </div>
+              <div class="rounded border border-msborder bg-white p-4 shadow-sm">
+                <p class="text-sm text-[#605e5c]">Interviews</p>
+                <p class="mt-2 text-3xl font-semibold text-msblueDark">32</p>
+              </div>
+              <div class="rounded border border-msborder bg-white p-4 shadow-sm">
+                <p class="text-sm text-[#605e5c]">Offers pending</p>
+                <p class="mt-2 text-3xl font-semibold text-[#ca5010]">5</p>
+              </div>
+            </div>
+
+            <div id="pipeline" class="rounded border border-msborder bg-white shadow-sm">
+              <div class="flex items-center justify-between border-b border-msborder px-5 py-4">
+                <div>
+                  <h2 class="text-lg font-semibold">Recruitment pipeline</h2>
+                  <p class="mt-1 text-sm text-[#605e5c]">Theo dõi ứng viên theo từng giai đoạn tuyển dụng.</p>
+                </div>
+                <button class="rounded px-3 py-2 text-sm font-semibold text-msblueDark hover:bg-msgray">Customize stages</button>
+              </div>
+              <div class="grid gap-4 overflow-x-auto p-5 lg:grid-cols-5">
+                <div class="min-w-[190px] rounded bg-[#faf9f8] p-3">
+                  <div class="mb-3 flex items-center justify-between"><p class="font-semibold">Applied</p><span class="rounded bg-msgray px-2 py-1 text-xs">64</span></div>
+                  <div class="space-y-2 text-sm">
+                    <div class="rounded border border-msborder bg-white p-3 shadow-sm"><p class="font-semibold">Nguyễn Minh Anh</p><p class="text-xs text-[#605e5c]">HR Specialist</p></div>
+                    <div class="rounded border border-msborder bg-white p-3 shadow-sm"><p class="font-semibold">Trần Quốc Bảo</p><p class="text-xs text-[#605e5c]">Nurse</p></div>
+                  </div>
+                </div>
+                <div class="min-w-[190px] rounded bg-[#faf9f8] p-3">
+                  <div class="mb-3 flex items-center justify-between"><p class="font-semibold">Screening</p><span class="rounded bg-msgray px-2 py-1 text-xs">48</span></div>
+                  <div class="space-y-2 text-sm">
+                    <div class="rounded border border-msborder bg-white p-3 shadow-sm"><p class="font-semibold">Lê Thanh Tâm</p><p class="text-xs text-[#605e5c]">Doctor</p></div>
+                    <div class="rounded border border-msborder bg-white p-3 shadow-sm"><p class="font-semibold">Phạm Hồng Ngọc</p><p class="text-xs text-[#605e5c]">Accountant</p></div>
+                  </div>
+                </div>
+                <div class="min-w-[190px] rounded bg-[#faf9f8] p-3">
+                  <div class="mb-3 flex items-center justify-between"><p class="font-semibold">Interview</p><span class="rounded bg-msgray px-2 py-1 text-xs">32</span></div>
+                  <div class="space-y-2 text-sm">
+                    <div class="rounded border-2 border-msblue bg-white p-3 shadow-ms"><p class="font-semibold text-msblueDark">Đỗ Hoàng Nam</p><p class="text-xs text-[#605e5c]">System Engineer</p></div>
+                    <div class="rounded border border-msborder bg-white p-3 shadow-sm"><p class="font-semibold">Võ Kim Chi</p><p class="text-xs text-[#605e5c]">Receptionist</p></div>
+                  </div>
+                </div>
+                <div class="min-w-[190px] rounded bg-[#faf9f8] p-3">
+                  <div class="mb-3 flex items-center justify-between"><p class="font-semibold">Offer</p><span class="rounded bg-msgray px-2 py-1 text-xs">5</span></div>
+                  <div class="space-y-2 text-sm">
+                    <div class="rounded border border-msborder bg-white p-3 shadow-sm"><p class="font-semibold">Nguyễn Thảo Vy</p><p class="text-xs text-[#605e5c]">Nurse</p></div>
+                  </div>
+                </div>
+                <div class="min-w-[190px] rounded bg-[#faf9f8] p-3">
+                  <div class="mb-3 flex items-center justify-between"><p class="font-semibold">Hired</p><span class="rounded bg-msgray px-2 py-1 text-xs">12</span></div>
+                  <div class="space-y-2 text-sm">
+                    <div class="rounded border border-msborder bg-white p-3 shadow-sm"><p class="font-semibold">Bùi Minh Khang</p><p class="text-xs text-[#605e5c]">IT Support</p></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div id="jobs" class="rounded border border-msborder bg-white shadow-sm">
+              <div class="flex items-center justify-between border-b border-msborder px-5 py-4">
+                <div><h2 class="text-lg font-semibold">Job openings</h2><p class="mt-1 text-sm text-[#605e5c]">Vị trí đang tuyển theo phòng ban.</p></div>
+                <button class="rounded bg-msblue px-3 py-2 text-sm font-semibold text-white hover:bg-msblueDark">+ New job</button>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full min-w-[900px] text-left text-sm">
+                  <thead class="bg-[#faf9f8] text-xs font-semibold uppercase tracking-wide text-[#605e5c]"><tr><th class="px-5 py-3">Job</th><th class="px-5 py-3">Department</th><th class="px-5 py-3">Openings</th><th class="px-5 py-3">Candidates</th><th class="px-5 py-3">Owner</th><th class="px-5 py-3">Status</th></tr></thead>
+                  <tbody class="divide-y divide-msborder">
+                    <tr><td class="px-5 py-3 font-semibold">System Engineer</td><td class="px-5 py-3">IT</td><td class="px-5 py-3">3</td><td class="px-5 py-3">18</td><td class="px-5 py-3">HR Team</td><td class="px-5 py-3"><span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Open</span></td></tr>
+                    <tr><td class="px-5 py-3 font-semibold">Doctor</td><td class="px-5 py-3">Cardiology</td><td class="px-5 py-3">4</td><td class="px-5 py-3">24</td><td class="px-5 py-3">Medical HR</td><td class="px-5 py-3"><span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Open</span></td></tr>
+                    <tr><td class="px-5 py-3 font-semibold">HR Specialist</td><td class="px-5 py-3">HR</td><td class="px-5 py-3">2</td><td class="px-5 py-3">31</td><td class="px-5 py-3">HR Team</td><td class="px-5 py-3"><span class="rounded bg-[#fff4ce] px-2 py-1 text-xs font-semibold text-[#8a6100]">Review</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div id="candidates" class="overflow-hidden rounded border border-msborder bg-white shadow-sm">
+              <div class="flex flex-col gap-3 border-b border-msborder px-4 py-3 lg:flex-row lg:items-center lg:justify-between">
+                <div class="flex flex-wrap gap-2">
+                  <button class="rounded bg-msgray px-3 py-2 text-sm font-semibold hover:bg-msborder">Filter</button>
+                  <button class="rounded bg-msgray px-3 py-2 text-sm font-semibold hover:bg-msborder">Stage</button>
+                  <button class="rounded bg-msgray px-3 py-2 text-sm font-semibold hover:bg-msborder">Source</button>
+                  <button class="rounded bg-msgray px-3 py-2 text-sm font-semibold hover:bg-msborder">Bulk email</button>
+                </div>
+                <div class="flex items-center gap-2 rounded bg-msgray px-3 py-2 text-sm">🔎 <input class="bg-transparent outline-none" placeholder="Search candidates"></div>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full min-w-[1120px] text-left text-sm">
+                  <thead class="bg-[#faf9f8] text-xs font-semibold uppercase tracking-wide text-[#605e5c]"><tr><th class="w-10 px-4 py-3"><input type="checkbox" class="h-4 w-4 accent-msblue"></th><th class="px-4 py-3">Candidate</th><th class="px-4 py-3">Job</th><th class="px-4 py-3">Stage</th><th class="px-4 py-3">Score</th><th class="px-4 py-3">Source</th><th class="px-4 py-3">Next action</th><th class="px-4 py-3">Actions</th></tr></thead>
+                  <tbody class="divide-y divide-msborder">
+                    <tr class="bg-[#f5fbff]"><td class="px-4 py-3"><input type="checkbox" checked="" class="h-4 w-4 accent-msblue"></td><td class="px-4 py-3"><div class="flex items-center gap-3"><div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#c7e0f4] font-semibold text-msblueDark">HN</div><div><p class="font-semibold text-msblueDark">Đỗ Hoàng Nam</p><p class="text-xs text-[#605e5c]">nam.do@email.vn</p></div></div></td><td class="px-4 py-3">System Engineer</td><td class="px-4 py-3"><span class="rounded bg-[#e5f1fb] px-2 py-1 text-xs font-semibold text-msblueDark">Interview</span></td><td class="px-4 py-3">86/100</td><td class="px-4 py-3">LinkedIn</td><td class="px-4 py-3">Technical interview</td><td class="px-4 py-3"><button class="rounded px-2 py-1 hover:bg-white">•••</button></td></tr>
+                    <tr><td class="px-4 py-3"><input type="checkbox" class="h-4 w-4 accent-msblue"></td><td class="px-4 py-3"><div class="flex items-center gap-3"><div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#fde7e9] font-semibold text-[#a4262c]">TV</div><div><p class="font-semibold">Nguyễn Thảo Vy</p><p class="text-xs text-[#605e5c]">vy.nguyen@email.vn</p></div></div></td><td class="px-4 py-3">Nurse</td><td class="px-4 py-3"><span class="rounded bg-[#fff4ce] px-2 py-1 text-xs font-semibold text-[#8a6100]">Offer</span></td><td class="px-4 py-3">91/100</td><td class="px-4 py-3">Referral</td><td class="px-4 py-3">Send offer</td><td class="px-4 py-3"><button class="rounded px-2 py-1 hover:bg-msgray">•••</button></td></tr>
+                    <tr><td class="px-4 py-3"><input type="checkbox" class="h-4 w-4 accent-msblue"></td><td class="px-4 py-3"><div class="flex items-center gap-3"><div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#fff4ce] font-semibold text-[#8a6100]">TA</div><div><p class="font-semibold">Nguyễn Minh Anh</p><p class="text-xs text-[#605e5c]">anh.nguyen@email.vn</p></div></div></td><td class="px-4 py-3">HR Specialist</td><td class="px-4 py-3"><span class="rounded bg-msgray px-2 py-1 text-xs font-semibold">Applied</span></td><td class="px-4 py-3">72/100</td><td class="px-4 py-3">Website</td><td class="px-4 py-3">CV screening</td><td class="px-4 py-3"><button class="rounded px-2 py-1 hover:bg-msgray">•••</button></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="grid gap-4 lg:grid-cols-2">
+              <div id="interviews" class="rounded border border-msborder bg-white shadow-sm">
+                <div class="flex items-center justify-between border-b border-msborder px-5 py-4"><div><h2 class="text-lg font-semibold">Interview schedule</h2><p class="mt-1 text-sm text-[#605e5c]">Lịch phỏng vấn sắp tới.</p></div><button class="rounded bg-msblue px-3 py-2 text-sm font-semibold text-white hover:bg-msblueDark">+ Schedule</button></div>
+                <div class="divide-y divide-msborder text-sm">
+                  <div class="flex items-center justify-between px-5 py-4"><div><p class="font-semibold">Đỗ Hoàng Nam</p><p class="text-xs text-[#605e5c]">Technical · Today 14:00 · IT Manager</p></div><span class="rounded bg-[#e5f1fb] px-2 py-1 text-xs font-semibold text-msblueDark">Today</span></div>
+                  <div class="flex items-center justify-between px-5 py-4"><div><p class="font-semibold">Võ Kim Chi</p><p class="text-xs text-[#605e5c]">HR Interview · Tomorrow 09:30</p></div><span class="rounded bg-msgray px-2 py-1 text-xs font-semibold">Tomorrow</span></div>
+                  <div class="flex items-center justify-between px-5 py-4"><div><p class="font-semibold">Lê Thanh Tâm</p><p class="text-xs text-[#605e5c]">Medical board · 25/05/2026</p></div><span class="rounded bg-msgray px-2 py-1 text-xs font-semibold">Upcoming</span></div>
+                </div>
+              </div>
+
+              <div id="offers" class="rounded border border-msborder bg-white shadow-sm">
+                <div class="flex items-center justify-between border-b border-msborder px-5 py-4"><div><h2 class="text-lg font-semibold">Offers</h2><p class="mt-1 text-sm text-[#605e5c]">Đề nghị tuyển dụng đang xử lý.</p></div><button class="rounded px-3 py-2 text-sm font-semibold text-msblueDark hover:bg-msgray">Templates</button></div>
+                <div class="divide-y divide-msborder text-sm">
+                  <div class="flex items-center justify-between px-5 py-4"><div><p class="font-semibold">Nguyễn Thảo Vy</p><p class="text-xs text-[#605e5c]">Nurse · 18,000,000₫ · Sent</p></div><span class="rounded bg-[#fff4ce] px-2 py-1 text-xs font-semibold text-[#8a6100]">Pending</span></div>
+                  <div class="flex items-center justify-between px-5 py-4"><div><p class="font-semibold">Bùi Minh Khang</p><p class="text-xs text-[#605e5c]">IT Support · Accepted</p></div><span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Accepted</span></div>
+                  <div class="flex items-center justify-between px-5 py-4"><div><p class="font-semibold">Trần Quốc Bảo</p><p class="text-xs text-[#605e5c]">Nurse · Draft</p></div><span class="rounded bg-msgray px-2 py-1 text-xs font-semibold">Draft</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div id="sources" class="rounded border border-msborder bg-white shadow-sm">
+              <div class="border-b border-msborder px-5 py-4"><h2 class="text-lg font-semibold">Recruitment sources</h2><p class="mt-1 text-sm text-[#605e5c]">Hiệu quả theo nguồn ứng viên.</p></div>
+              <div class="grid gap-4 p-5 md:grid-cols-4">
+                <div class="rounded bg-[#faf9f8] p-4"><p class="text-sm text-[#605e5c]">Website</p><p class="mt-2 text-2xl font-semibold">64</p><div class="mt-3 h-1.5 rounded bg-msgray"><div class="h-1.5 w-[70%] rounded bg-msblue"></div></div></div>
+                <div class="rounded bg-[#faf9f8] p-4"><p class="text-sm text-[#605e5c]">LinkedIn</p><p class="mt-2 text-2xl font-semibold">48</p><div class="mt-3 h-1.5 rounded bg-msgray"><div class="h-1.5 w-[55%] rounded bg-[#107c10]"></div></div></div>
+                <div class="rounded bg-[#faf9f8] p-4"><p class="text-sm text-[#605e5c]">Referral</p><p class="mt-2 text-2xl font-semibold">42</p><div class="mt-3 h-1.5 rounded bg-msgray"><div class="h-1.5 w-[48%] rounded bg-[#ca5010]"></div></div></div>
+                <div class="rounded bg-[#faf9f8] p-4"><p class="text-sm text-[#605e5c]">Agency</p><p class="mt-2 text-2xl font-semibold">32</p><div class="mt-3 h-1.5 rounded bg-msgray"><div class="h-1.5 w-[36%] rounded bg-[#5c2d91]"></div></div></div>
+              </div>
+            </div>
+          </div>
+
+          <aside class="space-y-4">
+            <section class="rounded border border-msborder bg-white shadow-sm">
+              <div class="border-b border-msborder px-5 py-4">
+                <h2 class="text-lg font-semibold">Selected candidate</h2>
+                <p class="mt-1 text-sm text-[#605e5c]">Ứng viên đang chọn</p>
+              </div>
+              <div class="p-5">
+                <div class="mb-5 flex items-center gap-3">
+                  <div class="flex h-14 w-14 items-center justify-center rounded-full bg-[#c7e0f4] text-lg font-semibold text-msblueDark">HN</div>
+                  <div><p class="font-semibold">Đỗ Hoàng Nam</p><p class="text-sm text-[#605e5c]">System Engineer</p></div>
+                </div>
+                <div class="space-y-3 text-sm">
+                  <div class="flex justify-between border-b border-msborder pb-3"><span class="text-[#605e5c]">Stage</span><span class="font-semibold text-msblueDark">Interview</span></div>
+                  <div class="flex justify-between border-b border-msborder pb-3"><span class="text-[#605e5c]">Score</span><span class="font-semibold">86/100</span></div>
+                  <div class="flex justify-between border-b border-msborder pb-3"><span class="text-[#605e5c]">Source</span><span class="font-semibold">LinkedIn</span></div>
+                  <div class="flex justify-between"><span class="text-[#605e5c]">Next action</span><span class="font-semibold">Technical interview</span></div>
+                </div>
+                <div class="mt-5 grid grid-cols-2 gap-2">
+                  <button class="rounded border border-[#8a8886] bg-white px-4 py-2 text-sm font-semibold hover:bg-msgray">View CV</button>
+                  <button class="rounded bg-msblue px-4 py-2 text-sm font-semibold text-white hover:bg-msblueDark">Move stage</button>
+                </div>
+              </div>
+            </section>
+
+            <section class="rounded border border-msborder bg-white shadow-sm">
+              <div class="border-b border-msborder px-5 py-4"><h2 class="text-lg font-semibold">Evaluation</h2></div>
+              <div class="space-y-3 p-5 text-sm">
+                <div><div class="mb-2 flex justify-between"><span class="font-semibold">Technical</span><span>90%</span></div><div class="h-1.5 rounded bg-msgray"><div class="h-1.5 w-[90%] rounded bg-msblue"></div></div></div>
+                <div><div class="mb-2 flex justify-between"><span class="font-semibold">Communication</span><span>78%</span></div><div class="h-1.5 rounded bg-msgray"><div class="h-1.5 w-[78%] rounded bg-[#107c10]"></div></div></div>
+                <div><div class="mb-2 flex justify-between"><span class="font-semibold">Culture fit</span><span>84%</span></div><div class="h-1.5 rounded bg-msgray"><div class="h-1.5 w-[84%] rounded bg-[#ca5010]"></div></div></div>
+              </div>
+            </section>
+
+            <section class="rounded border border-msborder bg-white shadow-sm">
+              <div class="flex items-center justify-between border-b border-msborder px-5 py-4"><h2 class="text-lg font-semibold">Activity</h2><a href="#" class="text-sm font-semibold text-msblueDark hover:underline">See all</a></div>
+              <div class="space-y-5 p-5 text-sm">
+                <div class="flex gap-3"><div class="mt-1 h-2.5 w-2.5 rounded-full bg-msblue"></div><div><p class="font-semibold">Interview scheduled</p><p class="text-[#605e5c]">Today 14:00 · IT Manager</p></div></div>
+                <div class="flex gap-3"><div class="mt-1 h-2.5 w-2.5 rounded-full bg-[#107c10]"></div><div><p class="font-semibold">CV reviewed</p><p class="text-[#605e5c]">HR Team · Yesterday</p></div></div>
+                <div class="flex gap-3"><div class="mt-1 h-2.5 w-2.5 rounded-full bg-[#ca5010]"></div><div><p class="font-semibold">Candidate moved to Interview</p><p class="text-[#605e5c]">Recruiter · This week</p></div></div>
+              </div>
+            </section>
+          </aside>
+        </section>
+      </main>
+    </div>
+  </div>
+
+</body></html>

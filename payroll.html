@@ -1,0 +1,368 @@
+<html lang="vi"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payroll Management - Microsoft Style</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            msblue: '#0078d4',
+            msblueDark: '#005a9e',
+            msgray: '#f3f2f1',
+            msborder: '#edebe9'
+          },
+          boxShadow: {
+            ms: '0 2px 8px rgba(0,0,0,0.12)'
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-[#faf9f8] text-[#323130]">
+  <div class="min-h-screen">
+    <header class="sticky top-0 z-50 border-b border-[#e1dfdd] bg-white">
+      <div class="flex h-14 items-center gap-4 px-4">
+        <button class="flex h-9 w-9 items-center justify-center rounded hover:bg-msgray">☰</button>
+        <div class="flex items-center gap-3">
+          <div class="flex h-8 w-8 items-center justify-center rounded bg-msblue text-sm font-bold text-white">HR</div>
+          <span class="text-sm font-semibold">Payroll Management</span>
+        </div>
+
+        <div class="mx-auto hidden w-full max-w-2xl items-center gap-2 rounded bg-msgray px-3 py-2 md:flex">
+          <span class="text-[#605e5c]">🔍</span>
+          <input class="w-full bg-transparent text-sm outline-none" placeholder="Search employee, payroll period, department...">
+        </div>
+
+        <button class="rounded px-3 py-2 text-sm hover:bg-msgray">🔔</button>
+        <button class="rounded px-3 py-2 text-sm hover:bg-msgray">⚙️</button>
+        <div class="flex h-8 w-8 items-center justify-center rounded-full bg-[#c7e0f4] text-sm font-bold text-msblueDark">E</div>
+      </div>
+    </header>
+
+    <div class="grid min-h-[calc(100vh-56px)] grid-cols-[240px_1fr]">
+      <aside class="border-r border-[#e1dfdd] bg-white px-3 py-4">
+        <button class="mb-5 flex w-full items-center justify-center gap-2 rounded bg-msblue px-4 py-2.5 text-sm font-semibold text-white hover:bg-msblueDark">
+          + New payroll run
+        </button>
+
+        <nav class="space-y-1 text-sm">
+          <a class="flex items-center gap-3 rounded px-3 py-2 hover:bg-msgray" href="#">🏠 Dashboard</a>
+          <a class="flex items-center gap-3 rounded px-3 py-2 hover:bg-msgray" href="#">👥 Employees</a>
+          <a class="flex items-center gap-3 rounded px-3 py-2 hover:bg-msgray" href="#">🏢 Departments</a>
+          <a class="flex items-center gap-3 rounded px-3 py-2 hover:bg-msgray" href="#">📅 Attendance</a>
+          <a class="flex items-center gap-3 rounded bg-[#e5f1fb] px-3 py-2 font-semibold text-msblueDark" href="#">💰 Payroll</a>
+          <a class="flex items-center gap-3 rounded px-3 py-2 hover:bg-msgray" href="#">📝 Recruitment</a>
+          <a class="flex items-center gap-3 rounded px-3 py-2 hover:bg-msgray" href="#">📊 Reports</a>
+          <a class="flex items-center gap-3 rounded px-3 py-2 hover:bg-msgray" href="#">⚙️ Settings</a>
+        </nav>
+
+        <div class="mt-8 border-t border-msborder pt-4">
+          <p class="mb-2 px-3 text-xs font-semibold uppercase tracking-wide text-[#605e5c]">Payroll views</p>
+          <nav class="space-y-1 text-sm">
+            <a class="flex items-center justify-between rounded bg-msgray px-3 py-2 font-semibold" href="#"><span>Current period</span><span class="text-xs text-[#605e5c]">05/2026</span></a>
+            <a class="flex items-center justify-between rounded px-3 py-2 hover:bg-msgray" href="#"><span>Pending approval</span><span class="text-xs text-[#605e5c]">24</span></a>
+            <a class="flex items-center justify-between rounded px-3 py-2 hover:bg-msgray" href="#"><span>Payment ready</span><span class="text-xs text-[#605e5c]">1,112</span></a>
+            <a class="flex items-center justify-between rounded px-3 py-2 hover:bg-msgray" href="#"><span>Payroll errors</span><span class="text-xs text-[#a4262c]">7</span></a>
+          </nav>
+        </div>
+      </aside>
+
+      <main class="min-w-0">
+        <section class="border-b border-[#e1dfdd] bg-white px-6 py-5">
+          <div class="mb-3 flex items-center gap-2 text-sm text-[#605e5c]">
+            <span>HRM</span>
+            <span>/</span>
+            <span class="font-semibold text-[#323130]">Payroll</span>
+          </div>
+
+          <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+            <div>
+              <h1 class="text-3xl font-semibold tracking-tight">Payroll Management</h1>
+              <p class="mt-1 text-sm text-[#605e5c]">Tính lương, phụ cấp, khấu trừ, bảo hiểm, thuế, phê duyệt và chi trả lương.</p>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <button class="rounded border border-[#8a8886] bg-white px-4 py-2 text-sm font-semibold hover:bg-msgray">Import Excel</button>
+              <button class="rounded border border-[#8a8886] bg-white px-4 py-2 text-sm font-semibold hover:bg-msgray">Export bank file</button>
+              <button class="rounded border border-[#8a8886] bg-white px-4 py-2 text-sm font-semibold hover:bg-msgray">Recalculate</button>
+              <button class="rounded bg-msblue px-4 py-2 text-sm font-semibold text-white hover:bg-msblueDark">Submit approval</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="border-b border-[#e1dfdd] bg-white px-6">
+          <nav class="flex gap-6 overflow-x-auto text-sm font-semibold">
+            <a href="#overview" class="border-b-2 border-msblue px-1 py-4 text-msblueDark">Overview</a>
+            <a href="#employees" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Employee payroll</a>
+            <a href="#allowances" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Allowances</a>
+            <a href="#deductions" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Deductions</a>
+            <a href="#approval" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Approval</a>
+            <a href="#payments" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Payments</a>
+            <a href="#settings" class="px-1 py-4 text-[#605e5c] hover:text-[#323130]">Settings</a>
+          </nav>
+        </section>
+
+        <section class="grid gap-6 px-6 py-5 xl:grid-cols-[1fr_360px]">
+          <div class="space-y-4">
+            <div id="overview" class="rounded border border-msborder bg-white shadow-sm">
+              <div class="flex flex-col gap-3 border-b border-msborder px-5 py-4 lg:flex-row lg:items-center lg:justify-between">
+                <div>
+                  <h2 class="text-lg font-semibold">Payroll period: May 2026</h2>
+                  <p class="mt-1 text-sm text-[#605e5c]">Kỳ lương 01/05/2026 - 31/05/2026 · Trạng thái: Draft</p>
+                </div>
+                <div class="flex gap-2">
+                  <select class="rounded border border-[#8a8886] bg-white px-3 py-2 text-sm outline-none focus:border-msblue focus:ring-1 focus:ring-msblue">
+                    <option>May 2026</option>
+                    <option>April 2026</option>
+                    <option>March 2026</option>
+                  </select>
+                  <button class="rounded bg-msblue px-3 py-2 text-sm font-semibold text-white hover:bg-msblueDark">Run payroll</button>
+                </div>
+              </div>
+
+              <div class="grid gap-4 p-5 md:grid-cols-4">
+                <div class="rounded bg-[#faf9f8] p-4">
+                  <p class="text-sm text-[#605e5c]">Employees</p>
+                  <p class="mt-2 text-3xl font-semibold">1,248</p>
+                </div>
+                <div class="rounded bg-[#faf9f8] p-4">
+                  <p class="text-sm text-[#605e5c]">Gross salary</p>
+                  <p class="mt-2 text-3xl font-semibold">42.8B₫</p>
+                </div>
+                <div class="rounded bg-[#faf9f8] p-4">
+                  <p class="text-sm text-[#605e5c]">Deductions</p>
+                  <p class="mt-2 text-3xl font-semibold text-[#ca5010]">4.6B₫</p>
+                </div>
+                <div class="rounded bg-[#faf9f8] p-4">
+                  <p class="text-sm text-[#605e5c]">Net payment</p>
+                  <p class="mt-2 text-3xl font-semibold text-[#107c10]">38.2B₫</p>
+                </div>
+              </div>
+
+              <div class="grid gap-4 border-t border-msborder p-5 lg:grid-cols-3">
+                <div>
+                  <div class="mb-2 flex justify-between text-sm"><span class="font-semibold">Calculation progress</span><span>86%</span></div>
+                  <div class="h-1.5 rounded bg-msgray"><div class="h-1.5 w-[86%] rounded bg-msblue"></div></div>
+                </div>
+                <div>
+                  <div class="mb-2 flex justify-between text-sm"><span class="font-semibold">Approval progress</span><span>40%</span></div>
+                  <div class="h-1.5 rounded bg-msgray"><div class="h-1.5 w-[40%] rounded bg-[#ca5010]"></div></div>
+                </div>
+                <div>
+                  <div class="mb-2 flex justify-between text-sm"><span class="font-semibold">Payment readiness</span><span>72%</span></div>
+                  <div class="h-1.5 rounded bg-msgray"><div class="h-1.5 w-[72%] rounded bg-[#107c10]"></div></div>
+                </div>
+              </div>
+            </div>
+
+            <div id="employees" class="overflow-hidden rounded border border-msborder bg-white shadow-sm">
+              <div class="flex flex-col gap-3 border-b border-msborder px-4 py-3 lg:flex-row lg:items-center lg:justify-between">
+                <div class="flex flex-wrap gap-2">
+                  <button class="rounded bg-msgray px-3 py-2 text-sm font-semibold hover:bg-msborder">Filter</button>
+                  <button class="rounded bg-msgray px-3 py-2 text-sm font-semibold hover:bg-msborder">Department</button>
+                  <button class="rounded bg-msgray px-3 py-2 text-sm font-semibold hover:bg-msborder">Status</button>
+                  <button class="rounded bg-msgray px-3 py-2 text-sm font-semibold hover:bg-msborder">Bulk adjust</button>
+                  <button class="rounded bg-msgray px-3 py-2 text-sm font-semibold hover:bg-msborder">Lock period</button>
+                </div>
+                <div class="flex items-center gap-2 rounded bg-msgray px-3 py-2 text-sm">
+                  🔎 <input class="bg-transparent outline-none" placeholder="Search employee">
+                </div>
+              </div>
+
+              <div class="overflow-x-auto">
+                <table class="w-full min-w-[1180px] text-left text-sm">
+                  <thead class="bg-[#faf9f8] text-xs font-semibold uppercase tracking-wide text-[#605e5c]">
+                    <tr class="border-b border-msborder">
+                      <th class="w-10 px-4 py-3"><input type="checkbox" class="h-4 w-4 accent-msblue"></th>
+                      <th class="px-4 py-3">Employee</th>
+                      <th class="px-4 py-3">Department</th>
+                      <th class="px-4 py-3">Base</th>
+                      <th class="px-4 py-3">Allowance</th>
+                      <th class="px-4 py-3">Overtime</th>
+                      <th class="px-4 py-3">Deduction</th>
+                      <th class="px-4 py-3">Net</th>
+                      <th class="px-4 py-3">Status</th>
+                      <th class="px-4 py-3">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-msborder">
+                    <tr class="bg-[#f5fbff] hover:bg-[#e5f1fb]">
+                      <td class="px-4 py-3"><input type="checkbox" checked="" class="h-4 w-4 accent-msblue"></td>
+                      <td class="px-4 py-3">
+                        <div class="flex items-center gap-3">
+                          <div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#c7e0f4] font-semibold text-msblueDark">NT</div>
+                          <div><p class="font-semibold text-msblueDark">Nguyễn Văn Thành</p><p class="text-xs text-[#605e5c]">NV000128</p></div>
+                        </div>
+                      </td>
+                      <td class="px-4 py-3">Cardiology</td>
+                      <td class="px-4 py-3">35,000,000₫</td>
+                      <td class="px-4 py-3">5,000,000₫</td>
+                      <td class="px-4 py-3">1,200,000₫</td>
+                      <td class="px-4 py-3">4,200,000₫</td>
+                      <td class="px-4 py-3 font-semibold">37,000,000₫</td>
+                      <td class="px-4 py-3"><span class="rounded bg-[#dff6dd] px-2 py-1 text-xs font-semibold text-[#107c10]">Ready</span></td>
+                      <td class="px-4 py-3"><button class="rounded px-2 py-1 hover:bg-white">•••</button></td>
+                    </tr>
+                    <tr class="hover:bg-msgray">
+                      <td class="px-4 py-3"><input type="checkbox" class="h-4 w-4 accent-msblue"></td>
+                      <td class="px-4 py-3"><div class="flex items-center gap-3"><div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#fde7e9] font-semibold text-[#a4262c]">LT</div><div><p class="font-semibold">Lê Minh Trang</p><p class="text-xs text-[#605e5c]">NV000084</p></div></div></td>
+                      <td class="px-4 py-3">HR</td>
+                      <td class="px-4 py-3">28,000,000₫</td>
+                      <td class="px-4 py-3">3,000,000₫</td>
+                      <td class="px-4 py-3">0₫</td>
+                      <td class="px-4 py-3">3,200,000₫</td>
+                      <td class="px-4 py-3 font-semibold">27,800,000₫</td>
+                      <td class="px-4 py-3"><span class="rounded bg-[#fff4ce] px-2 py-1 text-xs font-semibold text-[#8a6100]">Review</span></td>
+                      <td class="px-4 py-3"><button class="rounded px-2 py-1 hover:bg-msborder">•••</button></td>
+                    </tr>
+                    <tr class="hover:bg-msgray">
+                      <td class="px-4 py-3"><input type="checkbox" class="h-4 w-4 accent-msblue"></td>
+                      <td class="px-4 py-3"><div class="flex items-center gap-3"><div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#fff4ce] font-semibold text-[#8a6100]">PH</div><div><p class="font-semibold">Phạm Hữu Phúc</p><p class="text-xs text-[#605e5c]">NV000215</p></div></div></td>
+                      <td class="px-4 py-3">IT</td>
+                      <td class="px-4 py-3">30,000,000₫</td>
+                      <td class="px-4 py-3">4,000,000₫</td>
+                      <td class="px-4 py-3">2,500,000₫</td>
+                      <td class="px-4 py-3">3,800,000₫</td>
+                      <td class="px-4 py-3 font-semibold">32,700,000₫</td>
+                      <td class="px-4 py-3"><span class="rounded bg-[#fde7e9] px-2 py-1 text-xs font-semibold text-[#a4262c]">Error</span></td>
+                      <td class="px-4 py-3"><button class="rounded px-2 py-1 hover:bg-msborder">•••</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="grid gap-4 lg:grid-cols-2">
+              <div id="allowances" class="rounded border border-msborder bg-white shadow-sm">
+                <div class="flex items-center justify-between border-b border-msborder px-5 py-4">
+                  <div><h2 class="text-lg font-semibold">Allowances</h2><p class="mt-1 text-sm text-[#605e5c]">Phụ cấp cố định và phát sinh.</p></div>
+                  <button class="rounded bg-msblue px-3 py-2 text-sm font-semibold text-white hover:bg-msblueDark">+ Add</button>
+                </div>
+                <div class="divide-y divide-msborder text-sm">
+                  <div class="flex items-center justify-between px-5 py-4"><div><p class="font-semibold">Trách nhiệm</p><p class="text-xs text-[#605e5c]">Theo chức vụ</p></div><span class="font-semibold">2.1B₫</span></div>
+                  <div class="flex items-center justify-between px-5 py-4"><div><p class="font-semibold">Ăn trưa</p><p class="text-xs text-[#605e5c]">Theo ngày công</p></div><span class="font-semibold">680M₫</span></div>
+                  <div class="flex items-center justify-between px-5 py-4"><div><p class="font-semibold">Trực / ca đêm</p><p class="text-xs text-[#605e5c]">Theo bảng công</p></div><span class="font-semibold">1.4B₫</span></div>
+                </div>
+              </div>
+
+              <div id="deductions" class="rounded border border-msborder bg-white shadow-sm">
+                <div class="flex items-center justify-between border-b border-msborder px-5 py-4">
+                  <div><h2 class="text-lg font-semibold">Deductions</h2><p class="mt-1 text-sm text-[#605e5c]">Khấu trừ bảo hiểm, thuế và khoản khác.</p></div>
+                  <button class="rounded bg-msblue px-3 py-2 text-sm font-semibold text-white hover:bg-msblueDark">+ Add</button>
+                </div>
+                <div class="divide-y divide-msborder text-sm">
+                  <div class="flex items-center justify-between px-5 py-4"><div><p class="font-semibold">Bảo hiểm</p><p class="text-xs text-[#605e5c]">BHXH/BHYT/BHTN</p></div><span class="font-semibold">2.8B₫</span></div>
+                  <div class="flex items-center justify-between px-5 py-4"><div><p class="font-semibold">Thuế TNCN</p><p class="text-xs text-[#605e5c]">Theo biểu thuế</p></div><span class="font-semibold">1.2B₫</span></div>
+                  <div class="flex items-center justify-between px-5 py-4"><div><p class="font-semibold">Tạm ứng</p><p class="text-xs text-[#605e5c]">Theo nhân viên</p></div><span class="font-semibold">600M₫</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div id="approval" class="rounded border border-msborder bg-white shadow-sm">
+              <div class="flex items-center justify-between border-b border-msborder px-5 py-4">
+                <div><h2 class="text-lg font-semibold">Approval workflow</h2><p class="mt-1 text-sm text-[#605e5c]">Luồng duyệt kỳ lương theo phòng ban và tài chính.</p></div>
+                <button class="rounded px-3 py-2 text-sm font-semibold text-msblueDark hover:bg-msgray">Configure</button>
+              </div>
+              <div class="grid gap-4 p-5 md:grid-cols-4">
+                <div class="rounded border border-msborder bg-[#dff6dd] p-4"><p class="font-semibold text-[#107c10]">1. HR calculated</p><p class="mt-1 text-sm text-[#605e5c]">Completed</p></div>
+                <div class="rounded border border-msborder bg-[#fff4ce] p-4"><p class="font-semibold text-[#8a6100]">2. Manager review</p><p class="mt-1 text-sm text-[#605e5c]">24 pending</p></div>
+                <div class="rounded border border-msborder bg-[#faf9f8] p-4"><p class="font-semibold">3. Finance approval</p><p class="mt-1 text-sm text-[#605e5c]">Waiting</p></div>
+                <div class="rounded border border-msborder bg-[#faf9f8] p-4"><p class="font-semibold">4. Payment release</p><p class="mt-1 text-sm text-[#605e5c]">Locked</p></div>
+              </div>
+            </div>
+
+            <div id="payments" class="rounded border border-msborder bg-white shadow-sm">
+              <div class="flex items-center justify-between border-b border-msborder px-5 py-4">
+                <div><h2 class="text-lg font-semibold">Payment batches</h2><p class="mt-1 text-sm text-[#605e5c]">Danh sách đợt chi trả và file ngân hàng.</p></div>
+                <button class="rounded bg-msblue px-3 py-2 text-sm font-semibold text-white hover:bg-msblueDark">Create batch</button>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full min-w-[760px] text-left text-sm">
+                  <thead class="bg-[#faf9f8] text-xs font-semibold uppercase tracking-wide text-[#605e5c]"><tr><th class="px-5 py-3">Batch</th><th class="px-5 py-3">Employees</th><th class="px-5 py-3">Amount</th><th class="px-5 py-3">Bank file</th><th class="px-5 py-3">Status</th></tr></thead>
+                  <tbody class="divide-y divide-msborder">
+                    <tr><td class="px-5 py-3 font-semibold">PAY-2026-05-01</td><td class="px-5 py-3">1,112</td><td class="px-5 py-3">34.6B₫</td><td class="px-5 py-3 text-msblueDark">VCB_salary_052026.xlsx</td><td class="px-5 py-3"><span class="rounded bg-[#e5f1fb] px-2 py-1 text-xs font-semibold text-msblueDark">Ready</span></td></tr>
+                    <tr><td class="px-5 py-3 font-semibold">PAY-2026-05-02</td><td class="px-5 py-3">136</td><td class="px-5 py-3">3.6B₫</td><td class="px-5 py-3 text-msblueDark">ACB_salary_052026.xlsx</td><td class="px-5 py-3"><span class="rounded bg-[#fff4ce] px-2 py-1 text-xs font-semibold text-[#8a6100]">Review</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div id="settings" class="rounded border border-msborder bg-white shadow-sm">
+              <div class="border-b border-msborder px-5 py-4">
+                <h2 class="text-lg font-semibold">Payroll settings</h2>
+                <p class="mt-1 text-sm text-[#605e5c]">Cấu hình công thức lương, khóa kỳ, bảo hiểm, thuế và phê duyệt.</p>
+              </div>
+              <div class="grid gap-4 p-5 md:grid-cols-2">
+                <label class="flex items-start gap-3 rounded border border-msborder bg-[#faf9f8] p-4"><input type="checkbox" checked="" class="mt-1 h-4 w-4 accent-msblue"><span><span class="block font-semibold">Auto import attendance</span><span class="block text-sm text-[#605e5c]">Tự động lấy dữ liệu chấm công.</span></span></label>
+                <label class="flex items-start gap-3 rounded border border-msborder bg-[#faf9f8] p-4"><input type="checkbox" checked="" class="mt-1 h-4 w-4 accent-msblue"><span><span class="block font-semibold">Require manager approval</span><span class="block text-sm text-[#605e5c]">Quản lý duyệt trước tài chính.</span></span></label>
+                <label class="flex items-start gap-3 rounded border border-msborder bg-[#faf9f8] p-4"><input type="checkbox" checked="" class="mt-1 h-4 w-4 accent-msblue"><span><span class="block font-semibold">Lock after payment</span><span class="block text-sm text-[#605e5c]">Khóa dữ liệu sau khi chi trả.</span></span></label>
+                <label class="flex items-start gap-3 rounded border border-msborder bg-[#faf9f8] p-4"><input type="checkbox" class="mt-1 h-4 w-4 accent-msblue"><span><span class="block font-semibold">Send payslip email</span><span class="block text-sm text-[#605e5c]">Gửi phiếu lương cho nhân viên.</span></span></label>
+              </div>
+            </div>
+          </div>
+
+          <aside class="space-y-4">
+            <section class="rounded border border-msborder bg-white shadow-sm">
+              <div class="border-b border-msborder px-5 py-4">
+                <h2 class="text-lg font-semibold">Payroll health</h2>
+                <p class="mt-1 text-sm text-[#605e5c]">Kiểm tra trước khi duyệt kỳ lương.</p>
+              </div>
+              <div class="space-y-3 p-5 text-sm">
+                <div class="rounded bg-[#fde7e9] p-3">
+                  <p class="font-semibold text-[#a4262c]">7 calculation errors</p>
+                  <p class="mt-1 text-[#605e5c]">Thiếu dữ liệu ngân hàng hoặc hệ số lương.</p>
+                </div>
+                <div class="rounded bg-[#fff4ce] p-3">
+                  <p class="font-semibold text-[#8a6100]">24 pending reviews</p>
+                  <p class="mt-1 text-[#605e5c]">Cần trưởng phòng xác nhận.</p>
+                </div>
+                <div class="rounded bg-[#dff6dd] p-3">
+                  <p class="font-semibold text-[#107c10]">1,112 ready payments</p>
+                  <p class="mt-1 text-[#605e5c]">Đã đủ thông tin chi trả.</p>
+                </div>
+              </div>
+            </section>
+
+            <section class="rounded border border-msborder bg-white shadow-sm">
+              <div class="border-b border-msborder px-5 py-4">
+                <h2 class="text-lg font-semibold">Selected employee</h2>
+              </div>
+              <div class="p-5">
+                <div class="mb-5 flex items-center gap-3">
+                  <div class="flex h-12 w-12 items-center justify-center rounded-full bg-[#c7e0f4] font-semibold text-msblueDark">NT</div>
+                  <div><p class="font-semibold">Nguyễn Văn Thành</p><p class="text-sm text-[#605e5c]">NV000128 · Cardiology</p></div>
+                </div>
+                <div class="space-y-3 text-sm">
+                  <div class="flex justify-between border-b border-msborder pb-3"><span class="text-[#605e5c]">Gross</span><span class="font-semibold">41,200,000₫</span></div>
+                  <div class="flex justify-between border-b border-msborder pb-3"><span class="text-[#605e5c]">Deduction</span><span class="font-semibold text-[#ca5010]">4,200,000₫</span></div>
+                  <div class="flex justify-between border-b border-msborder pb-3"><span class="text-[#605e5c]">Net</span><span class="font-semibold text-[#107c10]">37,000,000₫</span></div>
+                  <div class="flex justify-between"><span class="text-[#605e5c]">Status</span><span class="font-semibold text-[#107c10]">Ready</span></div>
+                </div>
+                <div class="mt-5 grid grid-cols-2 gap-2">
+                  <button class="rounded border border-[#8a8886] bg-white px-4 py-2 text-sm font-semibold hover:bg-msgray">Payslip</button>
+                  <button class="rounded bg-msblue px-4 py-2 text-sm font-semibold text-white hover:bg-msblueDark">Adjust</button>
+                </div>
+              </div>
+            </section>
+
+            <section class="rounded border border-msborder bg-white shadow-sm">
+              <div class="flex items-center justify-between border-b border-msborder px-5 py-4">
+                <h2 class="text-lg font-semibold">Recent activity</h2>
+                <a href="#" class="text-sm font-semibold text-msblueDark hover:underline">See all</a>
+              </div>
+              <div class="space-y-5 p-5 text-sm">
+                <div class="flex gap-3"><div class="mt-1 h-2.5 w-2.5 rounded-full bg-msblue"></div><div><p class="font-semibold">Payroll recalculated</p><p class="text-[#605e5c]">HR Admin · Today 09:15</p></div></div>
+                <div class="flex gap-3"><div class="mt-1 h-2.5 w-2.5 rounded-full bg-[#107c10]"></div><div><p class="font-semibold">Attendance imported</p><p class="text-[#605e5c]">System · Today 08:00</p></div></div>
+                <div class="flex gap-3"><div class="mt-1 h-2.5 w-2.5 rounded-full bg-[#ca5010]"></div><div><p class="font-semibold">7 records flagged</p><p class="text-[#605e5c]">Validation engine · Yesterday</p></div></div>
+              </div>
+            </section>
+          </aside>
+        </section>
+      </main>
+    </div>
+  </div>
+
+
+</body></html>
