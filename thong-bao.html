@@ -1,0 +1,266 @@
+<html lang="vi"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Internal Notifications</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          boxShadow: {
+            soft: '0 18px 45px rgba(15, 23, 42, 0.08)'
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-slate-100 text-slate-900">
+  <div class="min-h-screen">
+    <header class="sticky top-0 z-30 border-b border-slate-200 bg-white/85 backdrop-blur-xl">
+      <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4">
+        <div class="flex items-center gap-3">
+          <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-600 text-lg font-black text-white shadow-lg shadow-blue-200">IP</div>
+          <div>
+            <h1 class="text-lg font-black tracking-tight">Notification Center</h1>
+            <p class="text-xs font-medium text-slate-500">Trung tâm thông báo nội bộ</p>
+          </div>
+        </div>
+
+        <div class="hidden flex-1 md:block">
+          <div class="mx-auto flex max-w-2xl items-center gap-3 rounded-full border border-slate-200 bg-slate-50 px-4 py-3 shadow-sm">
+            <span>🔎</span>
+            <input class="w-full bg-transparent text-sm outline-none placeholder:text-slate-400" placeholder="Tìm thông báo, người gửi, module, hồ sơ...">
+            <kbd class="rounded-lg border border-slate-200 bg-white px-2 py-1 text-xs font-bold text-slate-400">Ctrl K</kbd>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-bold shadow-sm hover:bg-slate-50">Đánh dấu đã đọc</button>
+          <div class="flex items-center gap-2 rounded-full border border-slate-200 bg-white py-2 pl-2 pr-4 shadow-sm">
+            <div class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 font-black text-blue-700">E</div>
+            <span class="hidden text-sm font-bold sm:inline">Ethan</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="mx-auto max-w-7xl px-6 py-8">
+      <section class="mb-8 rounded-[2rem] bg-gradient-to-br from-slate-900 via-blue-900 to-blue-600 p-8 text-white shadow-soft">
+        <div class="grid gap-8 lg:grid-cols-[1.3fr_0.9fr] lg:items-center">
+          <div>
+            <span class="mb-4 inline-flex rounded-full bg-white/15 px-4 py-2 text-sm font-bold ring-1 ring-white/30">Realtime Alert</span>
+            <h2 class="text-4xl font-black tracking-tight md:text-5xl">Tất cả thông báo quan trọng ở một nơi</h2>
+            <p class="mt-4 max-w-2xl text-sm leading-7 text-white/80 md:text-base">Theo dõi thông báo từ EMR, HRM, eSign, Report, IT Helpdesk và hệ thống vận hành. Phân loại theo mức ưu tiên, trạng thái xử lý và kênh nhận.</p>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div class="rounded-3xl bg-white/15 p-5 ring-1 ring-white/25 backdrop-blur">
+              <p class="text-sm text-white/70">Chưa đọc</p>
+              <p class="mt-2 text-4xl font-black">18</p>
+            </div>
+            <div class="rounded-3xl bg-white/15 p-5 ring-1 ring-white/25 backdrop-blur">
+              <p class="text-sm text-white/70">Khẩn cấp</p>
+              <p class="mt-2 text-4xl font-black">4</p>
+            </div>
+            <div class="rounded-3xl bg-white/15 p-5 ring-1 ring-white/25 backdrop-blur">
+              <p class="text-sm text-white/70">Hồ sơ chờ ký</p>
+              <p class="mt-2 text-4xl font-black">12</p>
+            </div>
+            <div class="rounded-3xl bg-white/15 p-5 ring-1 ring-white/25 backdrop-blur">
+              <p class="text-sm text-white/70">Ticket IT</p>
+              <p class="mt-2 text-4xl font-black">5</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div class="flex flex-wrap gap-2">
+          <button class="rounded-full bg-slate-900 px-4 py-2 text-sm font-bold text-white">Tất cả</button>
+          <button class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-bold text-slate-600 hover:bg-slate-50">Chưa đọc</button>
+          <button class="rounded-full border border-red-200 bg-red-50 px-4 py-2 text-sm font-bold text-red-600 hover:bg-red-100">Khẩn cấp</button>
+          <button class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-bold text-slate-600 hover:bg-slate-50">EMR</button>
+          <button class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-bold text-slate-600 hover:bg-slate-50">HRM</button>
+          <button class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-bold text-slate-600 hover:bg-slate-50">IT</button>
+          <button class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-bold text-slate-600 hover:bg-slate-50">Hệ thống</button>
+        </div>
+        <button class="rounded-full bg-blue-600 px-5 py-3 text-sm font-black text-white shadow-lg shadow-blue-200 hover:bg-blue-700">+ Tạo thông báo</button>
+      </section>
+
+      <div class="grid gap-6 lg:grid-cols-[1fr_380px]">
+        <section class="space-y-4">
+          <article class="rounded-3xl border border-red-200 bg-white p-5 shadow-soft ring-2 ring-red-100">
+            <div class="flex gap-4">
+              <div class="relative flex h-14 w-14 flex-none items-center justify-center rounded-2xl bg-red-50 text-2xl">
+                🚨
+                <span class="absolute -right-1 -top-1 h-4 w-4 rounded-full border-2 border-white bg-red-500"></span>
+              </div>
+              <div class="min-w-0 flex-1">
+                <div class="flex flex-wrap items-center gap-2">
+                  <span class="rounded-full bg-red-50 px-3 py-1 text-xs font-black text-red-600">Khẩn cấp</span>
+                  <span class="rounded-full bg-blue-50 px-3 py-1 text-xs font-black text-blue-600">EMR</span>
+                  <span class="text-xs font-bold text-slate-400">2 phút trước</span>
+                </div>
+                <h3 class="mt-3 text-lg font-black">Có 12 hồ sơ bệnh án đang chờ ký số</h3>
+                <p class="mt-1 text-sm leading-6 text-slate-500">Các phiếu xét nghiệm và phiếu điều trị cần được ký trước 16:00 để hoàn tất quy trình lưu trữ hồ sơ.</p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                  <button class="rounded-full bg-slate-900 px-4 py-2 text-sm font-bold text-white hover:bg-blue-600">Mở danh sách ký</button>
+                  <button class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-bold text-slate-600 hover:bg-slate-50">Nhắc lại sau</button>
+                </div>
+              </div>
+              <button class="h-10 rounded-full px-3 text-slate-400 hover:bg-slate-50">•••</button>
+            </div>
+          </article>
+
+          <article class="rounded-3xl border border-slate-200 bg-white p-5 shadow-soft">
+            <div class="flex gap-4">
+              <div class="relative flex h-14 w-14 flex-none items-center justify-center rounded-2xl bg-amber-50 text-2xl">
+                🛠️
+                <span class="absolute -right-1 -top-1 h-4 w-4 rounded-full border-2 border-white bg-amber-500"></span>
+              </div>
+              <div class="min-w-0 flex-1">
+                <div class="flex flex-wrap items-center gap-2">
+                  <span class="rounded-full bg-amber-50 px-3 py-1 text-xs font-black text-amber-600">Cao</span>
+                  <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-black text-slate-600">IT Helpdesk</span>
+                  <span class="text-xs font-bold text-slate-400">15 phút trước</span>
+                </div>
+                <h3 class="mt-3 text-lg font-black">Ticket máy in khoa Khám bệnh cần xử lý</h3>
+                <p class="mt-1 text-sm leading-6 text-slate-500">Người dùng báo lỗi không in được phiếu chỉ định. Hệ thống gợi ý kiểm tra local print agent và queue jobs.</p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                  <button class="rounded-full bg-slate-900 px-4 py-2 text-sm font-bold text-white hover:bg-blue-600">Mở ticket</button>
+                  <button class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-bold text-slate-600 hover:bg-slate-50">Gán cho tôi</button>
+                </div>
+              </div>
+              <button class="h-10 rounded-full px-3 text-slate-400 hover:bg-slate-50">•••</button>
+            </div>
+          </article>
+
+          <article class="rounded-3xl border border-slate-200 bg-white p-5 shadow-soft opacity-80">
+            <div class="flex gap-4">
+              <div class="flex h-14 w-14 flex-none items-center justify-center rounded-2xl bg-cyan-50 text-2xl">📊</div>
+              <div class="min-w-0 flex-1">
+                <div class="flex flex-wrap items-center gap-2">
+                  <span class="rounded-full bg-cyan-50 px-3 py-1 text-xs font-black text-cyan-600">Report</span>
+                  <span class="rounded-full bg-emerald-50 px-3 py-1 text-xs font-black text-emerald-600">Đã đọc</span>
+                  <span class="text-xs font-bold text-slate-400">1 giờ trước</span>
+                </div>
+                <h3 class="mt-3 text-lg font-black">Báo cáo vận hành ngày đã được tạo</h3>
+                <p class="mt-1 text-sm leading-6 text-slate-500">Report Engine đã hoàn tất báo cáo doanh thu, lượt khám, tình trạng giường và SLA xét nghiệm.</p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                  <button class="rounded-full bg-slate-900 px-4 py-2 text-sm font-bold text-white hover:bg-blue-600">Xem báo cáo</button>
+                  <button class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-bold text-slate-600 hover:bg-slate-50">Tải Excel</button>
+                </div>
+              </div>
+              <button class="h-10 rounded-full px-3 text-slate-400 hover:bg-slate-50">•••</button>
+            </div>
+          </article>
+
+          <article class="rounded-3xl border border-slate-200 bg-white p-5 shadow-soft">
+            <div class="flex gap-4">
+              <div class="relative flex h-14 w-14 flex-none items-center justify-center rounded-2xl bg-violet-50 text-2xl">
+                👥
+                <span class="absolute -right-1 -top-1 h-4 w-4 rounded-full border-2 border-white bg-blue-500"></span>
+              </div>
+              <div class="min-w-0 flex-1">
+                <div class="flex flex-wrap items-center gap-2">
+                  <span class="rounded-full bg-violet-50 px-3 py-1 text-xs font-black text-violet-600">HRM</span>
+                  <span class="rounded-full bg-blue-50 px-3 py-1 text-xs font-black text-blue-600">Phê duyệt</span>
+                  <span class="text-xs font-bold text-slate-400">Hôm nay</span>
+                </div>
+                <h3 class="mt-3 text-lg font-black">3 yêu cầu nghỉ phép đang chờ duyệt</h3>
+                <p class="mt-1 text-sm leading-6 text-slate-500">Các yêu cầu từ phòng Hành chính và khoa Cận lâm sàng cần trưởng bộ phận xác nhận.</p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                  <button class="rounded-full bg-slate-900 px-4 py-2 text-sm font-bold text-white hover:bg-blue-600">Xem yêu cầu</button>
+                  <button class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-bold text-slate-600 hover:bg-slate-50">Duyệt nhanh</button>
+                </div>
+              </div>
+              <button class="h-10 rounded-full px-3 text-slate-400 hover:bg-slate-50">•••</button>
+            </div>
+          </article>
+        </section>
+
+        <aside class="space-y-6">
+          <section class="rounded-3xl border border-slate-200 bg-white p-5 shadow-soft">
+            <div class="mb-5 flex items-center justify-between">
+              <h3 class="font-black">Chi tiết thông báo</h3>
+              <span class="rounded-full bg-red-50 px-3 py-1 text-xs font-black text-red-600">Đang chọn</span>
+            </div>
+
+            <div class="rounded-2xl bg-red-50 p-4 text-red-700">
+              <p class="text-sm font-black">Có 12 hồ sơ bệnh án đang chờ ký số</p>
+              <p class="mt-2 text-xs leading-5">Nguồn: EMR / eSign · Mức độ: Khẩn cấp · SLA: trước 16:00</p>
+            </div>
+
+            <div class="mt-5 space-y-4 text-sm">
+              <div class="flex justify-between border-b border-slate-100 pb-3">
+                <span class="font-bold text-slate-500">Người nhận</span>
+                <span class="font-black">Bác sĩ phụ trách</span>
+              </div>
+              <div class="flex justify-between border-b border-slate-100 pb-3">
+                <span class="font-bold text-slate-500">Kênh</span>
+                <span class="font-black">Web, Email, Zalo</span>
+              </div>
+              <div class="flex justify-between border-b border-slate-100 pb-3">
+                <span class="font-bold text-slate-500">Trạng thái</span>
+                <span class="font-black text-red-600">Chưa xử lý</span>
+              </div>
+            </div>
+
+            <button class="mt-5 w-full rounded-2xl bg-blue-600 px-4 py-3 text-sm font-black text-white shadow-lg shadow-blue-100 hover:bg-blue-700">Đi tới hồ sơ</button>
+          </section>
+
+          <section class="rounded-3xl border border-slate-200 bg-white p-5 shadow-soft">
+            <div class="mb-5 flex items-center justify-between">
+              <h3 class="font-black">Kênh nhận thông báo</h3>
+              <a href="#" class="text-sm font-bold text-blue-600">Cấu hình</a>
+            </div>
+
+            <div class="space-y-3">
+              <label class="flex items-center justify-between rounded-2xl bg-slate-50 p-4">
+                <span class="font-bold">🌐 Web push</span>
+                <input type="checkbox" checked="" class="h-5 w-5 accent-blue-600">
+              </label>
+              <label class="flex items-center justify-between rounded-2xl bg-slate-50 p-4">
+                <span class="font-bold">📧 Email</span>
+                <input type="checkbox" checked="" class="h-5 w-5 accent-blue-600">
+              </label>
+              <label class="flex items-center justify-between rounded-2xl bg-slate-50 p-4">
+                <span class="font-bold">💬 Zalo</span>
+                <input type="checkbox" checked="" class="h-5 w-5 accent-blue-600">
+              </label>
+              <label class="flex items-center justify-between rounded-2xl bg-slate-50 p-4">
+                <span class="font-bold">📱 SMS</span>
+                <input type="checkbox" class="h-5 w-5 accent-blue-600">
+              </label>
+            </div>
+          </section>
+
+          <section class="rounded-3xl border border-slate-200 bg-white p-5 shadow-soft">
+            <h3 class="mb-4 font-black">Tổng hợp theo module</h3>
+            <div class="space-y-4">
+              <div>
+                <div class="mb-2 flex justify-between text-sm font-bold text-slate-600"><span>EMR / eSign</span><span>12</span></div>
+                <div class="h-2 rounded-full bg-slate-100"><div class="h-2 w-[80%] rounded-full bg-blue-600"></div></div>
+              </div>
+              <div>
+                <div class="mb-2 flex justify-between text-sm font-bold text-slate-600"><span>IT Helpdesk</span><span>5</span></div>
+                <div class="h-2 rounded-full bg-slate-100"><div class="h-2 w-[45%] rounded-full bg-amber-500"></div></div>
+              </div>
+              <div>
+                <div class="mb-2 flex justify-between text-sm font-bold text-slate-600"><span>HRM</span><span>3</span></div>
+                <div class="h-2 rounded-full bg-slate-100"><div class="h-2 w-[30%] rounded-full bg-violet-500"></div></div>
+              </div>
+              <div>
+                <div class="mb-2 flex justify-between text-sm font-bold text-slate-600"><span>Report</span><span>2</span></div>
+                <div class="h-2 rounded-full bg-slate-100"><div class="h-2 w-[20%] rounded-full bg-cyan-500"></div></div>
+              </div>
+            </div>
+          </section>
+        </aside>
+      </div>
+    </main>
+  </div>
+
+
+</body></html>
