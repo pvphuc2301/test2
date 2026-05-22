@@ -1,0 +1,330 @@
+<html lang="vi"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Organization Chart - Full Chart</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            msblue: '#0078d4',
+            msblueDark: '#005a9e',
+            msgray: '#f3f2f1',
+            msborder: '#edebe9'
+          },
+          boxShadow: {
+            ms: '0 2px 8px rgba(0,0,0,0.12)'
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-[#faf9f8] text-[#323130]">
+  <div class="min-h-screen">
+    <header class="sticky top-0 z-50 border-b border-[#e1dfdd] bg-white">
+      <div class="flex h-14 items-center gap-4 px-4">
+        <button class="flex h-9 w-9 items-center justify-center rounded hover:bg-msgray">☰</button>
+        <div class="flex items-center gap-3">
+          <div class="flex h-8 w-8 items-center justify-center rounded bg-msblue text-sm font-bold text-white">HR</div>
+          <span class="text-sm font-semibold">Organization Chart</span>
+        </div>
+
+        <div class="mx-auto hidden w-full max-w-xl items-center gap-2 rounded bg-msgray px-3 py-2 md:flex">
+          <span class="text-[#605e5c]">🔍</span>
+          <input class="w-full bg-transparent text-sm outline-none" placeholder="Search department, manager, employee...">
+        </div>
+
+        <button class="rounded border border-[#8a8886] bg-white px-3 py-2 text-sm font-semibold hover:bg-msgray">Export</button>
+        <button class="rounded bg-msblue px-3 py-2 text-sm font-semibold text-white hover:bg-msblueDark">Edit chart</button>
+      </div>
+    </header>
+
+    <main class="grid h-[calc(100vh-56px)] grid-cols-[280px_1fr_360px] overflow-hidden">
+      <aside class="border-r border-msborder bg-white p-4">
+        <div class="mb-4">
+          <p class="text-xs font-semibold uppercase tracking-wide text-[#605e5c]">Chart views</p>
+          <h2 class="mt-1 text-xl font-semibold">Cơ cấu tổ chức</h2>
+        </div>
+
+        <div class="space-y-2 text-sm">
+          <button class="flex w-full items-center justify-between rounded bg-[#e5f1fb] px-3 py-2 font-semibold text-msblueDark">
+            <span>Toàn bệnh viện</span><span>1,248</span>
+          </button>
+          <button class="flex w-full items-center justify-between rounded px-3 py-2 hover:bg-msgray">
+            <span>Khối Y tế</span><span>842</span>
+          </button>
+          <button class="flex w-full items-center justify-between rounded px-3 py-2 hover:bg-msgray">
+            <span>Khối Hành chính</span><span>238</span>
+          </button>
+          <button class="flex w-full items-center justify-between rounded px-3 py-2 hover:bg-msgray">
+            <span>Khối Hỗ trợ</span><span>168</span>
+          </button>
+        </div>
+
+        <div class="mt-6 border-t border-msborder pt-4">
+          <p class="mb-3 text-xs font-semibold uppercase tracking-wide text-[#605e5c]">Filters</p>
+          <div class="space-y-3 text-sm">
+            <label class="block">
+              <span class="mb-1 block font-semibold">View mode</span>
+              <select class="w-full rounded border border-[#8a8886] bg-white px-3 py-2 outline-none focus:border-msblue focus:ring-1 focus:ring-msblue">
+                <option>Department hierarchy</option>
+                <option>Manager hierarchy</option>
+                <option>Position hierarchy</option>
+              </select>
+            </label>
+            <label class="block">
+              <span class="mb-1 block font-semibold">Level depth</span>
+              <select class="w-full rounded border border-[#8a8886] bg-white px-3 py-2 outline-none focus:border-msblue focus:ring-1 focus:ring-msblue">
+                <option>Show 3 levels</option>
+                <option>Show 4 levels</option>
+                <option>Show all</option>
+              </select>
+            </label>
+            <label class="flex items-start gap-3 rounded bg-[#faf9f8] p-3">
+              <input type="checkbox" checked="" class="mt-1 h-4 w-4 accent-msblue">
+              <span><span class="block font-semibold">Show headcount</span><span class="text-xs text-[#605e5c]">Hiển thị số nhân sự.</span></span>
+            </label>
+            <label class="flex items-start gap-3 rounded bg-[#faf9f8] p-3">
+              <input type="checkbox" checked="" class="mt-1 h-4 w-4 accent-msblue">
+              <span><span class="block font-semibold">Show open positions</span><span class="text-xs text-[#605e5c]">Hiển thị vị trí đang tuyển.</span></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="mt-6 border-t border-msborder pt-4">
+          <p class="mb-3 text-xs font-semibold uppercase tracking-wide text-[#605e5c]">Legend</p>
+          <div class="space-y-2 text-sm">
+            <div class="flex items-center gap-2"><span class="h-3 w-3 rounded bg-msblue"></span>Executive</div>
+            <div class="flex items-center gap-2"><span class="h-3 w-3 rounded bg-[#107c10]"></span>Medical block</div>
+            <div class="flex items-center gap-2"><span class="h-3 w-3 rounded bg-[#ca5010]"></span>Administration</div>
+            <div class="flex items-center gap-2"><span class="h-3 w-3 rounded bg-[#5c2d91]"></span>Support</div>
+          </div>
+        </div>
+      </aside>
+
+      <section class="relative overflow-hidden bg-[#f8f7f6]">
+        <div class="absolute left-4 right-4 top-4 z-20 flex flex-wrap items-center justify-between gap-3 rounded border border-msborder bg-white px-4 py-3 shadow-sm">
+          <div class="flex flex-wrap gap-2">
+            <button class="rounded bg-msgray px-3 py-2 text-sm font-semibold hover:bg-msborder">Fit screen</button>
+            <button class="rounded bg-msgray px-3 py-2 text-sm font-semibold hover:bg-msborder">Expand all</button>
+            <button class="rounded bg-msgray px-3 py-2 text-sm font-semibold hover:bg-msborder">Collapse all</button>
+            <button class="rounded bg-msgray px-3 py-2 text-sm font-semibold hover:bg-msborder">Print</button>
+          </div>
+          <div class="flex items-center gap-2 text-sm">
+            <button class="rounded border border-[#8a8886] bg-white px-3 py-2 font-semibold hover:bg-msgray">−</button>
+            <span class="w-14 text-center font-semibold">85%</span>
+            <button class="rounded border border-[#8a8886] bg-white px-3 py-2 font-semibold hover:bg-msgray">+</button>
+          </div>
+        </div>
+
+        <div class="h-full overflow-auto px-10 pb-10 pt-24">
+          <div class="mx-auto min-w-[1180px]">
+            <div class="flex justify-center">
+              <div class="w-72 rounded border-2 border-msblue bg-white p-4 text-center shadow-ms">
+                <div class="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-[#c7e0f4] text-lg font-semibold text-msblueDark">BD</div>
+                <p class="font-semibold text-msblueDark">Ban Giám Đốc</p>
+                <p class="mt-1 text-xs text-[#605e5c]">Executive Board</p>
+                <div class="mt-3 flex justify-center gap-2 text-xs">
+                  <span class="rounded bg-[#e5f1fb] px-2 py-1 font-semibold text-msblueDark">8 people</span>
+                  <span class="rounded bg-[#dff6dd] px-2 py-1 font-semibold text-[#107c10]">Active</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="mx-auto h-10 w-px bg-[#c8c6c4]"></div>
+            <div class="mx-auto h-px w-[820px] bg-[#c8c6c4]"></div>
+
+            <div class="grid grid-cols-3 gap-10">
+              <div>
+                <div class="mx-auto h-10 w-px bg-[#c8c6c4]"></div>
+                <div class="rounded border border-[#107c10] bg-white p-4 text-center shadow-sm">
+                  <div class="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded bg-[#dff6dd] text-xl">🏥</div>
+                  <p class="font-semibold">Khối Y tế</p>
+                  <p class="mt-1 text-xs text-[#605e5c]">Medical block</p>
+                  <div class="mt-3 flex justify-center gap-2 text-xs">
+                    <span class="rounded bg-msgray px-2 py-1">842 people</span>
+                    <span class="rounded bg-[#fff4ce] px-2 py-1 text-[#8a6100]">14 open</span>
+                  </div>
+                </div>
+                <div class="mx-auto h-8 w-px bg-[#c8c6c4]"></div>
+                <div class="grid grid-cols-2 gap-4">
+                  <div class="rounded border border-msborder bg-white p-3 shadow-sm">
+                    <p class="font-semibold">Khoa Tim mạch</p>
+                    <p class="text-xs text-[#605e5c]">126 people · 4 open</p>
+                    <p class="mt-2 text-xs text-msblueDark">Manager: Lê Minh Trang</p>
+                  </div>
+                  <div class="rounded border border-msborder bg-white p-3 shadow-sm">
+                    <p class="font-semibold">Khoa Cấp cứu</p>
+                    <p class="text-xs text-[#605e5c]">98 people · 3 open</p>
+                    <p class="mt-2 text-xs text-msblueDark">Manager: Trần Quốc Huy</p>
+                  </div>
+                  <div class="rounded border border-msborder bg-white p-3 shadow-sm">
+                    <p class="font-semibold">Khoa Nội tổng hợp</p>
+                    <p class="text-xs text-[#605e5c]">156 people · 2 open</p>
+                    <p class="mt-2 text-xs text-msblueDark">Manager: Phạm Thu Hà</p>
+                  </div>
+                  <div class="rounded border border-msborder bg-white p-3 shadow-sm">
+                    <p class="font-semibold">Khoa Cận lâm sàng</p>
+                    <p class="text-xs text-[#605e5c]">112 people · 5 open</p>
+                    <p class="mt-2 text-xs text-msblueDark">Manager: Nguyễn Minh Đức</p>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div class="mx-auto h-10 w-px bg-[#c8c6c4]"></div>
+                <div class="rounded border border-[#ca5010] bg-white p-4 text-center shadow-sm">
+                  <div class="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded bg-[#fff4ce] text-xl">👥</div>
+                  <p class="font-semibold">Khối Hành chính</p>
+                  <p class="mt-1 text-xs text-[#605e5c]">Administration block</p>
+                  <div class="mt-3 flex justify-center gap-2 text-xs">
+                    <span class="rounded bg-msgray px-2 py-1">238 people</span>
+                    <span class="rounded bg-[#fff4ce] px-2 py-1 text-[#8a6100]">3 open</span>
+                  </div>
+                </div>
+                <div class="mx-auto h-8 w-px bg-[#c8c6c4]"></div>
+                <div class="grid grid-cols-2 gap-4">
+                  <div class="rounded border border-msborder bg-white p-3 shadow-sm">
+                    <p class="font-semibold">Phòng Nhân sự</p>
+                    <p class="text-xs text-[#605e5c]">32 people · 2 open</p>
+                    <p class="mt-2 text-xs text-msblueDark">Manager: Nguyễn Hoài An</p>
+                  </div>
+                  <div class="rounded border border-msborder bg-white p-3 shadow-sm">
+                    <p class="font-semibold">Phòng Tài chính</p>
+                    <p class="text-xs text-[#605e5c]">42 people · 1 open</p>
+                    <p class="mt-2 text-xs text-msblueDark">Manager: Trần Thu Ngân</p>
+                  </div>
+                  <div class="rounded border border-msborder bg-white p-3 shadow-sm">
+                    <p class="font-semibold">Phòng Hành chính</p>
+                    <p class="text-xs text-[#605e5c]">55 people · 0 open</p>
+                    <p class="mt-2 text-xs text-msblueDark">Manager: Lê Minh Khoa</p>
+                  </div>
+                  <div class="rounded border border-msborder bg-white p-3 shadow-sm">
+                    <p class="font-semibold">Phòng QLCL</p>
+                    <p class="text-xs text-[#605e5c]">24 people · 0 open</p>
+                    <p class="mt-2 text-xs text-msblueDark">Manager: Võ Thanh Bình</p>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div class="mx-auto h-10 w-px bg-[#c8c6c4]"></div>
+                <div class="rounded border border-[#5c2d91] bg-white p-4 text-center shadow-sm">
+                  <div class="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded bg-[#ede7f6] text-xl">🛠</div>
+                  <p class="font-semibold">Khối Hỗ trợ</p>
+                  <p class="mt-1 text-xs text-[#605e5c]">Support services</p>
+                  <div class="mt-3 flex justify-center gap-2 text-xs">
+                    <span class="rounded bg-msgray px-2 py-1">168 people</span>
+                    <span class="rounded bg-[#fff4ce] px-2 py-1 text-[#8a6100]">6 open</span>
+                  </div>
+                </div>
+                <div class="mx-auto h-8 w-px bg-[#c8c6c4]"></div>
+                <div class="grid grid-cols-2 gap-4">
+                  <div class="rounded border-2 border-msblue bg-white p-3 shadow-ms">
+                    <p class="font-semibold text-msblueDark">Phòng IT</p>
+                    <p class="text-xs text-[#605e5c]">28 people · 3 open</p>
+                    <p class="mt-2 text-xs text-msblueDark">Manager: Phạm Hữu Phúc</p>
+                  </div>
+                  <div class="rounded border border-msborder bg-white p-3 shadow-sm">
+                    <p class="font-semibold">CSKH</p>
+                    <p class="text-xs text-[#605e5c]">48 people · 1 open</p>
+                    <p class="mt-2 text-xs text-msblueDark">Manager: Trần Mỹ Linh</p>
+                  </div>
+                  <div class="rounded border border-msborder bg-white p-3 shadow-sm">
+                    <p class="font-semibold">Kho vận</p>
+                    <p class="text-xs text-[#605e5c]">36 people · 1 open</p>
+                    <p class="mt-2 text-xs text-msblueDark">Manager: Nguyễn Quốc Việt</p>
+                  </div>
+                  <div class="rounded border border-msborder bg-white p-3 shadow-sm">
+                    <p class="font-semibold">Bảo trì</p>
+                    <p class="text-xs text-[#605e5c]">31 people · 1 open</p>
+                    <p class="mt-2 text-xs text-msblueDark">Manager: Đỗ Minh Tâm</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="absolute bottom-4 left-4 rounded border border-msborder bg-white p-3 shadow-ms">
+          <p class="mb-2 text-xs font-semibold text-[#605e5c]">Mini map</p>
+          <div class="h-28 w-44 rounded bg-[#faf9f8] p-2">
+            <div class="mx-auto h-4 w-16 rounded bg-msblue"></div>
+            <div class="mx-auto my-2 h-px w-32 bg-[#c8c6c4]"></div>
+            <div class="grid grid-cols-3 gap-2">
+              <div class="h-12 rounded bg-[#dff6dd]"></div>
+              <div class="h-12 rounded bg-[#fff4ce]"></div>
+              <div class="h-12 rounded border-2 border-msblue bg-[#ede7f6]"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="overflow-auto border-l border-msborder bg-white">
+        <section class="border-b border-msborder px-5 py-4">
+          <h2 class="text-lg font-semibold">Department details</h2>
+          <p class="mt-1 text-sm text-[#605e5c]">Đơn vị đang chọn</p>
+        </section>
+
+        <section class="p-5">
+          <div class="mb-5 flex items-center gap-3">
+            <div class="flex h-14 w-14 items-center justify-center rounded bg-[#c7e0f4] text-lg font-semibold text-msblueDark">IT</div>
+            <div>
+              <p class="font-semibold">Phòng Công nghệ thông tin</p>
+              <p class="text-sm text-[#605e5c]">Support Services / Level 2</p>
+            </div>
+          </div>
+
+          <div class="space-y-3 text-sm">
+            <div class="flex justify-between border-b border-msborder pb-3"><span class="text-[#605e5c]">Department code</span><span class="font-semibold">IT</span></div>
+            <div class="flex justify-between border-b border-msborder pb-3"><span class="text-[#605e5c]">Manager</span><span class="font-semibold text-msblueDark">Phạm Hữu Phúc</span></div>
+            <div class="flex justify-between border-b border-msborder pb-3"><span class="text-[#605e5c]">Employees</span><span class="font-semibold">28</span></div>
+            <div class="flex justify-between border-b border-msborder pb-3"><span class="text-[#605e5c]">Open positions</span><span class="font-semibold text-[#ca5010]">3</span></div>
+            <div class="flex justify-between"><span class="text-[#605e5c]">Status</span><span class="font-semibold text-[#107c10]">Active</span></div>
+          </div>
+
+          <div class="mt-5 grid grid-cols-2 gap-2">
+            <button class="rounded border border-[#8a8886] bg-white px-4 py-2 text-sm font-semibold hover:bg-msgray">View</button>
+            <button class="rounded bg-msblue px-4 py-2 text-sm font-semibold text-white hover:bg-msblueDark">Edit</button>
+          </div>
+        </section>
+
+        <section class="border-t border-msborder p-5">
+          <h3 class="mb-3 font-semibold">Direct employees</h3>
+          <div class="space-y-2 text-sm">
+            <div class="flex items-center gap-3 rounded bg-[#faf9f8] p-3">
+              <div class="flex h-9 w-9 items-center justify-center rounded-full bg-[#c7e0f4] font-semibold text-msblueDark">PH</div>
+              <div><p class="font-semibold">Phạm Hữu Phúc</p><p class="text-xs text-[#605e5c]">IT Manager</p></div>
+            </div>
+            <div class="flex items-center gap-3 rounded bg-[#faf9f8] p-3">
+              <div class="flex h-9 w-9 items-center justify-center rounded-full bg-[#dff6dd] font-semibold text-[#107c10]">AN</div>
+              <div><p class="font-semibold">Anh Nguyễn</p><p class="text-xs text-[#605e5c]">System Engineer</p></div>
+            </div>
+            <div class="flex items-center gap-3 rounded bg-[#faf9f8] p-3">
+              <div class="flex h-9 w-9 items-center justify-center rounded-full bg-[#fff4ce] font-semibold text-[#8a6100]">TL</div>
+              <div><p class="font-semibold">Trúc Lê</p><p class="text-xs text-[#605e5c]">Application Support</p></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="border-t border-msborder p-5">
+          <h3 class="mb-3 font-semibold">Insights</h3>
+          <div class="space-y-3 text-sm">
+            <div class="rounded bg-[#fff4ce] p-3">
+              <p class="font-semibold text-[#8a6100]">Headcount gap</p>
+              <p class="mt-1 text-[#605e5c]">Thiếu 3 vị trí so với định biên hiện tại.</p>
+            </div>
+            <div class="rounded bg-[#e5f1fb] p-3">
+              <p class="font-semibold text-msblueDark">Access sync</p>
+              <p class="mt-1 text-[#605e5c]">Department claim đã đồng bộ Auth Server.</p>
+            </div>
+          </div>
+        </section>
+      </aside>
+    </main>
+  </div>
+
+
+</body></html>
