@@ -1,0 +1,455 @@
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CORS Policy Issue &amp; Solution Documentation</title>
+  <!-- Google Fonts: Outfit & Space Grotesk -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&amp;family=Space+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-gradient: radial-gradient(circle at 50% 50%, #151528, #0b0b14);
+      --card-bg: rgba(26, 26, 46, 0.65);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --glow-blue: rgba(0, 210, 255, 0.15);
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --primary: #00d2ff;
+      --primary-hover: #33d9ff;
+      --secondary: #9b5de5;
+      --error: #ff4757;
+      --success: #2ed573;
+      --code-bg: rgba(10, 10, 20, 0.85);
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      overflow-x: hidden;
+    }
+    .background-decor {
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(155, 93, 229, 0.1) 0%, rgba(0, 0, 0, 0) 70%);
+      top: -10%;
+      right: -10%;
+      z-index: -1;
+      pointer-events: none;
+    }
+    .background-decor-left {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 210, 255, 0.08) 0%, rgba(0, 0, 0, 0) 70%);
+      bottom: -20%;
+      left: -20%;
+      z-index: -1;
+      pointer-events: none;
+    }
+    .container {
+      width: 100%;
+      max-width: 900px;
+      z-index: 10;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255, 71, 87, 0.1);
+      border: 1px solid rgba(255, 71, 87, 0.2);
+      color: var(--error);
+      padding: 0.4rem 1rem;
+      border-radius: 100px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      box-shadow: 0 4px 12px rgba(255, 71, 87, 0.1);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.4); }
+      70% { box-shadow: 0 0 0 8px rgba(255, 71, 87, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(255, 71, 87, 0); }
+    }
+    h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #fff 30%, #a5b4fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.5px;
+    }
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      font-weight: 300;
+    }
+    /* Glassmorphism Card */
+    .glass-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    /* Tabs Navigation */
+    .tabs-nav {
+      display: flex;
+      gap: 0.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 2rem;
+      padding-bottom: 0.5rem;
+      position: relative;
+    }
+    .tab-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      padding: 0.8rem 1.2rem;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border-radius: 8px;
+      position: relative;
+    }
+    .tab-btn:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.04);
+    }
+    .tab-btn.active {
+      color: var(--primary);
+    }
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -0.6rem;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--primary);
+      box-shadow: 0 0 10px var(--primary);
+      border-radius: 100px;
+    }
+    /* Tabs Content */
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.4s ease;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    /* General Typography inside Content */
+    h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    p {
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+      font-size: 1rem;
+    }
+    p strong {
+      color: var(--text-main);
+    }
+    /* Warning & Success Banners */
+    .banner {
+      padding: 1.2rem 1.5rem;
+      border-radius: 14px;
+      margin-bottom: 1.5rem;
+      display: flex;
+      gap: 1rem;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    .banner.warning {
+      background: rgba(255, 71, 87, 0.08);
+      border: 1px solid rgba(255, 71, 87, 0.15);
+      color: #ff6b81;
+    }
+    .banner.success {
+      background: rgba(46, 213, 115, 0.08);
+      border: 1px solid rgba(46, 213, 115, 0.15);
+      color: #2ecc71;
+    }
+    .banner-icon {
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+    /* Code Blocks */
+    .code-container {
+      position: relative;
+      margin-bottom: 1.5rem;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      overflow: hidden;
+    }
+    .code-header {
+      background: rgba(255, 255, 255, 0.02);
+      padding: 0.6rem 1rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .copy-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+    .copy-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--primary);
+    }
+    pre {
+      background: var(--code-bg);
+      padding: 1.2rem;
+      overflow-x: auto;
+      font-family: 'Space Grotesk', monospace;
+      font-size: 0.9rem;
+    }
+    code {
+      color: #e2e8f0;
+    }
+    .keyword { color: #f43f5e; }
+    .string { color: #10b981; }
+    .property { color: #3b82f6; }
+    .comment { color: #64748b; font-style: italic; }
+    /* Steps List */
+    .steps-list {
+      list-style-type: none;
+      margin-bottom: 1.5rem;
+    }
+    .step-item {
+      position: relative;
+      padding-left: 2.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .step-number {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1.7rem;
+      height: 1.7rem;
+      border-radius: 50%;
+      background: rgba(0, 210, 255, 0.1);
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+    .step-title {
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 0.3rem;
+    }
+    /* Footer styling */
+    footer {
+      text-align: center;
+      margin-top: 2rem;
+      color: rgba(255, 255, 255, 0.25);
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="background-decor"></div>
+  <div class="background-decor-left"></div>
+  <div class="container">
+    <header>
+      <div class="badge">
+        <span class="banner-icon">⚠️</span> CORS Policy Blocked
+      </div>
+      <h1>CORS Error &amp; Proxy Solution</h1>
+      <p class="subtitle">Detailed post-mortem and resolution for development API requests</p>
+    </header>
+    <main class="glass-card">
+      <nav class="tabs-nav">
+        <button class="tab-btn active" onclick="switchTab(event, 'overview')">Overview</button>
+        <button class="tab-btn" onclick="switchTab(event, 'root-cause')">Root Cause</button>
+        <button class="tab-btn" onclick="switchTab(event, 'solution')">The Solution</button>
+        <button class="tab-btn" onclick="switchTab(event, 'how-to-run')">How to Apply</button>
+      </nav>
+      <!-- Overview Tab -->
+      <section id="overview" class="tab-content active">
+        <h3>📊 Incident Summary</h3>
+        <p>
+          While running the frontend application locally on <strong>http://localhost:4200</strong>, API calls made to the GraphQL backend endpoint at <strong>https://192.168.20.21/api/graphql</strong> were blocked by the browser.
+        </p>
+        <div class="banner warning">
+          <div class="banner-icon">🚨</div>
+          <div>
+            <strong>Blocked Error Message:</strong><br>
+            <em>"Access to fetch at 'https://192.168.20.21/api/graphql' from origin 'http://localhost:4200' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource."</em>
+          </div>
+        </div>
+        <p>
+          To solve this without modifying backend server headers immediately, we configured an <strong>Angular CLI Development Proxy</strong>. This routes backend calls locally through node, bypassing the browser's origin restrictions.
+        </p>
+      </section>
+      <!-- Root Cause Tab -->
+      <section id="root-cause" class="tab-content">
+        <h3>🔍 Why CORS Blocks Local Development</h3>
+        <p>
+          <strong>CORS (Cross-Origin Resource Sharing)</strong> is a browser security mechanism designed to prevent malicious scripts on one origin (e.g., local server) from reading sensitive data from another origin (e.g., your backend server).
+        </p>
+        
+        <p>
+          When the Angular application (origin: <code>http://localhost:4200</code>) requests data from the backend (origin: <code>https://192.168.20.21</code>), the browser performs a <strong>Preflight request</strong> (an HTTP OPTIONS request) to check if the server permits cross-origin traffic from localhost. 
+        </p>
+        
+        <p>
+          Because the backend did not return the <code>Access-Control-Allow-Origin: http://localhost:4200</code> header, the browser blocked the response, throwing a console error.
+        </p>
+      </section>
+      <!-- Solution Tab -->
+      <section id="solution" class="tab-content">
+        <h3>🛠️ Dev Server Proxy Setup</h3>
+        <p>
+          We introduced a local developer proxy. Instead of sending absolute requests to the IP address directly, the Angular application sends relative requests to its own origin (<code>/api/graphql</code>). The Angular dev-server (Node) intercepts this request and proxies it directly to the backend.
+        </p>
+        <div class="banner success">
+          <div class="banner-icon">✓</div>
+          <div>
+            <strong>Benefit:</strong> The browser sees a request to <code>http://localhost:4200/api/graphql</code> (same origin), so CORS restrictions do not trigger. Node then issues the backend request server-to-server.
+          </div>
+        </div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>proxy.conf.json (Project Root)</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre><code>{
+  <span class="property">"/api"</span>: {
+    <span class="property">"target"</span>: <span class="string">"https://192.168.20.21"</span>,
+    <span class="property">"secure"</span>: <span class="keyword">false</span>, <span class="comment">// Allows self-signed certificates</span>
+    <span class="property">"changeOrigin"</span>: <span class="keyword">true</span>, <span class="comment">// Changes host header to backend target</span>
+    <span class="property">"logLevel"</span>: <span class="string">"debug"</span>
+  }
+}</code></pre>
+        </div>
+        <div class="code-container">
+          <div class="code-header">
+            <span>angular.json (Configuration)</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre><code><span class="comment">// under architect &gt; serve &gt; options</span>
+<span class="property">"options"</span>: {
+  <span class="property">"proxyConfig"</span>: <span class="string">"proxy.conf.json"</span>
+}</code></pre>
+        </div>
+      </section>
+      <!-- How to Run Tab -->
+      <section id="how-to-run" class="tab-content">
+        <h3>🚀 Steps to Run and Verify</h3>
+        <ul class="steps-list">
+          <li class="step-item">
+            <div class="step-number">1</div>
+            <div class="step-title">Verify Dev Environment Variable</div>
+            <p>Ensure that <code>src/environments/environment.development.ts</code> points to the relative path:</p>
+            <div class="code-container" style="margin-bottom: 0.5rem;">
+              <pre><code><span class="keyword">export const</span> environment = {
+  production: <span class="keyword">false</span>,
+  graphqlUrl: <span class="string">'/api/graphql'</span>
+};</code></pre>
+            </div>
+          </li>
+          <li class="step-item">
+            <div class="step-number">2</div>
+            <div class="step-title">Restart Angular Dev Server</div>
+            <p>The dev server needs to reload the new configuration. Kill any running server and start it again:</p>
+            <div class="code-container" style="margin-bottom: 0.5rem;">
+              <pre><code>npm run start</code></pre>
+            </div>
+          </li>
+          <li class="step-item">
+            <div class="step-number">3</div>
+            <div class="step-title">Validate Network Logs</div>
+            <p>Open Developer Tools in the browser, check the Network tab. You will see requests going to <code>http://localhost:4200/api/graphql</code> returning successful status codes (200 OK).</p>
+          </li>
+        </ul>
+      </section>
+    </main>
+    <footer>
+      Documented by Antigravity • Pair Programming Workspace
+    </footer>
+  </div>
+  <script>
+    function switchTab(event, tabId) {
+      // Deactivate all tabs
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+      
+      // Activate selected tab
+      event.currentTarget.classList.add('active');
+      document.getElementById(tabId).classList.add('active');
+    }
+    function copyCode(button) {
+      const codeBlock = button.parentElement.nextElementSibling.querySelector('code');
+      const textToCopy = codeBlock.textContent;
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        const originalText = button.textContent;
+        button.textContent = 'Copied!';
+        button.style.borderColor = 'var(--success)';
+        button.style.color = '#fff';
+        
+        setTimeout(() => {
+          button.textContent = originalText;
+          button.style.borderColor = '';
+          button.style.color = '';
+        }, 2000);
+      });
+    }
+  </script>
+
+</body></html>
