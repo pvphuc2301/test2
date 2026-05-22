@@ -1,0 +1,262 @@
+<html lang="vi"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Internal App Launcher</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          boxShadow: {
+            soft: '0 18px 45px rgba(15, 23, 42, 0.08)'
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-slate-100 text-slate-900">
+  <div class="min-h-screen">
+    <header class="sticky top-0 z-30 border-b border-slate-200 bg-white/80 backdrop-blur-xl">
+      <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4">
+        <div class="flex items-center gap-3">
+          <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-600 text-lg font-black text-white shadow-lg shadow-blue-200">
+            IP
+          </div>
+          <div>
+            <h1 class="text-lg font-black tracking-tight">Internal App Launcher</h1>
+            <p class="text-xs font-medium text-slate-500">Truy cập nhanh các hệ thống nội bộ</p>
+          </div>
+        </div>
+
+        <div class="hidden flex-1 md:block">
+          <div class="mx-auto flex max-w-2xl items-center gap-3 rounded-full border border-slate-200 bg-slate-50 px-4 py-3 shadow-sm">
+            <span>🔎</span>
+            <input class="w-full bg-transparent text-sm outline-none placeholder:text-slate-400" placeholder="Tìm EMR, HRM, Report, File Hub, Workflow...">
+            <kbd class="rounded-lg border border-slate-200 bg-white px-2 py-1 text-xs font-bold text-slate-400">Ctrl K</kbd>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-bold shadow-sm hover:bg-slate-50">🔔</button>
+          <button class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-bold shadow-sm hover:bg-slate-50">🌙</button>
+          <div class="flex items-center gap-2 rounded-full border border-slate-200 bg-white py-2 pl-2 pr-4 shadow-sm">
+            <div class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 font-black text-blue-700">E</div>
+            <span class="hidden text-sm font-bold sm:inline">Ethan</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="mx-auto max-w-7xl px-6 py-8">
+      <section class="mb-8 overflow-hidden rounded-[2rem] bg-gradient-to-br from-blue-700 via-sky-600 to-cyan-500 p-8 text-white shadow-soft">
+        <div class="grid gap-8 lg:grid-cols-[1.4fr_0.8fr] lg:items-center">
+          <div>
+            <span class="mb-4 inline-flex rounded-full bg-white/15 px-4 py-2 text-sm font-bold ring-1 ring-white/30">Digital Workplace</span>
+            <h2 class="max-w-2xl text-4xl font-black tracking-tight md:text-5xl">Mở nhanh mọi hệ thống nội bộ từ một nơi</h2>
+            <p class="mt-4 max-w-2xl text-sm leading-7 text-white/85 md:text-base">App Launcher giúp nhân viên truy cập EMR, HRM, Report, eSign, File Hub, Workflow và Admin Portal bằng SSO, phân quyền theo vai trò và gợi ý ứng dụng thường dùng.</p>
+            <div class="mt-6 flex flex-wrap gap-3">
+              <button class="rounded-full bg-white px-5 py-3 text-sm font-black text-blue-700 shadow-lg hover:bg-blue-50">Mở EMR</button>
+              <button class="rounded-full bg-white/15 px-5 py-3 text-sm font-black text-white ring-1 ring-white/35 hover:bg-white/20">Quản lý ứng dụng</button>
+            </div>
+          </div>
+
+          <div class="rounded-3xl bg-white/15 p-5 ring-1 ring-white/25 backdrop-blur">
+            <div class="mb-4 flex items-center justify-between">
+              <p class="font-bold">Truy cập hôm nay</p>
+              <span class="rounded-full bg-emerald-400/20 px-3 py-1 text-xs font-black text-emerald-100">Online</span>
+            </div>
+            <div class="grid grid-cols-3 gap-3 text-center">
+              <div class="rounded-2xl bg-white/15 p-4">
+                <div class="text-2xl font-black">12</div>
+                <div class="text-xs text-white/75">Apps</div>
+              </div>
+              <div class="rounded-2xl bg-white/15 p-4">
+                <div class="text-2xl font-black">248</div>
+                <div class="text-xs text-white/75">Users</div>
+              </div>
+              <div class="rounded-2xl bg-white/15 p-4">
+                <div class="text-2xl font-black">99.9%</div>
+                <div class="text-xs text-white/75">Health</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div class="flex flex-wrap gap-2">
+          <button class="rounded-full bg-slate-900 px-4 py-2 text-sm font-bold text-white">Tất cả</button>
+          <button class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-bold text-slate-600 hover:bg-slate-50">Y tế</button>
+          <button class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-bold text-slate-600 hover:bg-slate-50">Nhân sự</button>
+          <button class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-bold text-slate-600 hover:bg-slate-50">Báo cáo</button>
+          <button class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-bold text-slate-600 hover:bg-slate-50">Hệ thống</button>
+          <button class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-bold text-slate-600 hover:bg-slate-50">Yêu thích</button>
+        </div>
+        <button class="rounded-full bg-blue-600 px-5 py-3 text-sm font-black text-white shadow-lg shadow-blue-200 hover:bg-blue-700">+ Thêm ứng dụng</button>
+      </section>
+
+      <div class="grid gap-6 lg:grid-cols-[1fr_340px]">
+        <section>
+          <div class="mb-4 flex items-center justify-between">
+            <h3 class="text-xl font-black">Ứng dụng nội bộ</h3>
+            <p class="text-sm font-medium text-slate-500">12 ứng dụng khả dụng</p>
+          </div>
+
+          <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+            <article class="group rounded-3xl border border-slate-200 bg-white p-5 shadow-soft transition hover:-translate-y-1 hover:shadow-xl">
+              <div class="mb-5 flex items-start justify-between">
+                <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 text-3xl">🏥</div>
+                <button class="rounded-full bg-amber-50 px-3 py-1 text-xs font-black text-amber-600">★</button>
+              </div>
+              <h4 class="text-lg font-black">EMR</h4>
+              <p class="mt-1 text-sm leading-6 text-slate-500">Bệnh án điện tử, hồ sơ bệnh nhân, phiếu điều trị và ký số.</p>
+              <div class="mt-5 flex items-center justify-between">
+                <span class="rounded-full bg-emerald-50 px-3 py-1 text-xs font-black text-emerald-600">Online</span>
+                <button class="rounded-full bg-slate-900 px-4 py-2 text-sm font-bold text-white group-hover:bg-blue-600">Mở app</button>
+              </div>
+            </article>
+
+            <article class="group rounded-3xl border border-slate-200 bg-white p-5 shadow-soft transition hover:-translate-y-1 hover:shadow-xl">
+              <div class="mb-5 flex items-start justify-between">
+                <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-violet-50 text-3xl">👥</div>
+                <button class="rounded-full bg-slate-50 px-3 py-1 text-xs font-black text-slate-400">☆</button>
+              </div>
+              <h4 class="text-lg font-black">HRM</h4>
+              <p class="mt-1 text-sm leading-6 text-slate-500">Quản lý nhân sự, phòng ban, chức vụ, hợp đồng và nghỉ phép.</p>
+              <div class="mt-5 flex items-center justify-between">
+                <span class="rounded-full bg-emerald-50 px-3 py-1 text-xs font-black text-emerald-600">Online</span>
+                <button class="rounded-full bg-slate-900 px-4 py-2 text-sm font-bold text-white group-hover:bg-blue-600">Mở app</button>
+              </div>
+            </article>
+
+            <article class="group rounded-3xl border border-slate-200 bg-white p-5 shadow-soft transition hover:-translate-y-1 hover:shadow-xl">
+              <div class="mb-5 flex items-start justify-between">
+                <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-cyan-50 text-3xl">📊</div>
+                <button class="rounded-full bg-amber-50 px-3 py-1 text-xs font-black text-amber-600">★</button>
+              </div>
+              <h4 class="text-lg font-black">Report Center</h4>
+              <p class="mt-1 text-sm leading-6 text-slate-500">Báo cáo vận hành, BI dashboard, xuất Excel/PDF và lịch chạy tự động.</p>
+              <div class="mt-5 flex items-center justify-between">
+                <span class="rounded-full bg-emerald-50 px-3 py-1 text-xs font-black text-emerald-600">Online</span>
+                <button class="rounded-full bg-slate-900 px-4 py-2 text-sm font-bold text-white group-hover:bg-blue-600">Mở app</button>
+              </div>
+            </article>
+
+            <article class="group rounded-3xl border border-slate-200 bg-white p-5 shadow-soft transition hover:-translate-y-1 hover:shadow-xl">
+              <div class="mb-5 flex items-start justify-between">
+                <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-rose-50 text-3xl">✍️</div>
+                <button class="rounded-full bg-amber-50 px-3 py-1 text-xs font-black text-amber-600">★</button>
+              </div>
+              <h4 class="text-lg font-black">eSign</h4>
+              <p class="mt-1 text-sm leading-6 text-slate-500">Ký số hồ sơ, xác thực chữ ký, batch signing và audit log.</p>
+              <div class="mt-5 flex items-center justify-between">
+                <span class="rounded-full bg-emerald-50 px-3 py-1 text-xs font-black text-emerald-600">Online</span>
+                <button class="rounded-full bg-slate-900 px-4 py-2 text-sm font-bold text-white group-hover:bg-blue-600">Mở app</button>
+              </div>
+            </article>
+
+            <article class="group rounded-3xl border border-slate-200 bg-white p-5 shadow-soft transition hover:-translate-y-1 hover:shadow-xl">
+              <div class="mb-5 flex items-start justify-between">
+                <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-orange-50 text-3xl">📁</div>
+                <button class="rounded-full bg-slate-50 px-3 py-1 text-xs font-black text-slate-400">☆</button>
+              </div>
+              <h4 class="text-lg font-black">File Hub</h4>
+              <p class="mt-1 text-sm leading-6 text-slate-500">Kho tài liệu nội bộ, phân quyền, preview PDF và quản lý phiên bản.</p>
+              <div class="mt-5 flex items-center justify-between">
+                <span class="rounded-full bg-emerald-50 px-3 py-1 text-xs font-black text-emerald-600">Online</span>
+                <button class="rounded-full bg-slate-900 px-4 py-2 text-sm font-bold text-white group-hover:bg-blue-600">Mở app</button>
+              </div>
+            </article>
+
+            <article class="group rounded-3xl border border-slate-200 bg-white p-5 shadow-soft transition hover:-translate-y-1 hover:shadow-xl">
+              <div class="mb-5 flex items-start justify-between">
+                <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-indigo-50 text-3xl">🔐</div>
+                <button class="rounded-full bg-slate-50 px-3 py-1 text-xs font-black text-slate-400">☆</button>
+              </div>
+              <h4 class="text-lg font-black">Auth Server</h4>
+              <p class="mt-1 text-sm leading-6 text-slate-500">SSO, user, role, permission, client apps và security policy.</p>
+              <div class="mt-5 flex items-center justify-between">
+                <span class="rounded-full bg-emerald-50 px-3 py-1 text-xs font-black text-emerald-600">Online</span>
+                <button class="rounded-full bg-slate-900 px-4 py-2 text-sm font-bold text-white group-hover:bg-blue-600">Mở app</button>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <aside class="space-y-6">
+          <section class="rounded-3xl border border-slate-200 bg-white p-5 shadow-soft">
+            <div class="mb-4 flex items-center justify-between">
+              <h3 class="font-black">Ứng dụng gần đây</h3>
+              <a href="#" class="text-sm font-bold text-blue-600">Xem thêm</a>
+            </div>
+
+            <div class="space-y-3">
+              <div class="flex items-center gap-3 rounded-2xl bg-slate-50 p-3">
+                <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-100 text-xl">🏥</div>
+                <div class="flex-1">
+                  <p class="font-black">EMR</p>
+                  <p class="text-xs text-slate-500">5 phút trước</p>
+                </div>
+                <button class="text-sm font-black text-blue-600">Mở</button>
+              </div>
+              <div class="flex items-center gap-3 rounded-2xl bg-slate-50 p-3">
+                <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-cyan-100 text-xl">📊</div>
+                <div class="flex-1">
+                  <p class="font-black">Report Center</p>
+                  <p class="text-xs text-slate-500">32 phút trước</p>
+                </div>
+                <button class="text-sm font-black text-blue-600">Mở</button>
+              </div>
+              <div class="flex items-center gap-3 rounded-2xl bg-slate-50 p-3">
+                <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-rose-100 text-xl">✍️</div>
+                <div class="flex-1">
+                  <p class="font-black">eSign</p>
+                  <p class="text-xs text-slate-500">Hôm nay</p>
+                </div>
+                <button class="text-sm font-black text-blue-600">Mở</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="rounded-3xl border border-slate-200 bg-white p-5 shadow-soft">
+            <div class="mb-4 flex items-center justify-between">
+              <h3 class="font-black">Trạng thái hệ thống</h3>
+              <span class="rounded-full bg-emerald-50 px-3 py-1 text-xs font-black text-emerald-600">Stable</span>
+            </div>
+
+            <div class="space-y-4">
+              <div>
+                <div class="mb-2 flex justify-between text-sm font-bold text-slate-600">
+                  <span>EMR API</span><span>99%</span>
+                </div>
+                <div class="h-2 rounded-full bg-slate-100"><div class="h-2 w-[99%] rounded-full bg-blue-600"></div></div>
+              </div>
+              <div>
+                <div class="mb-2 flex justify-between text-sm font-bold text-slate-600">
+                  <span>Report Engine</span><span>94%</span>
+                </div>
+                <div class="h-2 rounded-full bg-slate-100"><div class="h-2 w-[94%] rounded-full bg-cyan-500"></div></div>
+              </div>
+              <div>
+                <div class="mb-2 flex justify-between text-sm font-bold text-slate-600">
+                  <span>Auth Server</span><span>100%</span>
+                </div>
+                <div class="h-2 rounded-full bg-slate-100"><div class="h-2 w-full rounded-full bg-emerald-500"></div></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="rounded-3xl border border-slate-200 bg-slate-900 p-5 text-white shadow-soft">
+            <p class="text-sm font-bold text-blue-200">Command Palette</p>
+            <h3 class="mt-2 text-xl font-black">Nhấn Ctrl + K để mở nhanh chức năng</h3>
+            <p class="mt-2 text-sm leading-6 text-slate-300">Ví dụ: mở hồ sơ bệnh nhân, tạo ticket IT, ký hồ sơ, xem báo cáo doanh thu.</p>
+            <button class="mt-5 w-full rounded-2xl bg-white px-4 py-3 text-sm font-black text-slate-900">Mở Command Palette</button>
+          </section>
+        </aside>
+      </div>
+    </main>
+  </div>
+
+
+</body></html>
