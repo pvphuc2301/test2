@@ -1,0 +1,90 @@
+<html lang="vi"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Triển khai OpenIddict, Internal CA, Wildcard SSL và IIS HTTPS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'Segoe UI', 'Arial', 'sans-serif']
+          },
+          colors: {
+            ms: {
+              blue: '#2563eb',
+              dark: '#1f2937',
+              soft: '#eff6ff'
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans">
+  <div class="min-h-screen">
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-30">
+      <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
+        <div>
+          <p class="text-sm text-blue-600 font-semibold">Tài liệu kỹ thuật nội bộ</p>
+          <h1 class="text-xl md:text-2xl font-bold text-slate-900">OpenIddict + Internal CA + Wildcard SSL + IIS HTTPS</h1>
+        </div>
+        <div class="hidden md:flex items-center gap-2 text-sm">
+          <span class="px-3 py-1 rounded-full bg-green-50 text-green-700 border border-green-200">Internal Network</span>
+          <span class="px-3 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200">IIS</span>
+          <span class="px-3 py-1 rounded-full bg-purple-50 text-purple-700 border border-purple-200">OpenSSL</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 py-8 grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8">
+      <aside class="hidden lg:block">
+        <nav class="sticky top-24 bg-white border border-slate-200 rounded-2xl p-4 shadow-sm">
+          <p class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Mục lục</p>
+          <ul class="space-y-2 text-sm">
+            <li><a href="#overview" class="text-slate-700 hover:text-blue-600">1. Tổng quan</a></li>
+            <li><a href="#clients" class="text-slate-700 hover:text-blue-600">2. OpenIddict clients</a></li>
+            <li><a href="#cert-count" class="text-slate-700 hover:text-blue-600">3. Số lượng certificate</a></li>
+            <li><a href="#openssl" class="text-slate-700 hover:text-blue-600">4. Tạo Root CA và wildcard</a></li>
+            <li><a href="#import" class="text-slate-700 hover:text-blue-600">5. Import certificate</a></li>
+            <li><a href="#iis" class="text-slate-700 hover:text-blue-600">6. Binding IIS HTTPS</a></li>
+            <li><a href="#sni" class="text-slate-700 hover:text-blue-600">7. SNI và cảnh báo IIS</a></li>
+            <li><a href="#checklist" class="text-slate-700 hover:text-blue-600">8. Checklist</a></li>
+          </ul>
+        </nav>
+      </aside>
+
+      <section class="space-y-8">
+        <section id="overview" class="bg-white border border-slate-200 rounded-3xl p-6 md:p-8 shadow-sm">
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <p class="text-sm font-semibold text-blue-600">Mục tiêu</p>
+              <h2 class="text-2xl font-bold text-slate-900 mt-1">Thiết kế HTTPS nội bộ cho hệ thống nhiều ứng dụng</h2>
+            </div>
+            <div class="hidden md:block text-4xl">🔐</div>
+          </div>
+
+          <p class="mt-4 text-slate-600 leading-7">
+            Hệ thống sử dụng một AuthServer chạy OpenIddict để đăng nhập tập trung cho các ứng dụng nội bộ gồm HRM, EMR, Report và CMS. Mỗi ứng dụng có frontend và backend riêng. Tài liệu này hướng dẫn cách xác định số lượng OpenIddict client, số lượng SSL certificate cần có, cách tạo một Root CA nội bộ và một wildcard SSL certificate bằng OpenSSL, sau đó import và binding vào IIS.
+          </p>
+
+          <div class="mt-6 grid md:grid-cols-3 gap-4">
+            <div class="rounded-2xl bg-blue-50 border border-blue-100 p-4">
+              <p class="text-sm text-blue-700 font-semibold">Auth</p>
+              <p class="text-lg font-bold text-slate-900 mt-1">OpenIddict</p>
+              <p class="text-sm text-slate-600 mt-2">Quản lý đăng nhập, token, client và scope.</p>
+            </div>
+            <div class="rounded-2xl bg-green-50 border border-green-100 p-4">
+              <p class="text-sm text-green-700 font-semibold">SSL</p>
+              <p class="text-lg font-bold text-slate-900 mt-1">Root CA + Wildcard</p>
+              <p class="text-sm text-slate-600 mt-2">Một CA nội bộ ký một certificate dùng chung cho nhiều subdomain.</p>
+            </div>
+            <div class="rounded-2xl bg-purple-50 border border-purple-100 p-4">
+              <p class="text-sm text-purple-700 font-semibold">Hosting</p>
+              <p class="text-lg font-bold text-slate-900 mt-1">IIS + SNI</p>
+              <p class="text-sm text-slate-600 mt-2">Nhiều website HTTPS dùng chung IP và port 443.</p>
+            </div>
+          </div>
+        </section>
+</section></main></div></body></html>
