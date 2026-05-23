@@ -1,223 +1,394 @@
-<html lang="en"><head>
+<html lang="vi"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Premium Creative Agency</title>
-  <meta name="description" content="We craft high-performance digital experiences for modern brands.">
+  <title>Internal Docs Portal - Categorized</title>
+  <meta name="description" content="Cổng tài liệu nội bộ có phân loại, tìm kiếm và lọc theo nhóm tài liệu.">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     .glass {
-      background: rgba(17, 24, 39, 0.7);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background: rgba(15, 23, 42, 0.82);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
     }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans min-h-screen selection:bg-indigo-500 selection:text-white overflow-x-hidden">
-  <!-- Header -->
-  <header class="glass sticky top-0 z-50 border-b border-slate-900 px-6 py-4 flex justify-between items-center max-w-7xl mx-auto rounded-b-xl">
-    <div class="text-2xl font-black tracking-wider bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">
-      AETHER
-    </div>
-    <nav class="hidden md:flex space-x-8 text-sm font-medium text-slate-400">
-      <a href="index.html" class="hover:text-indigo-400 transition-colors">Home</a>
-      <a href="about.html" class="hover:text-indigo-400 transition-colors">About</a>
-      <a href="#" class="hover:text-indigo-400 transition-colors">Services</a>
-      <a href="#" class="hover:text-indigo-400 transition-colors">Work</a>
-    </nav>
-    <a href="#" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold px-5 py-2.5 rounded-full transition shadow-lg shadow-indigo-600/30">
-      Start Project
-    </a>
-  </header>
-
-  
-
-
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tài liệu nội bộ</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-
-
-
-  <div class="min-h-screen flex">
-    <!-- Sidebar -->
-    <aside class="w-72 bg-white border-r border-slate-200 p-5 hidden md:block">
-      <h1 class="text-xl font-semibold text-blue-700">Internal Docs</h1>
-      <p class="text-sm text-slate-500 mt-1">Danh sách tài liệu GitHub</p>
-
-      <div class="mt-6">
-        <input id="searchInput" type="text" placeholder="Tìm tài liệu..." class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+<body class="bg-slate-100 text-slate-900 font-sans min-h-screen selection:bg-blue-600 selection:text-white">
+  <header class="glass sticky top-0 z-50 border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center text-white font-black">D</div>
+        <div>
+          <div class="text-xl font-black tracking-wide text-white">Internal Docs</div>
+          <div class="text-xs text-slate-400">GitHub Documentation Portal</div>
+        </div>
       </div>
 
-      <div class="mt-6 text-xs text-slate-500">
-        Repo: <span class="font-medium">pvphuc2301/test2</span>
+      <nav class="hidden md:flex space-x-8 text-sm font-medium text-slate-300">
+        <a href="index.html" class="hover:text-cyan-300 transition-colors">Home</a>
+        <a href="#" class="hover:text-cyan-300 transition-colors">Documents</a>
+        <a href="#" class="hover:text-cyan-300 transition-colors">Categories</a>
+        <a href="#" class="hover:text-cyan-300 transition-colors">Settings</a>
+      </nav>
+
+      <a href="https://github.com/pvphuc2301/test2" target="_blank" class="bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-5 py-2.5 rounded-full transition shadow-lg shadow-blue-600/30">
+        Open GitHub
+      </a>
+    </div>
+  </header>
+
+  <div class="min-h-screen flex max-w-7xl mx-auto">
+    <aside class="w-80 bg-white border-r border-slate-200 p-5 hidden lg:block">
+      <div>
+        <h1 class="text-lg font-semibold text-slate-900">Bộ lọc tài liệu</h1>
+        <p class="text-sm text-slate-500 mt-1">Phân loại theo thư mục, từ khóa và định dạng file.</p>
+      </div>
+
+      <div class="mt-6">
+        <label for="searchInput" class="text-xs font-semibold uppercase tracking-wide text-slate-500">Tìm kiếm</label>
+        <input id="searchInput" type="text" placeholder="Tìm theo tên, đường dẫn, tag..." class="mt-2 w-full rounded-xl border border-slate-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+
+      <div class="mt-6">
+        <label for="categoryFilter" class="text-xs font-semibold uppercase tracking-wide text-slate-500">Category</label>
+        <select id="categoryFilter" class="mt-2 w-full rounded-xl border border-slate-300 px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <option value="all">All categories</option>
+        </select>
+      </div>
+
+      <div class="mt-6">
+        <label for="typeFilter" class="text-xs font-semibold uppercase tracking-wide text-slate-500">File type</label>
+        <select id="typeFilter" class="mt-2 w-full rounded-xl border border-slate-300 px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <option value="all">All types</option>
+        </select>
+      </div>
+
+      <div class="mt-6 rounded-2xl bg-slate-50 border border-slate-200 p-4">
+        <div class="text-xs font-semibold uppercase tracking-wide text-slate-500">Repository</div>
+        <div class="mt-2 font-medium text-slate-800">pvphuc2301/test2</div>
+        <div class="mt-1 text-sm text-slate-500">Branch: main</div>
+      </div>
+
+      <div class="mt-6">
+        <div class="text-xs font-semibold uppercase tracking-wide text-slate-500 mb-3">Category Map</div>
+        <div id="categorySummary" class="space-y-2 text-sm"></div>
       </div>
     </aside>
 
-    <!-- Main -->
     <main class="flex-1 p-6">
       <div class="max-w-6xl mx-auto">
-        <!-- Header -->
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div>
-            <h2 class="text-2xl font-semibold">Tài liệu nội bộ</h2>
-            <p class="text-slate-500 mt-1">
-              Click vào tài liệu để mở nội dung từ GitHub.
-            </p>
+        <section class="rounded-3xl bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 p-8 text-white shadow-xl">
+          <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+            <div>
+              <div class="inline-flex items-center rounded-full bg-white/10 px-3 py-1 text-xs text-cyan-100 ring-1 ring-white/10">Documentation Center</div>
+              <h2 class="text-3xl md:text-4xl font-bold mt-4">Tài liệu nội bộ đã phân loại</h2>
+              <p class="text-slate-300 mt-3 max-w-2xl">Tự động đọc file từ GitHub, gán category theo thư mục/từ khóa, hỗ trợ tìm kiếm và lọc nhanh.</p>
+            </div>
+            <div class="grid grid-cols-3 gap-3 text-center min-w-[280px]">
+              <div class="rounded-2xl bg-white/10 p-4 ring-1 ring-white/10">
+                <div id="totalCount" class="text-2xl font-bold">0</div>
+                <div class="text-xs text-slate-300">Files</div>
+              </div>
+              <div class="rounded-2xl bg-white/10 p-4 ring-1 ring-white/10">
+                <div id="categoryCount" class="text-2xl font-bold">0</div>
+                <div class="text-xs text-slate-300">Categories</div>
+              </div>
+              <div class="rounded-2xl bg-white/10 p-4 ring-1 ring-white/10">
+                <div id="typeCount" class="text-2xl font-bold">0</div>
+                <div class="text-xs text-slate-300">Types</div>
+              </div>
+            </div>
           </div>
+        </section>
 
-          <a href="https://github.com/pvphuc2301/test2" target="_blank" class="inline-flex items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-white text-sm hover:bg-blue-700">
-            Mở GitHub Repo
-          </a>
+        <section class="lg:hidden mt-6 grid grid-cols-1 md:grid-cols-3 gap-3">
+          <input id="mobileSearchInput" type="text" placeholder="Tìm tài liệu..." class="rounded-xl border border-slate-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <select id="mobileCategoryFilter" class="rounded-xl border border-slate-300 px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"><option value="all">All categories</option></select>
+          <select id="mobileTypeFilter" class="rounded-xl border border-slate-300 px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"><option value="all">All types</option></select>
+        </section>
+
+        <div class="mt-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div id="status" class="text-sm text-slate-500">Đang tải danh sách tài liệu...</div>
+          <div class="flex items-center gap-2">
+            <button id="resetFilterBtn" class="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Reset filter</button>
+          </div>
         </div>
 
-        <!-- Status -->
-        <div id="status" class="mt-6 text-sm text-slate-500">
-          Đang tải danh sách tài liệu...
-        </div>
-
-        <!-- File List -->
-        <div id="fileList" class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+        <div id="activeFilters" class="mt-4 flex flex-wrap gap-2"></div>
+        <div id="fileList" class="mt-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5"></div>
       </div>
     </main>
   </div>
+
+  <footer class="bg-slate-950 border-t border-slate-900 py-10 text-slate-500 text-sm">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+      <div class="text-slate-300 font-bold text-lg tracking-wider">Internal Docs</div>
+      <div>© 2026 Internal Documentation Portal. Built with Tailwind CSS and GitHub API.</div>
+    </div>
+  </footer>
 
   <script>
     const owner = "pvphuc2301";
     const repo = "test2";
     const branch = "main";
-
     const apiUrl = `https://api.github.com/repos/${owner}/${repo}/git/trees/${branch}?recursive=1`;
+
+    const categoryRules = [
+      { name: "EMR", keywords: ["emr", "benh-an", "benh_su", "medical", "hospital", "cks", "esign", "signature"] },
+      { name: "HRM", keywords: ["hrm", "employee", "nhan-su", "nhansu", "payroll", "attendance", "recruitment"] },
+      { name: "Auth & Security", keywords: ["auth", "openiddict", "identity", "login", "ssl", "certificate", "security", "ca", "sso"] },
+      { name: "Deployment", keywords: ["deploy", "iis", "publish", "docker", "hosting", "server", "windows"] },
+      { name: "Database", keywords: ["sql", "database", "db", "migration", "stored", "procedure", "connection"] },
+      { name: "Reporting", keywords: ["report", "bi", "fastreport", "dashboard", "analytics", "metabase"] },
+      { name: "Integration", keywords: ["api", "zalo", "viber", "sms", "webhook", "integration"] },
+      { name: "Infrastructure", keywords: ["network", "infra", "vpn", "firewall", "storage", "drive"] },
+      { name: "Architecture", keywords: ["architecture", "design", "workflow", "engine", "cms", "platform"] }
+    ];
 
     const fileListEl = document.getElementById("fileList");
     const statusEl = document.getElementById("status");
     const searchInput = document.getElementById("searchInput");
+    const mobileSearchInput = document.getElementById("mobileSearchInput");
+    const categoryFilter = document.getElementById("categoryFilter");
+    const mobileCategoryFilter = document.getElementById("mobileCategoryFilter");
+    const typeFilter = document.getElementById("typeFilter");
+    const mobileTypeFilter = document.getElementById("mobileTypeFilter");
+    const categorySummary = document.getElementById("categorySummary");
+    const activeFilters = document.getElementById("activeFilters");
+    const resetFilterBtn = document.getElementById("resetFilterBtn");
 
     let allFiles = [];
+    let state = { keyword: "", category: "all", type: "all" };
 
     async function loadFiles() {
       try {
         const response = await fetch(apiUrl);
-
-        if (!response.ok) {
-          throw new Error("Không thể tải dữ liệu từ GitHub API");
-        }
+        if (!response.ok) throw new Error("Không thể tải dữ liệu từ GitHub API");
 
         const data = await response.json();
-
         allFiles = data.tree
           .filter(item => item.type === "blob")
-          .filter(item =>
-            item.path.endsWith(".html") ||
-            item.path.endsWith(".md") ||
-            item.path.endsWith(".txt")
-          )
-          .map(item => ({
-            name: item.path.split("/").pop(),
-            path: item.path,
-            type: getFileType(item.path),
-            rawUrl: `https://pvphuc2301.github.io/test2/${item.path.split("/").pop()}`,
-            githubUrl: `https://github.com/${owner}/${repo}/blob/${branch}/${item.path}`
-          }));
+          .filter(item => isSupportedFile(item.path))
+          .map(item => createDocumentModel(item));
 
-        renderFiles(allFiles);
-        statusEl.textContent = `Tìm thấy ${allFiles.length} tài liệu.`;
+        buildFilters(allFiles);
+        updateStats(allFiles);
+        applyFilters();
       } catch (error) {
         statusEl.textContent = error.message;
         statusEl.className = "mt-6 text-sm text-red-600";
       }
     }
 
+    function isSupportedFile(path) {
+      return [".html", ".md", ".txt", ".pdf", ".docx", ".xlsx", ".json", ".sql"].some(ext => path.toLowerCase().endsWith(ext));
+    }
+
+    function createDocumentModel(item) {
+      const name = item.path.split("/").pop();
+      const type = getFileType(item.path);
+      const category = detectCategory(item.path);
+      const tags = createTags(item.path, category, type);
+      const folder = item.path.includes("/") ? item.path.split("/")[0] : "root";
+
+      return {
+        name,
+        path: item.path,
+        folder,
+        type,
+        category,
+        tags,
+        rawUrl: buildOpenUrl(item.path),
+        githubUrl: `https://github.com/${owner}/${repo}/blob/${branch}/${item.path}`
+      };
+    }
+
+    function buildOpenUrl(path) {
+      if (path.endsWith(".html")) return `https://${owner}.github.io/${repo}/${path}`;
+      return `https://github.com/${owner}/${repo}/blob/${branch}/${path}`;
+    }
+
+    function detectCategory(path) {
+      const normalized = path.toLowerCase();
+      const folder = normalized.split("/")[0];
+      const folderMatch = categoryRules.find(rule => rule.keywords.includes(folder));
+      if (folderMatch) return folderMatch.name;
+
+      const keywordMatch = categoryRules.find(rule => rule.keywords.some(keyword => normalized.includes(keyword)));
+      return keywordMatch ? keywordMatch.name : "General";
+    }
+
+    function createTags(path, category, type) {
+      const tags = new Set([category, type]);
+      const normalized = path.toLowerCase();
+      categoryRules.forEach(rule => {
+        rule.keywords.forEach(keyword => {
+          if (normalized.includes(keyword)) tags.add(keyword);
+        });
+      });
+      return Array.from(tags).slice(0, 5);
+    }
+
     function getFileType(path) {
-      if (path.endsWith(".html")) return "HTML";
-      if (path.endsWith(".md")) return "Markdown";
-      if (path.endsWith(".txt")) return "Text";
+      const lower = path.toLowerCase();
+      if (lower.endsWith(".html")) return "HTML";
+      if (lower.endsWith(".md")) return "Markdown";
+      if (lower.endsWith(".txt")) return "Text";
+      if (lower.endsWith(".pdf")) return "PDF";
+      if (lower.endsWith(".docx")) return "Word";
+      if (lower.endsWith(".xlsx")) return "Excel";
+      if (lower.endsWith(".json")) return "Config";
+      if (lower.endsWith(".sql")) return "SQL";
       return "File";
     }
 
     function getIcon(type) {
-      if (type === "HTML") return "🌐";
-      if (type === "Markdown") return "📝";
-      if (type === "Text") return "📄";
-      return "📁";
+      const icons = { HTML: "🌐", Markdown: "📝", Text: "📄", PDF: "📕", Word: "📘", Excel: "📊", Config: "⚙️", SQL: "🗄️" };
+      return icons[type] || "📁";
+    }
+
+    function buildFilters(files) {
+      const categories = unique(files.map(file => file.category)).sort();
+      const types = unique(files.map(file => file.type)).sort();
+      fillSelect(categoryFilter, categories, "All categories");
+      fillSelect(mobileCategoryFilter, categories, "All categories");
+      fillSelect(typeFilter, types, "All types");
+      fillSelect(mobileTypeFilter, types, "All types");
+      renderCategorySummary(files, categories);
+    }
+
+    function fillSelect(selectEl, values, defaultLabel) {
+      selectEl.innerHTML = `<option value="all">${defaultLabel}</option>`;
+      values.forEach(value => {
+        const option = document.createElement("option");
+        option.value = value;
+        option.textContent = value;
+        selectEl.appendChild(option);
+      });
+    }
+
+    function renderCategorySummary(files, categories) {
+      categorySummary.innerHTML = categories.map(category => {
+        const count = files.filter(file => file.category === category).length;
+        return `<button class="w-full flex items-center justify-between rounded-xl border border-slate-200 bg-white px-3 py-2 hover:bg-blue-50" onclick="setCategory('${category}')"><span>${category}</span><span class="rounded-full bg-slate-100 px-2 py-0.5 text-xs">${count}</span></button>`;
+      }).join("");
+    }
+
+    function updateStats(files) {
+      document.getElementById("totalCount").textContent = files.length;
+      document.getElementById("categoryCount").textContent = unique(files.map(file => file.category)).length;
+      document.getElementById("typeCount").textContent = unique(files.map(file => file.type)).length;
+    }
+
+    function applyFilters() {
+      const keyword = state.keyword.toLowerCase().trim();
+      const filtered = allFiles.filter(file => {
+        const matchesKeyword = !keyword || [file.name, file.path, file.category, file.type, ...file.tags].join(" ").toLowerCase().includes(keyword);
+        const matchesCategory = state.category === "all" || file.category === state.category;
+        const matchesType = state.type === "all" || file.type === state.type;
+        return matchesKeyword && matchesCategory && matchesType;
+      });
+
+      renderFiles(filtered);
+      renderActiveFilters();
+      statusEl.textContent = `Hiển thị ${filtered.length}/${allFiles.length} tài liệu.`;
     }
 
     function renderFiles(files) {
       fileListEl.innerHTML = "";
-
       if (files.length === 0) {
-        fileListEl.innerHTML = `
-          <div class="col-span-full rounded-xl border border-slate-200 bg-white p-6 text-slate-500">
-            Không tìm thấy tài liệu phù hợp.
-          </div>
-        `;
+        fileListEl.innerHTML = `<div class="col-span-full rounded-2xl border border-dashed border-slate-300 bg-white p-8 text-center text-slate-500">Không tìm thấy tài liệu phù hợp.</div>`;
         return;
       }
 
       files.forEach(file => {
-        const card = document.createElement("div");
-
-        card.className =
-          "group rounded-xl border border-slate-200 bg-white p-5 shadow-sm hover:shadow-md hover:border-blue-300 transition";
-
+        const card = document.createElement("article");
+        card.className = "group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:shadow-lg hover:border-blue-300 transition";
         card.innerHTML = `
           <div class="flex items-start gap-4">
-            <div class="h-11 w-11 rounded-lg bg-blue-50 flex items-center justify-center text-xl">
-              ${getIcon(file.type)}
-            </div>
-
+            <div class="h-12 w-12 shrink-0 rounded-2xl bg-blue-50 flex items-center justify-center text-2xl">${getIcon(file.type)}</div>
             <div class="flex-1 min-w-0">
-              <h3 class="font-semibold text-slate-900 truncate">
-                ${file.name}
-              </h3>
-
-              <p class="text-sm text-slate-500 mt-1 truncate">
-                ${file.path}
-              </p>
-
-              <div class="mt-4 flex items-center gap-2">
-                <a
-                  href="${file.rawUrl}"
-                  target="_blank"
-                  class="rounded-md bg-blue-600 px-3 py-1.5 text-sm text-white hover:bg-blue-700"
-                >
-                  Mở tài liệu
-                </a>
-
-                <a
-                  href="${file.githubUrl}"
-                  target="_blank"
-                  class="rounded-md border border-slate-300 px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50"
-                >
-                  Xem source
-                </a>
+              <div class="flex items-center gap-2 mb-2">
+                <span class="rounded-full bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700">${file.category}</span>
+                <span class="rounded-full bg-slate-100 px-2.5 py-1 text-xs text-slate-600">${file.type}</span>
+              </div>
+              <h3 class="font-semibold text-slate-900 truncate" title="${file.name}">${file.name}</h3>
+              <p class="text-sm text-slate-500 mt-1 truncate" title="${file.path}">${file.path}</p>
+              <div class="mt-3 flex flex-wrap gap-1.5">${file.tags.map(tag => `<span class="rounded-md bg-slate-100 px-2 py-0.5 text-[11px] text-slate-600">#${tag}</span>`).join("")}</div>
+              <div class="mt-5 flex items-center gap-2">
+                <a href="${file.rawUrl}" target="_blank" class="rounded-lg bg-blue-600 px-3 py-2 text-sm text-white hover:bg-blue-700">Mở tài liệu</a>
+                <a href="${file.githubUrl}" target="_blank" class="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 hover:bg-slate-50">Source</a>
               </div>
             </div>
-          </div>
-        `;
-
+          </div>`;
         fileListEl.appendChild(card);
       });
     }
 
-    searchInput.addEventListener("input", function () {
-      const keyword = this.value.toLowerCase();
+    function renderActiveFilters() {
+      const filters = [];
+      if (state.keyword) filters.push(`Search: ${state.keyword}`);
+      if (state.category !== "all") filters.push(`Category: ${state.category}`);
+      if (state.type !== "all") filters.push(`Type: ${state.type}`);
+      activeFilters.innerHTML = filters.map(filter => `<span class="rounded-full bg-blue-50 px-3 py-1 text-sm text-blue-700 border border-blue-100">${filter}</span>`).join("");
+    }
 
-      const filtered = allFiles.filter(file =>
-        file.name.toLowerCase().includes(keyword) ||
-        file.path.toLowerCase().includes(keyword)
-      );
+    function setCategory(category) {
+      state.category = category;
+      categoryFilter.value = category;
+      mobileCategoryFilter.value = category;
+      applyFilters();
+    }
 
-      renderFiles(filtered);
-    });
+    function unique(values) {
+      return [...new Set(values)];
+    }
 
+    function syncInputs() {
+      searchInput.addEventListener("input", event => {
+        state.keyword = event.target.value;
+        mobileSearchInput.value = state.keyword;
+        applyFilters();
+      });
+      mobileSearchInput.addEventListener("input", event => {
+        state.keyword = event.target.value;
+        searchInput.value = state.keyword;
+        applyFilters();
+      });
+      categoryFilter.addEventListener("change", event => {
+        state.category = event.target.value;
+        mobileCategoryFilter.value = state.category;
+        applyFilters();
+      });
+      mobileCategoryFilter.addEventListener("change", event => {
+        state.category = event.target.value;
+        categoryFilter.value = state.category;
+        applyFilters();
+      });
+      typeFilter.addEventListener("change", event => {
+        state.type = event.target.value;
+        mobileTypeFilter.value = state.type;
+        applyFilters();
+      });
+      mobileTypeFilter.addEventListener("change", event => {
+        state.type = event.target.value;
+        typeFilter.value = state.type;
+        applyFilters();
+      });
+      resetFilterBtn.addEventListener("click", () => {
+        state = { keyword: "", category: "all", type: "all" };
+        searchInput.value = "";
+        mobileSearchInput.value = "";
+        categoryFilter.value = "all";
+        mobileCategoryFilter.value = "all";
+        typeFilter.value = "all";
+        mobileTypeFilter.value = "all";
+        applyFilters();
+      });
+    }
+
+    syncInputs();
     loadFiles();
   </script>
 
 
-
-  
-  <footer class="bg-slate-950 border-t border-slate-900 py-12 text-slate-500 text-sm max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
-    <div class="text-slate-400 font-bold text-lg tracking-wider">AETHER</div>
-    <div>© 2026 Aether Agency. All rights reserved. Built with CMS Editor.</div>
-  </footer></body></html>
+</body></html>
