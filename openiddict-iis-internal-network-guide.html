@@ -1,0 +1,792 @@
+<html lang="vi" class="scroll-smooth"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OpenIddict IIS - Tài liệu Cấu hình Nội bộ</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              900: '#312e81',
+            },
+            accent: {
+              50: '#ecfeff',
+              500: '#06b6d4',
+              600: '#0891b2',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-feature-settings: "cv02","cv03","cv04","cv11"; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    .dark ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    .dark ::-webkit-scrollbar-thumb { background: #334155; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-200 antialiased min-h-screen transition-colors duration-200">
+
+  <!-- Mobile Top Bar -->
+  <div class="lg:hidden flex items-center justify-between px-6 py-4 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-40">
+    <div class="flex items-center gap-3">
+      <div class="h-9 w-9 bg-brand-500 rounded-lg flex items-center justify-center text-white shadow-md shadow-brand-500/20">
+        <i data-lucide="lock-keyhole" class="h-5 w-5"></i>
+      </div>
+      <div>
+        <span class="font-bold text-slate-900 dark:text-white text-lg">OpenIddict</span>
+        <span class="text-xs text-brand-500 font-semibold block -mt-1">Tài liệu IIS Nội bộ</span>
+      </div>
+    </div>
+    <div class="flex items-center gap-3">
+      <button id="theme-toggle-mobile" class="p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg" aria-label="Toggle Theme">
+        <i data-lucide="sun" class="hidden dark:block h-5 w-5"></i>
+        <i data-lucide="moon" class="block dark:hidden h-5 w-5"></i>
+      </button>
+      <button id="menu-toggle" class="p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg" aria-label="Toggle Menu">
+        <i data-lucide="menu" class="h-6 w-6"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="max-w-[90rem] mx-auto flex">
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-72 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 transform -translate-x-full lg:translate-x-0 lg:static lg:h-screen lg:sticky lg:top-0 transition-transform duration-300 ease-in-out flex flex-col justify-between overflow-y-auto">
+      <div class="p-6">
+        <!-- Brand -->
+        <div class="hidden lg:flex items-center gap-3 mb-6">
+          <div class="h-10 w-10 bg-brand-500 rounded-lg flex items-center justify-center text-white shadow-lg shadow-brand-500/25">
+            <i data-lucide="lock-keyhole" class="h-6 w-6"></i>
+          </div>
+          <div>
+            <h1 class="font-extrabold text-slate-900 dark:text-white text-xl leading-none">OpenIddict</h1>
+            <span class="text-xs text-brand-500 font-bold">IIS Deployment Guide</span>
+          </div>
+        </div>
+
+        <!-- Search -->
+        <div class="relative mb-6">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+            <i data-lucide="search" class="h-4 w-4"></i>
+          </div>
+          <input type="text" id="search-input" placeholder="Tìm kiếm tài liệu..." class="w-full pl-9 pr-4 py-2 text-sm bg-slate-100 dark:bg-slate-800/60 border border-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white dark:focus:bg-slate-900 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-all">
+          <span class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-xs text-slate-400 font-mono">/</span>
+        </div>
+
+        <!-- Nav -->
+        <nav class="space-y-8">
+          <div>
+            <h3 class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-3 px-3">Chẩn đoán</h3>
+            <ul class="space-y-1">
+              <li>
+                <a href="#mo-ta-loi" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-brand-600 bg-brand-50 dark:text-brand-400 dark:bg-brand-950/50 transition-colors">
+                  <i data-lucide="bug" class="h-4 w-4"></i>
+                  <span>1. Mô tả lỗi</span>
+                </a>
+              </li>
+              <li>
+                <a href="#nguyen-nhan" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/50 transition-colors">
+                  <i data-lucide="search-x" class="h-4 w-4"></i>
+                  <span>2. Nguyên nhân</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-3 px-3">Giải pháp</h3>
+            <ul class="space-y-1">
+              <li>
+                <a href="#giai-phap-nhanh" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/50 transition-colors">
+                  <i data-lucide="zap" class="h-4 w-4"></i>
+                  <span>3. Giải pháp nhanh</span>
+                </a>
+              </li>
+              <li>
+                <a href="#cau-hinh-hoan-chinh" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/50 transition-colors">
+                  <i data-lucide="settings-2" class="h-4 w-4"></i>
+                  <span>4. Cấu hình hoàn chỉnh</span>
+                </a>
+              </li>
+              <li>
+                <a href="#so-sanh" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/50 transition-colors">
+                  <i data-lucide="git-compare" class="h-4 w-4"></i>
+                  <span>5. So sánh lựa chọn</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-3 px-3">Triển khai thực tế</h3>
+            <ul class="space-y-1">
+              <li>
+                <a href="#production" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/50 transition-colors">
+                  <i data-lucide="file-key-2" class="h-4 w-4"></i>
+                  <span>6. Cấu hình Production</span>
+                </a>
+              </li>
+              <li>
+                <a href="#https" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/50 transition-colors">
+                  <i data-lucide="shield" class="h-4 w-4"></i>
+                  <span>7. Lưu ý HTTPS</span>
+                </a>
+              </li>
+              <li>
+                <a href="#checklist" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/50 transition-colors">
+                  <i data-lucide="list-checks" class="h-4 w-4"></i>
+                  <span>8. Checklist</span>
+                </a>
+              </li>
+              <li>
+                <a href="#ket-luan" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/50 transition-colors">
+                  <i data-lucide="check-circle-2" class="h-4 w-4"></i>
+                  <span>9. Kết luận</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+
+      <!-- Sidebar Footer -->
+      <div class="p-6 border-t border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></div>
+          <span class="text-xs text-slate-500 dark:text-slate-400 font-medium">Tài liệu: Cập nhật</span>
+        </div>
+        <button id="theme-toggle" class="p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" aria-label="Toggle Theme">
+          <i data-lucide="sun" class="hidden dark:block h-4 w-4"></i>
+          <i data-lucide="moon" class="block dark:hidden h-4 w-4"></i>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Mobile overlay -->
+    <div id="sidebar-overlay" class="fixed inset-0 z-40 bg-slate-900/50 backdrop-blur-sm hidden transition-opacity lg:hidden"></div>
+
+    <!-- Main Content -->
+    <main class="flex-1 min-w-0 px-6 py-8 lg:px-16 lg:py-12 max-w-4xl mx-auto">
+
+      <!-- Breadcrumb -->
+      <div class="flex items-center gap-2 text-xs font-semibold text-brand-600 dark:text-brand-400 uppercase tracking-wider mb-4">
+        <span>Tài liệu Kỹ thuật</span>
+        <i data-lucide="chevron-right" class="h-3 w-3"></i>
+        <span>IIS Deployment</span>
+      </div>
+
+      <!-- Header -->
+      <header class="mb-12 border-b border-slate-200 dark:border-slate-800 pb-8">
+        <h1 class="text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-4">Cấu hình OpenIddict trên IIS cho mạng nội bộ</h1>
+        <p class="text-lg lg:text-xl text-slate-600 dark:text-slate-400 font-light leading-relaxed">Hướng dẫn xử lý lỗi <code class="font-mono text-sm bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded text-rose-600 dark:text-rose-400">CryptographicException: Access is denied</code> khi chạy AuthServer/OpenIddict trên IIS.</p>
+      </header>
+
+      <!-- Search Results -->
+      <div id="search-results-container" class="hidden mb-8 p-6 bg-brand-50/50 dark:bg-brand-950/20 border border-brand-100 dark:border-brand-900/50 rounded-xl">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="font-bold text-brand-900 dark:text-brand-300 flex items-center gap-2">
+            <i data-lucide="search-code" class="h-5 w-5"></i>
+            <span>Kết quả tìm kiếm</span>
+          </h3>
+          <button id="clear-search" class="text-xs font-semibold text-slate-500 hover:text-slate-800 dark:hover:text-white">Xóa tìm kiếm</button>
+        </div>
+        <div id="search-results" class="space-y-3"></div>
+      </div>
+
+      <!-- ===================== SECTION 1 ===================== -->
+      <section id="mo-ta-loi" class="doc-section mb-16 scroll-mt-24">
+        <h2 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-6 flex items-center gap-3">
+          <span class="h-8 w-8 bg-brand-100 dark:bg-brand-900/50 text-brand-600 dark:text-brand-400 rounded-lg flex items-center justify-center font-bold text-base">1</span>
+          Mô tả lỗi
+        </h2>
+        <div class="space-y-4 leading-relaxed">
+          <p>Khi deploy ứng dụng ASP.NET Core sử dụng OpenIddict lên IIS, hệ thống phát sinh lỗi sau:</p>
+
+          <!-- Error stack trace block -->
+          <div class="relative bg-slate-900 rounded-xl overflow-hidden border border-slate-800 group">
+            <div class="flex items-center justify-between px-4 py-2 bg-slate-950 border-b border-slate-800 text-xs text-slate-400">
+              <span class="font-mono flex items-center gap-2"><i data-lucide="terminal" class="h-3 w-3 text-rose-400"></i> Stack Trace</span>
+              <button class="copy-btn hover:text-white flex items-center gap-1 font-semibold" data-target="code-stacktrace">
+                <i data-lucide="copy" class="h-3 w-3"></i> Copy
+              </button>
+            </div>
+            <pre class="p-4 overflow-x-auto text-xs text-rose-300 font-mono" id="code-stacktrace">System.Security.Cryptography.CryptographicException: Access is denied.
+at System.Security.Cryptography.X509Certificates.X509Store.Open(OpenFlags flags)
+at Microsoft.Extensions.DependencyInjection.OpenIddictServerBuilder
+    .AddDevelopmentEncryptionCertificate(...)</pre>
+          </div>
+
+          <p>Lỗi thường xuất hiện khi request đi qua các endpoint xác thực sau:</p>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+            <div class="flex gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm items-center">
+              <div class="h-8 w-8 rounded bg-brand-50 dark:bg-brand-950/40 flex items-center justify-center flex-shrink-0 text-brand-500">
+                <i data-lucide="route" class="h-4 w-4"></i>
+              </div>
+              <code class="text-xs font-mono font-semibold text-slate-800 dark:text-slate-200">/connect/authorize</code>
+            </div>
+            <div class="flex gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm items-center">
+              <div class="h-8 w-8 rounded bg-brand-50 dark:bg-brand-950/40 flex items-center justify-center flex-shrink-0 text-brand-500">
+                <i data-lucide="key-round" class="h-4 w-4"></i>
+              </div>
+              <code class="text-xs font-mono font-semibold text-slate-800 dark:text-slate-200">/connect/token</code>
+            </div>
+            <div class="flex gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm items-center">
+              <div class="h-8 w-8 rounded bg-brand-50 dark:bg-brand-950/40 flex items-center justify-center flex-shrink-0 text-brand-500">
+                <i data-lucide="scan-search" class="h-4 w-4"></i>
+              </div>
+              <code class="text-xs font-mono font-semibold text-slate-800 dark:text-slate-200">/connect/introspect</code>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== SECTION 2 ===================== -->
+      <section id="nguyen-nhan" class="doc-section mb-16 scroll-mt-24">
+        <h2 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-6 flex items-center gap-3">
+          <span class="h-8 w-8 bg-brand-100 dark:bg-brand-900/50 text-brand-600 dark:text-brand-400 rounded-lg flex items-center justify-center font-bold text-base">2</span>
+          Nguyên nhân
+        </h2>
+        <div class="space-y-4 leading-relaxed">
+          <p>Trong cấu hình hiện tại, ứng dụng đang sử dụng hai hàm phát triển mặc định:</p>
+
+          <div class="relative bg-slate-900 rounded-xl overflow-hidden border border-slate-800">
+            <div class="flex items-center justify-between px-4 py-2 bg-slate-950 border-b border-slate-800 text-xs text-slate-400">
+              <span class="font-mono">Program.cs</span>
+              <button class="copy-btn hover:text-white flex items-center gap-1 font-semibold" data-target="code-dev-certs">
+                <i data-lucide="copy" class="h-3 w-3"></i> Copy
+              </button>
+            </div>
+            <pre class="p-4 overflow-x-auto text-xs text-brand-100 font-mono" id="code-dev-certs">options.AddDevelopmentEncryptionCertificate()
+       .AddDevelopmentSigningCertificate();</pre>
+          </div>
+
+          <p>Hai hàm này cần truy cập vào <strong>Windows Certificate Store</strong>. Khi chạy dưới IIS, App Pool Identity thường không có quyền mở certificate store hoặc private key, dẫn đến lỗi <code class="font-mono text-xs bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded text-rose-600 dark:text-rose-400">Access is denied</code>.</p>
+
+          <div class="mt-4 p-4 bg-rose-50 dark:bg-rose-950/20 border-l-4 border-rose-500 rounded-r-lg">
+            <div class="flex gap-3">
+              <i data-lucide="x-circle" class="h-5 w-5 text-rose-500 flex-shrink-0 mt-0.5"></i>
+              <div>
+                <span class="font-bold text-rose-700 dark:text-rose-400 block mb-1">Không nên dùng khi deploy IIS</span>
+                <span class="text-sm text-slate-700 dark:text-slate-300">Không sử dụng <code class="font-mono text-xs bg-rose-100 dark:bg-rose-950/50 px-1 rounded">AddDevelopmentEncryptionCertificate()</code> và <code class="font-mono text-xs bg-rose-100 dark:bg-rose-950/50 px-1 rounded">AddDevelopmentSigningCertificate()</code> khi deploy lên IIS, kể cả trong mạng nội bộ.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== SECTION 3 ===================== -->
+      <section id="giai-phap-nhanh" class="doc-section mb-16 scroll-mt-24">
+        <h2 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-6 flex items-center gap-3">
+          <span class="h-8 w-8 bg-brand-100 dark:bg-brand-900/50 text-brand-600 dark:text-brand-400 rounded-lg flex items-center justify-center font-bold text-base">3</span>
+          Giải pháp nhanh cho mạng nội bộ
+        </h2>
+        <div class="space-y-4 leading-relaxed">
+          <p>Nếu hệ thống chỉ dùng trong mạng nội bộ và đang ở giai đoạn test, có thể dùng <strong>Ephemeral Key</strong> — key được tạo trong bộ nhớ RAM và không cần quyền truy cập Certificate Store.</p>
+
+          <div class="relative bg-slate-900 rounded-xl overflow-hidden border border-slate-800">
+            <div class="flex items-center justify-between px-4 py-2 bg-slate-950 border-b border-slate-800 text-xs text-slate-400">
+              <span class="font-mono">Program.cs</span>
+              <button class="copy-btn hover:text-white flex items-center gap-1 font-semibold" data-target="code-ephemeral">
+                <i data-lucide="copy" class="h-3 w-3"></i> Copy
+              </button>
+            </div>
+            <pre class="p-4 overflow-x-auto text-xs text-brand-100 font-mono" id="code-ephemeral">if (builder.Environment.IsDevelopment())
+{
+    options.AddDevelopmentEncryptionCertificate()
+           .AddDevelopmentSigningCertificate();
+}
+else
+{
+    options.AddEphemeralEncryptionKey()
+           .AddEphemeralSigningKey();
+}
+
+options.DisableAccessTokenEncryption();</pre>
+          </div>
+
+          <div class="mt-4 p-4 bg-amber-50 dark:bg-amber-950/20 border-l-4 border-amber-500 rounded-r-lg">
+            <div class="flex gap-3">
+              <i data-lucide="alert-triangle" class="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5"></i>
+              <div>
+                <span class="font-bold text-amber-700 dark:text-amber-400 block mb-1">Lưu ý quan trọng</span>
+                <span class="text-sm text-slate-700 dark:text-slate-300">Ephemeral Key được tạo trong bộ nhớ. Khi restart IIS/App Pool, key sẽ thay đổi và token cũ có thể không còn hợp lệ. Người dùng có thể phải đăng nhập lại.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== SECTION 4 ===================== -->
+      <section id="cau-hinh-hoan-chinh" class="doc-section mb-16 scroll-mt-24">
+        <h2 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-6 flex items-center gap-3">
+          <span class="h-8 w-8 bg-brand-100 dark:bg-brand-900/50 text-brand-600 dark:text-brand-400 rounded-lg flex items-center justify-center font-bold text-base">4</span>
+          Cấu hình OpenIddict hoàn chỉnh đề xuất
+        </h2>
+        <div class="space-y-4 leading-relaxed">
+          <p>Dưới đây là cấu hình đầy đủ được khuyến nghị khi deploy lên IIS nội bộ, bao gồm các endpoints, flows, scopes và token lifetimes.</p>
+
+          <div class="relative bg-slate-900 rounded-xl overflow-hidden border border-slate-800">
+            <div class="flex items-center justify-between px-4 py-2 bg-slate-950 border-b border-slate-800 text-xs text-slate-400">
+              <span class="font-mono">Program.cs — AddOpenIddict()</span>
+              <button class="copy-btn hover:text-white flex items-center gap-1 font-semibold" data-target="code-full">
+                <i data-lucide="copy" class="h-3 w-3"></i> Copy
+              </button>
+            </div>
+            <pre class="p-4 overflow-x-auto text-xs text-brand-100 font-mono" id="code-full">builder.Services.AddOpenIddict()
+    .AddCore(options =&gt;
+    {
+        options.UseEntityFrameworkCore()
+               .UseDbContext&lt;ApplicationDbContext&gt;();
+    })
+    .AddServer(options =&gt;
+    {
+        // Endpoints
+        options.SetAuthorizationEndpointUris("/connect/authorize")
+               .SetTokenEndpointUris("/connect/token")
+               .SetEndSessionEndpointUris("/connect/endsession")
+               .SetIntrospectionEndpointUris("/connect/introspect");
+
+        // Flows
+        options.AllowAuthorizationCodeFlow()
+               .AllowRefreshTokenFlow()
+               .RequireProofKeyForCodeExchange();
+
+        // Scopes
+        options.RegisterScopes(
+            OpenIddictConstants.Scopes.OpenId,
+            OpenIddictConstants.Scopes.Email,
+            OpenIddictConstants.Scopes.Profile,
+            OpenIddictConstants.Scopes.Roles,
+            OpenIddictConstants.Scopes.OfflineAccess,
+            "api"
+        );
+
+        // Token lifetimes
+        options.SetAccessTokenLifetime(TimeSpan.FromMinutes(
+            builder.Configuration.GetValue&lt;int&gt;("Auth:AccessTokenLifetimeMinutes", 15)));
+
+        options.SetRefreshTokenLifetime(TimeSpan.FromDays(
+            builder.Configuration.GetValue&lt;int&gt;("Auth:RefreshTokenExpiryDays", 30)));
+
+        options.SetIdentityTokenLifetime(TimeSpan.FromMinutes(60));
+
+        // Signing &amp; Encryption — dùng Ephemeral khi chạy trên IIS nội bộ
+        if (builder.Environment.IsDevelopment())
+        {
+            options.AddDevelopmentEncryptionCertificate()
+                   .AddDevelopmentSigningCertificate();
+        }
+        else
+        {
+            options.AddEphemeralEncryptionKey()
+                   .AddEphemeralSigningKey();
+        }
+
+        // Không mã hóa Access Token để các API khác có thể validate
+        options.DisableAccessTokenEncryption();
+
+        options.UseAspNetCore()
+               .EnableAuthorizationEndpointPassthrough()
+               .EnableTokenEndpointPassthrough()
+               .EnableEndSessionEndpointPassthrough()
+               .EnableStatusCodePagesIntegration()
+               .DisableTransportSecurityRequirement();
+    })
+    .AddValidation(options =&gt;
+    {
+        options.UseLocalServer();
+        options.UseAspNetCore();
+    });</pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== SECTION 5 ===================== -->
+      <section id="so-sanh" class="doc-section mb-16 scroll-mt-24">
+        <h2 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-6 flex items-center gap-3">
+          <span class="h-8 w-8 bg-brand-100 dark:bg-brand-900/50 text-brand-600 dark:text-brand-400 rounded-lg flex items-center justify-center font-bold text-base">5</span>
+          So sánh các lựa chọn
+        </h2>
+        <div class="space-y-4 leading-relaxed">
+          <p>Ba phương án cấu hình certificate có các đặc điểm khác nhau tùy theo môi trường và nhu cầu sử dụng.</p>
+
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm">
+            <div class="p-4 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800 flex items-center gap-2">
+              <span class="h-2 w-2 rounded-full bg-brand-500"></span>
+              <span class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Bảng so sánh phương án</span>
+            </div>
+            <div class="p-4">
+              <table class="w-full text-left text-sm border-collapse">
+                <thead>
+                  <tr class="border-b border-slate-100 dark:border-slate-800 text-slate-500 dark:text-slate-400 font-semibold">
+                    <th class="pb-3 w-1/4">Cách cấu hình</th>
+                    <th class="pb-3 w-1/4">Phù hợp</th>
+                    <th class="pb-3">Ưu điểm</th>
+                    <th class="pb-3">Nhược điểm</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-800 text-xs">
+                  <tr>
+                    <td class="py-3 font-mono font-semibold text-rose-600 dark:text-rose-400">AddDevelopment...</td>
+                    <td class="py-3 text-slate-600 dark:text-slate-400">Local / Visual Studio</td>
+                    <td class="py-3 text-slate-600 dark:text-slate-400">Dễ dùng khi phát triển</td>
+                    <td class="py-3 text-slate-600 dark:text-slate-400">Dễ lỗi quyền trên IIS, không nên dùng khi deploy</td>
+                  </tr>
+                  <tr>
+                    <td class="py-3 font-mono font-semibold text-amber-600 dark:text-amber-400">AddEphemeral...</td>
+                    <td class="py-3 text-slate-600 dark:text-slate-400">Mạng nội bộ, test, demo</td>
+                    <td class="py-3 text-slate-600 dark:text-slate-400">Không cần certificate, chạy nhanh trên IIS</td>
+                    <td class="py-3 text-slate-600 dark:text-slate-400">Restart app làm token cũ mất hiệu lực</td>
+                  </tr>
+                  <tr>
+                    <td class="py-3 font-mono font-semibold text-emerald-600 dark:text-emerald-400">AddSigningCertificate</td>
+                    <td class="py-3 text-slate-600 dark:text-slate-400">Nội bộ production</td>
+                    <td class="py-3 text-slate-600 dark:text-slate-400">Ổn định, restart không mất token</td>
+                    <td class="py-3 text-slate-600 dark:text-slate-400">Cần quản lý file certificate và password</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== SECTION 6 ===================== -->
+      <section id="production" class="doc-section mb-16 scroll-mt-24">
+        <h2 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-6 flex items-center gap-3">
+          <span class="h-8 w-8 bg-brand-100 dark:bg-brand-900/50 text-brand-600 dark:text-brand-400 rounded-lg flex items-center justify-center font-bold text-base">6</span>
+          Cấu hình Production với Certificate .pfx
+        </h2>
+        <div class="space-y-4 leading-relaxed">
+          <p>Nếu AuthServer phục vụ thực tế cho nhiều ứng dụng như EMR, HRM, Report — cần dùng certificate dạng file <code class="font-mono text-xs bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded">.pfx</code> để đảm bảo token ổn định sau khi restart server.</p>
+
+          <h3 class="font-bold text-slate-900 dark:text-white text-base mt-4">1. Khai báo certificate trong Program.cs</h3>
+
+          <div class="relative bg-slate-900 rounded-xl overflow-hidden border border-slate-800">
+            <div class="flex items-center justify-between px-4 py-2 bg-slate-950 border-b border-slate-800 text-xs text-slate-400">
+              <span class="font-mono">Program.cs</span>
+              <button class="copy-btn hover:text-white flex items-center gap-1 font-semibold" data-target="code-pfx">
+                <i data-lucide="copy" class="h-3 w-3"></i> Copy
+              </button>
+            </div>
+            <pre class="p-4 overflow-x-auto text-xs text-brand-100 font-mono" id="code-pfx">options.AddEncryptionCertificate(new X509Certificate2(
+    @"D:\Certificates\openiddict-encryption.pfx",
+    builder.Configuration["Auth:Certificates:EncryptionPassword"],
+    X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.EphemeralKeySet
+));
+
+options.AddSigningCertificate(new X509Certificate2(
+    @"D:\Certificates\openiddict-signing.pfx",
+    builder.Configuration["Auth:Certificates:SigningPassword"],
+    X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.EphemeralKeySet
+));</pre>
+          </div>
+
+          <h3 class="font-bold text-slate-900 dark:text-white text-base mt-6">2. Cấu hình appsettings.Production.json</h3>
+
+          <div class="relative bg-slate-900 rounded-xl overflow-hidden border border-slate-800">
+            <div class="flex items-center justify-between px-4 py-2 bg-slate-950 border-b border-slate-800 text-xs text-slate-400">
+              <span class="font-mono">appsettings.Production.json</span>
+              <button class="copy-btn hover:text-white flex items-center gap-1 font-semibold" data-target="code-appsettings">
+                <i data-lucide="copy" class="h-3 w-3"></i> Copy
+              </button>
+            </div>
+            <pre class="p-4 overflow-x-auto text-xs text-brand-100 font-mono" id="code-appsettings">{
+  "Auth": {
+    "AccessTokenLifetimeMinutes": 15,
+    "RefreshTokenExpiryDays": 30,
+    "Certificates": {
+      "EncryptionPassword": "your-encryption-cert-password",
+      "SigningPassword": "your-signing-cert-password"
+    }
+  }
+}</pre>
+          </div>
+
+          <div class="mt-4 p-4 bg-emerald-50/50 dark:bg-emerald-950/20 border-l-4 border-emerald-500 rounded-r-lg">
+            <div class="flex gap-3">
+              <i data-lucide="check-circle-2" class="h-5 w-5 text-emerald-500 flex-shrink-0 mt-0.5"></i>
+              <div>
+                <span class="font-bold text-emerald-700 dark:text-emerald-400 block mb-1">Khuyến nghị cho hệ thống thực tế</span>
+                <span class="text-sm text-slate-700 dark:text-slate-300">Với hệ thống nội bộ dùng thực tế, nên dùng <strong>certificate .pfx</strong> thay vì Ephemeral Key để đảm bảo token ổn định sau khi restart server. Lưu password certificate trong biến môi trường hoặc Secret Manager, không ghi cứng vào file.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== SECTION 7 ===================== -->
+      <section id="https" class="doc-section mb-16 scroll-mt-24">
+        <h2 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-6 flex items-center gap-3">
+          <span class="h-8 w-8 bg-brand-100 dark:bg-brand-900/50 text-brand-600 dark:text-brand-400 rounded-lg flex items-center justify-center font-bold text-base">7</span>
+          Lưu ý về HTTPS trong mạng nội bộ
+        </h2>
+        <div class="space-y-4 leading-relaxed">
+          <p>Hiện tại code có cấu hình cho phép bỏ qua yêu cầu HTTPS:</p>
+
+          <div class="relative bg-slate-900 rounded-xl overflow-hidden border border-slate-800">
+            <div class="flex items-center justify-between px-4 py-2 bg-slate-950 border-b border-slate-800 text-xs text-slate-400">
+              <span class="font-mono">Program.cs</span>
+            </div>
+            <pre class="p-4 overflow-x-auto text-xs text-brand-100 font-mono">options.UseAspNetCore().DisableTransportSecurityRequirement();</pre>
+          </div>
+
+          <p>Cấu hình này cho phép chạy qua HTTP, phù hợp khi test bằng IP nội bộ:</p>
+
+          <div class="relative bg-slate-900 rounded-xl overflow-hidden border border-slate-800">
+            <div class="p-4 text-xs text-slate-400 font-mono">http://192.168.1.10:5000</div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            <div class="p-5 border border-amber-200 dark:border-amber-900/50 rounded-xl bg-amber-50/30 dark:bg-amber-950/10">
+              <h4 class="font-bold text-sm text-amber-700 dark:text-amber-400 mb-2 flex items-center gap-2">
+                <i data-lucide="alert-triangle" class="h-4 w-4"></i> Rủi ro khi dùng HTTP
+              </h4>
+              <p class="text-xs text-slate-600 dark:text-slate-400">Cookie phiên, authorization code và refresh token truyền qua HTTP có thể bị nghe lén trong môi trường mạng không tin cậy.</p>
+            </div>
+            <div class="p-5 border border-emerald-200 dark:border-emerald-900/50 rounded-xl bg-emerald-50/30 dark:bg-emerald-950/10">
+              <h4 class="font-bold text-sm text-emerald-700 dark:text-emerald-400 mb-2 flex items-center gap-2">
+                <i data-lucide="shield-check" class="h-4 w-4"></i> Khuyến nghị
+              </h4>
+              <p class="text-xs text-slate-600 dark:text-slate-400">Nếu AuthServer phục vụ nhiều ứng dụng nội bộ, nên cấu hình HTTPS với certificate nội bộ (self-signed hoặc CA nội bộ).</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== SECTION 8 ===================== -->
+      <section id="checklist" class="doc-section mb-16 scroll-mt-24">
+        <h2 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-6 flex items-center gap-3">
+          <span class="h-8 w-8 bg-brand-100 dark:bg-brand-900/50 text-brand-600 dark:text-brand-400 rounded-lg flex items-center justify-center font-bold text-base">8</span>
+          Checklist sau khi sửa
+        </h2>
+        <div class="space-y-4 leading-relaxed">
+          <p>Thực hiện lần lượt các bước sau để xác nhận hệ thống hoạt động đúng sau khi áp dụng cấu hình mới.</p>
+
+          <div class="border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden bg-white dark:bg-slate-900 shadow-sm">
+            <div class="divide-y divide-slate-100 dark:divide-slate-800">
+
+              <div class="flex items-start gap-4 p-4">
+                <div class="h-6 w-6 rounded-full bg-brand-500 text-white flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5">1</div>
+                <div>
+                  <h4 class="font-bold text-sm text-slate-900 dark:text-white">Đổi phương thức certificate</h4>
+                  <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Thay <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded">AddDevelopment...</code> sang <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded">AddEphemeral...</code> hoặc certificate <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded">.pfx</code>.</p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-4 p-4">
+                <div class="h-6 w-6 rounded-full bg-brand-500 text-white flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5">2</div>
+                <div>
+                  <h4 class="font-bold text-sm text-slate-900 dark:text-white">Publish lại AuthServer</h4>
+                  <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Build và deploy lại toàn bộ project lên thư mục IIS.</p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-4 p-4">
+                <div class="h-6 w-6 rounded-full bg-brand-500 text-white flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5">3</div>
+                <div>
+                  <h4 class="font-bold text-sm text-slate-900 dark:text-white">Restart IIS App Pool</h4>
+                  <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Recycle hoặc restart App Pool để áp dụng cấu hình mới hoàn toàn.</p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-4 p-4">
+                <div class="h-6 w-6 rounded-full bg-brand-500 text-white flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5">4</div>
+                <div>
+                  <h4 class="font-bold text-sm text-slate-900 dark:text-white">Kiểm tra endpoint Discovery</h4>
+                  <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Mở <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded font-mono">/connect/.well-known/openid-configuration</code> để xác nhận server phản hồi đúng.</p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-4 p-4">
+                <div class="h-6 w-6 rounded-full bg-brand-500 text-white flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5">5</div>
+                <div>
+                  <h4 class="font-bold text-sm text-slate-900 dark:text-white">Test login từ Angular frontend</h4>
+                  <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Thực hiện luồng đăng nhập đầu cuối từ ứng dụng client để xác nhận token được cấp thành công.</p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-4 p-4">
+                <div class="h-6 w-6 rounded-full bg-amber-500 text-white flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5">
+                  <i data-lucide="alert-triangle" class="h-3 w-3"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold text-sm text-amber-700 dark:text-amber-400">Nếu dùng Ephemeral Key</h4>
+                  <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Yêu cầu user đăng nhập lại sau mỗi lần restart app vì token cũ sẽ không còn hợp lệ.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== SECTION 9 ===================== -->
+      <section id="ket-luan" class="doc-section mb-16 scroll-mt-24">
+        <h2 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-6 flex items-center gap-3">
+          <span class="h-8 w-8 bg-brand-100 dark:bg-brand-900/50 text-brand-600 dark:text-brand-400 rounded-lg flex items-center justify-center font-bold text-base">9</span>
+          Kết luận
+        </h2>
+        <div class="space-y-4 leading-relaxed">
+          <p>Chọn phương án phù hợp với nhu cầu thực tế của hệ thống:</p>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
+              <div class="h-10 w-10 bg-amber-50 dark:bg-amber-950/30 text-amber-500 rounded-lg flex items-center justify-center mb-3">
+                <i data-lucide="flask-conical" class="h-5 w-5"></i>
+              </div>
+              <h4 class="font-bold text-slate-900 dark:text-white mb-2">Test / Demo</h4>
+              <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">Dùng <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded font-mono">AddEphemeralEncryptionKey()</code> và <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded font-mono">AddEphemeralSigningKey()</code> để chạy nhanh trên IIS không cần certificate.</p>
+            </div>
+            <div class="p-5 bg-white dark:bg-slate-900 border border-emerald-200 dark:border-emerald-900/50 rounded-xl shadow-sm">
+              <div class="h-10 w-10 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-500 rounded-lg flex items-center justify-center mb-3">
+                <i data-lucide="building-2" class="h-5 w-5"></i>
+              </div>
+              <h4 class="font-bold text-slate-900 dark:text-white mb-2">Chạy thật (Production)</h4>
+              <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">Dùng <strong>certificate .pfx</strong> riêng biệt cho signing và encryption để token ổn định và không bị mất khi server restart.</p>
+            </div>
+            <div class="p-5 bg-white dark:bg-slate-900 border border-rose-200 dark:border-rose-900/50 rounded-xl shadow-sm">
+              <div class="h-10 w-10 bg-rose-50 dark:bg-rose-950/30 text-rose-500 rounded-lg flex items-center justify-center mb-3">
+                <i data-lucide="ban" class="h-5 w-5"></i>
+              </div>
+              <h4 class="font-bold text-slate-900 dark:text-white mb-2">Không nên dùng</h4>
+              <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed"><code class="bg-slate-100 dark:bg-slate-800 px-1 rounded font-mono">AddDevelopmentEncryptionCertificate()</code> khi deploy lên IIS vì sẽ gây lỗi quyền truy cập certificate store.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400">
+        <p>© 2026 Tài liệu cấu hình OpenIddict — IIS Nội bộ</p>
+        <div class="flex items-center gap-4">
+          <span>ASP.NET Core + OpenIddict</span>
+          <span>•</span>
+          <span>IIS Deployment Guide</span>
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="fixed bottom-6 right-6 px-4 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl shadow-2xl flex items-center gap-2 border border-slate-800 dark:border-slate-100 opacity-0 pointer-events-none transition-all duration-300 transform translate-y-2 z-50">
+    <i data-lucide="check-circle-2" class="h-5 w-5 text-emerald-500"></i>
+    <span class="text-sm font-semibold">Đã sao chép vào bộ nhớ tạm!</span>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    // Theme
+    const initTheme = () => {
+      const isDark = localStorage.getItem('theme') === 'dark' ||
+        (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+      document.documentElement.classList.toggle('dark', isDark);
+    };
+    const toggleTheme = () => {
+      const isDark = document.documentElement.classList.contains('dark');
+      document.documentElement.classList.toggle('dark', !isDark);
+      localStorage.setItem('theme', isDark ? 'light' : 'dark');
+    };
+    document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+    document.getElementById('theme-toggle-mobile').addEventListener('click', toggleTheme);
+    initTheme();
+
+    // Mobile Menu
+    const menuToggle = document.getElementById('menu-toggle');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    const toggleMenu = () => {
+      sidebar.classList.toggle('-translate-x-full');
+      overlay.classList.toggle('hidden');
+    };
+    menuToggle.addEventListener('click', toggleMenu);
+    overlay.addEventListener('click', toggleMenu);
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => { if (window.innerWidth < 1024) toggleMenu(); });
+    });
+
+    // Copy buttons
+    const toast = document.getElementById('toast');
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const el = document.getElementById(btn.getAttribute('data-target'));
+        if (el) {
+          navigator.clipboard.writeText(el.textContent).then(() => {
+            toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-2');
+            setTimeout(() => toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-2'), 2500);
+          });
+        }
+      });
+    });
+
+    // ScrollSpy
+    const sections = document.querySelectorAll('section.doc-section');
+    const navLinks = document.querySelectorAll('.nav-link');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(s => {
+        if (window.scrollY + 120 >= s.offsetTop) current = s.id;
+      });
+      navLinks.forEach(link => {
+        const active = link.getAttribute('href') === '#' + current;
+        link.classList.toggle('text-brand-600', active);
+        link.classList.toggle('bg-brand-50', active);
+        link.classList.toggle('dark:text-brand-400', active);
+        link.classList.toggle('dark:bg-brand-950/50', active);
+        link.classList.toggle('text-slate-600', !active);
+        link.classList.toggle('hover:text-slate-900', !active);
+        link.classList.toggle('hover:bg-slate-50', !active);
+        link.classList.toggle('dark:text-slate-400', !active);
+        link.classList.toggle('dark:hover:text-white', !active);
+        link.classList.toggle('dark:hover:bg-slate-800/50', !active);
+      });
+    });
+
+    // Search
+    const searchInput = document.getElementById('search-input');
+    const searchContainer = document.getElementById('search-results-container');
+    const searchResults = document.getElementById('search-results');
+    const clearBtn = document.getElementById('clear-search');
+    const db = Array.from(sections).map(s => ({
+      id: s.id,
+      heading: s.querySelector('h2').textContent.trim(),
+      text: Array.from(s.querySelectorAll('p, li, td')).map(e => e.textContent).join(' ')
+    }));
+    searchInput.addEventListener('input', e => {
+      const q = e.target.value.toLowerCase().trim();
+      if (q.length < 2) { searchContainer.classList.add('hidden'); return; }
+      const matches = db.filter(i => i.heading.toLowerCase().includes(q) || i.text.toLowerCase().includes(q));
+      searchResults.innerHTML = matches.length === 0
+        ? '<p class="text-xs text-slate-500">Không tìm thấy kết quả.</p>'
+        : matches.map(m => `<a href="#${m.id}" class="block p-3 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-brand-500 transition-all"><h4 class="font-bold text-xs text-slate-900 dark:text-white">${m.heading}</h4><p class="text-[11px] text-slate-500 mt-1 line-clamp-2">...${m.text.substr(m.text.toLowerCase().indexOf(q), 150)}...</p></a>`).join('');
+      searchContainer.classList.remove('hidden');
+    });
+    clearBtn.addEventListener('click', () => { searchInput.value = ''; searchContainer.classList.add('hidden'); });
+    window.addEventListener('keydown', e => { if (e.key === '/' && document.activeElement !== searchInput) { e.preventDefault(); searchInput.focus(); } });
+  </script>
+
+</body></html>
