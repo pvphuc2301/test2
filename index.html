@@ -29,31 +29,194 @@
     </a>
   </header>
 
-  <!-- Hero Section -->
-  <section class="max-w-7xl mx-auto px-6 py-20 md:py-32 flex flex-col items-center text-center relative">
-    <div class="absolute w-72 h-72 bg-indigo-600/10 rounded-full blur-[100px] -z-10 top-10"></div>
-    <div class="absolute w-96 h-96 bg-cyan-600/10 rounded-full blur-[120px] -z-10 bottom-0 left-10"></div>
-    
-    <span class="text-xs uppercase tracking-[0.25em] font-semibold text-indigo-400 mb-6 bg-indigo-950/40 border border-indigo-900/50 px-4 py-1.5 rounded-full">
-      Creative Studio
-    </span>
-    <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-8 leading-[1.1] max-w-4xl">
-      We build <span class="bg-gradient-to-r from-indigo-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">immersive experiences</span> that scale.
-    </h1>
-    <p class="text-slate-400 text-lg md:text-xl mb-12 max-w-2xl font-light">
-      Aether is a boutique digital agency crafting high-performance interfaces, beautiful designs, and software that captivates audiences.
-    </p>
-    <div class="flex flex-col sm:flex-row gap-4">
-      <a href="#" class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-8 py-4 rounded-full transition shadow-lg shadow-indigo-600/30">
-        Our Work
-      </a>
-      <a href="#" class="border border-slate-800 hover:border-slate-700 bg-slate-900/40 hover:bg-slate-900/60 text-white font-semibold px-8 py-4 rounded-full transition">
-        Contact Us
-      </a>
-    </div>
-  </section>
+  
 
-  <!-- Footer -->
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tài liệu nội bộ</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+
+
+  <div class="min-h-screen flex">
+    <!-- Sidebar -->
+    <aside class="w-72 bg-white border-r border-slate-200 p-5 hidden md:block">
+      <h1 class="text-xl font-semibold text-blue-700">Internal Docs</h1>
+      <p class="text-sm text-slate-500 mt-1">Danh sách tài liệu GitHub</p>
+
+      <div class="mt-6">
+        <input id="searchInput" type="text" placeholder="Tìm tài liệu..." class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+
+      <div class="mt-6 text-xs text-slate-500">
+        Repo: <span class="font-medium">pvphuc2301/test2</span>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="flex-1 p-6">
+      <div class="max-w-6xl mx-auto">
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div>
+            <h2 class="text-2xl font-semibold">Tài liệu nội bộ</h2>
+            <p class="text-slate-500 mt-1">
+              Click vào tài liệu để mở nội dung từ GitHub.
+            </p>
+          </div>
+
+          <a href="https://github.com/pvphuc2301/test2" target="_blank" class="inline-flex items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-white text-sm hover:bg-blue-700">
+            Mở GitHub Repo
+          </a>
+        </div>
+
+        <!-- Status -->
+        <div id="status" class="mt-6 text-sm text-slate-500">
+          Đang tải danh sách tài liệu...
+        </div>
+
+        <!-- File List -->
+        <div id="fileList" class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const owner = "pvphuc2301";
+    const repo = "test2";
+    const branch = "main";
+
+    const apiUrl = `https://api.github.com/repos/${owner}/${repo}/git/trees/${branch}?recursive=1`;
+
+    const fileListEl = document.getElementById("fileList");
+    const statusEl = document.getElementById("status");
+    const searchInput = document.getElementById("searchInput");
+
+    let allFiles = [];
+
+    async function loadFiles() {
+      try {
+        const response = await fetch(apiUrl);
+
+        if (!response.ok) {
+          throw new Error("Không thể tải dữ liệu từ GitHub API");
+        }
+
+        const data = await response.json();
+
+        allFiles = data.tree
+          .filter(item => item.type === "blob")
+          .filter(item =>
+            item.path.endsWith(".html") ||
+            item.path.endsWith(".md") ||
+            item.path.endsWith(".txt")
+          )
+          .map(item => ({
+            name: item.path.split("/").pop(),
+            path: item.path,
+            type: getFileType(item.path),
+            rawUrl: `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${item.path}`,
+            githubUrl: `https://github.com/${owner}/${repo}/blob/${branch}/${item.path}`
+          }));
+
+        renderFiles(allFiles);
+        statusEl.textContent = `Tìm thấy ${allFiles.length} tài liệu.`;
+      } catch (error) {
+        statusEl.textContent = error.message;
+        statusEl.className = "mt-6 text-sm text-red-600";
+      }
+    }
+
+    function getFileType(path) {
+      if (path.endsWith(".html")) return "HTML";
+      if (path.endsWith(".md")) return "Markdown";
+      if (path.endsWith(".txt")) return "Text";
+      return "File";
+    }
+
+    function getIcon(type) {
+      if (type === "HTML") return "🌐";
+      if (type === "Markdown") return "📝";
+      if (type === "Text") return "📄";
+      return "📁";
+    }
+
+    function renderFiles(files) {
+      fileListEl.innerHTML = "";
+
+      if (files.length === 0) {
+        fileListEl.innerHTML = `
+          <div class="col-span-full rounded-xl border border-slate-200 bg-white p-6 text-slate-500">
+            Không tìm thấy tài liệu phù hợp.
+          </div>
+        `;
+        return;
+      }
+
+      files.forEach(file => {
+        const card = document.createElement("div");
+
+        card.className =
+          "group rounded-xl border border-slate-200 bg-white p-5 shadow-sm hover:shadow-md hover:border-blue-300 transition";
+
+        card.innerHTML = `
+          <div class="flex items-start gap-4">
+            <div class="h-11 w-11 rounded-lg bg-blue-50 flex items-center justify-center text-xl">
+              ${getIcon(file.type)}
+            </div>
+
+            <div class="flex-1 min-w-0">
+              <h3 class="font-semibold text-slate-900 truncate">
+                ${file.name}
+              </h3>
+
+              <p class="text-sm text-slate-500 mt-1 truncate">
+                ${file.path}
+              </p>
+
+              <div class="mt-4 flex items-center gap-2">
+                <a
+                  href="${file.rawUrl}"
+                  target="_blank"
+                  class="rounded-md bg-blue-600 px-3 py-1.5 text-sm text-white hover:bg-blue-700"
+                >
+                  Mở tài liệu
+                </a>
+
+                <a
+                  href="${file.githubUrl}"
+                  target="_blank"
+                  class="rounded-md border border-slate-300 px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50"
+                >
+                  Xem source
+                </a>
+              </div>
+            </div>
+          </div>
+        `;
+
+        fileListEl.appendChild(card);
+      });
+    }
+
+    searchInput.addEventListener("input", function () {
+      const keyword = this.value.toLowerCase();
+
+      const filtered = allFiles.filter(file =>
+        file.name.toLowerCase().includes(keyword) ||
+        file.path.toLowerCase().includes(keyword)
+      );
+
+      renderFiles(filtered);
+    });
+
+    loadFiles();
+  </script>
+
+
+
+  
   <footer class="bg-slate-950 border-t border-slate-900 py-12 text-slate-500 text-sm max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
     <div class="text-slate-400 font-bold text-lg tracking-wider">AETHER</div>
     <div>© 2026 Aether Agency. All rights reserved. Built with CMS Editor.</div>
