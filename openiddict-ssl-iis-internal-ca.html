@@ -87,4 +87,324 @@
             </div>
           </div>
         </section>
-</section></main></div></body></html>
+
+        <section id="clients" class="bg-white border border-slate-200 rounded-3xl p-6 md:p-8 shadow-sm">
+          <h2 class="text-2xl font-bold text-slate-900">1. Cần tạo bao nhiêu OpenIddict client?</h2>
+          <p class="mt-4 text-slate-600 leading-7">
+            Với các ứng dụng HRM, EMR, Report và CMS, nên tạo client riêng cho từng frontend. Backend API thông thường không cần client nếu chỉ nhận access token từ frontend. Backend chỉ cần cấu hình scope hoặc audience tương ứng.
+          </p>
+
+          <div class="mt-6 overflow-hidden rounded-2xl border border-slate-200">
+            <table class="w-full text-sm">
+              <thead class="bg-slate-100 text-slate-700">
+                <tr>
+                  <th class="text-left px-4 py-3">Ứng dụng</th>
+                  <th class="text-left px-4 py-3">Frontend client</th>
+                  <th class="text-left px-4 py-3">API scope/resource</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200">
+                <tr><td class="px-4 py-3 font-medium">HRM</td><td class="px-4 py-3 font-mono">hrm-web</td><td class="px-4 py-3 font-mono">hrm-api</td></tr>
+                <tr><td class="px-4 py-3 font-medium">EMR</td><td class="px-4 py-3 font-mono">emr-web</td><td class="px-4 py-3 font-mono">emr-api</td></tr>
+                <tr><td class="px-4 py-3 font-medium">Report</td><td class="px-4 py-3 font-mono">report-web</td><td class="px-4 py-3 font-mono">report-api</td></tr>
+                <tr><td class="px-4 py-3 font-medium">CMS</td><td class="px-4 py-3 font-mono">cms-web</td><td class="px-4 py-3 font-mono">cms-api</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="mt-6 grid md:grid-cols-2 gap-4">
+            <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+              <h3 class="font-bold text-slate-900">Tối thiểu</h3>
+              <pre class="mt-3 bg-slate-900 text-slate-100 rounded-xl p-4 overflow-auto text-sm"><code>hrm-web
+emr-web
+report-web
+cms-web</code></pre>
+              <p class="mt-3 text-sm text-slate-600">Tổng: 4 frontend clients.</p>
+            </div>
+            <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+              <h3 class="font-bold text-slate-900">Khi backend gọi lẫn nhau</h3>
+              <pre class="mt-3 bg-slate-900 text-slate-100 rounded-xl p-4 overflow-auto text-sm"><code>hrm-service
+emr-service
+report-service
+cms-service</code></pre>
+              <p class="mt-3 text-sm text-slate-600">Tổng có thể thành 8 clients: 4 web clients + 4 service clients.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="cert-count" class="bg-white border border-slate-200 rounded-3xl p-6 md:p-8 shadow-sm">
+          <h2 class="text-2xl font-bold text-slate-900">2. Cần tạo bao nhiêu SSL certificate?</h2>
+          <p class="mt-4 text-slate-600 leading-7">
+            Có hai cách triển khai phổ biến: mỗi hostname một certificate, hoặc dùng một wildcard certificate cho toàn bộ subdomain nội bộ. Với hệ thống nội bộ, wildcard certificate giúp giảm số lượng certificate cần quản lý.
+          </p>
+
+          <div class="mt-6 grid md:grid-cols-2 gap-4">
+            <div class="rounded-2xl border border-slate-200 p-5">
+              <h3 class="font-bold text-slate-900">Cách 1: Mỗi hostname một cert</h3>
+              <pre class="mt-3 bg-slate-900 text-slate-100 rounded-xl p-4 overflow-auto text-sm"><code>1 Root CA
+1 cert cho auth.timtamduc.local
+1 cert cho emr.timtamduc.local
+1 cert cho hrm.timtamduc.local
+1 cert cho report.timtamduc.local
+1 cert cho cms.timtamduc.local</code></pre>
+              <p class="mt-3 text-sm text-slate-600">Tổng: 6 certificate.</p>
+            </div>
+
+            <div class="rounded-2xl border-2 border-blue-200 bg-blue-50 p-5">
+              <h3 class="font-bold text-blue-900">Cách 2: Root CA + Wildcard</h3>
+              <pre class="mt-3 bg-slate-900 text-slate-100 rounded-xl p-4 overflow-auto text-sm"><code>1 Root CA
+1 wildcard certificate: *.timtamduc.local</code></pre>
+              <p class="mt-3 text-sm text-blue-800 font-medium">Tổng: 2 certificate. Đây là cách khuyến nghị cho hệ thống nội bộ nhiều subdomain.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="openssl" class="bg-white border border-slate-200 rounded-3xl p-6 md:p-8 shadow-sm">
+          <h2 class="text-2xl font-bold text-slate-900">3. Tạo Root CA và Wildcard SSL certificate bằng OpenSSL</h2>
+
+          <div class="mt-6 rounded-2xl bg-amber-50 border border-amber-200 p-4 text-sm text-amber-900">
+            <strong>Lưu ý:</strong> thay <span class="font-mono">timtamduc.local</span> bằng domain nội bộ của bạn. Không chia sẻ file <span class="font-mono">rootCA.key</span> và <span class="font-mono">wildcard.key</span> ra ngoài.
+          </div>
+
+          <h3 class="mt-6 text-lg font-bold text-slate-900">3.1. Tạo cấu trúc thư mục</h3>
+          <pre class="mt-3 bg-slate-900 text-slate-100 rounded-xl p-4 overflow-auto text-sm"><code>mkdir C:\certs
+mkdir C:\certs\rootCA
+mkdir C:\certs\wildcard</code></pre>
+
+          <h3 class="mt-6 text-lg font-bold text-slate-900">3.2. Tạo Root CA private key</h3>
+          <pre class="mt-3 bg-slate-900 text-slate-100 rounded-xl p-4 overflow-auto text-sm"><code>cd C:\certs\rootCA
+openssl genrsa -out rootCA.key 4096</code></pre>
+
+          <h3 class="mt-6 text-lg font-bold text-slate-900">3.3. Tạo Root CA certificate</h3>
+          <pre class="mt-3 bg-slate-900 text-slate-100 rounded-xl p-4 overflow-auto text-sm"><code>openssl req -x509 ^
+-new ^
+-nodes ^
+-key rootCA.key ^
+-sha256 ^
+-days 3650 ^
+-out rootCA.crt</code></pre>
+
+          <p class="mt-3 text-slate-600">Thông tin ví dụ khi OpenSSL hỏi:</p>
+          <pre class="mt-3 bg-slate-900 text-slate-100 rounded-xl p-4 overflow-auto text-sm"><code>Country Name: VN
+State: HCM
+Organization Name: Tam Duc
+Common Name: Tam Duc Internal Root CA</code></pre>
+
+          <h3 class="mt-6 text-lg font-bold text-slate-900">3.4. Tạo wildcard private key</h3>
+          <pre class="mt-3 bg-slate-900 text-slate-100 rounded-xl p-4 overflow-auto text-sm"><code>cd C:\certs\wildcard
+openssl genrsa -out wildcard.key 2048</code></pre>
+
+          <h3 class="mt-6 text-lg font-bold text-slate-900">3.5. Tạo CSR cho wildcard</h3>
+          <pre class="mt-3 bg-slate-900 text-slate-100 rounded-xl p-4 overflow-auto text-sm"><code>openssl req ^
+-new ^
+-key wildcard.key ^
+-out wildcard.csr</code></pre>
+          <p class="mt-3 text-slate-600">Khi nhập Common Name, dùng:</p>
+          <pre class="mt-3 bg-slate-900 text-slate-100 rounded-xl p-4 overflow-auto text-sm"><code>*.timtamduc.local</code></pre>
+
+          <h3 class="mt-6 text-lg font-bold text-slate-900">3.6. Tạo file SAN config</h3>
+          <p class="mt-3 text-slate-600">Tạo file:</p>
+          <pre class="mt-3 bg-slate-900 text-slate-100 rounded-xl p-4 overflow-auto text-sm"><code>C:\certs\wildcard\san.txt</code></pre>
+          <p class="mt-3 text-slate-600">Nội dung file:</p>
+          <pre class="mt-3 bg-slate-900 text-slate-100 rounded-xl p-4 overflow-auto text-sm"><code>authorityKeyIdentifier=keyid,issuer
+basicConstraints=CA:FALSE
+keyUsage = digitalSignature, keyEncipherment
+extendedKeyUsage = serverAuth
+subjectAltName = @alt_names
+
+[alt_names]
+DNS.1 = *.timtamduc.local
+DNS.2 = timtamduc.local</code></pre>
+
+          <h3 class="mt-6 text-lg font-bold text-slate-900">3.7. Ký wildcard certificate bằng Root CA</h3>
+          <pre class="mt-3 bg-slate-900 text-slate-100 rounded-xl p-4 overflow-auto text-sm"><code>openssl x509 ^
+-req ^
+-in wildcard.csr ^
+-CA ../rootCA/rootCA.crt ^
+-CAkey ../rootCA/rootCA.key ^
+-CAcreateserial ^
+-out wildcard.crt ^
+-days 825 ^
+-sha256 ^
+-extfile san.txt</code></pre>
+
+          <h3 class="mt-6 text-lg font-bold text-slate-900">3.8. Tạo file PFX để import vào IIS</h3>
+          <pre class="mt-3 bg-slate-900 text-slate-100 rounded-xl p-4 overflow-auto text-sm"><code>openssl pkcs12 ^
+-export ^
+-out wildcard.pfx ^
+-inkey wildcard.key ^
+-in wildcard.crt ^
+-certfile ../rootCA/rootCA.crt</code></pre>
+          <p class="mt-3 text-slate-600">Sau lệnh này, bạn sẽ nhập password cho file PFX. Password này dùng khi import vào IIS.</p>
+        </section>
+
+        <section id="import" class="bg-white border border-slate-200 rounded-3xl p-6 md:p-8 shadow-sm">
+          <h2 class="text-2xl font-bold text-slate-900">4. Import certificate vào Windows/IIS</h2>
+
+          <div class="mt-6 grid md:grid-cols-2 gap-4">
+            <div class="rounded-2xl border border-slate-200 p-5">
+              <h3 class="font-bold text-slate-900">Root CA</h3>
+              <p class="mt-3 text-slate-600">Import file:</p>
+              <pre class="mt-3 bg-slate-900 text-slate-100 rounded-xl p-4 overflow-auto text-sm"><code>rootCA.crt</code></pre>
+              <p class="mt-3 text-slate-600">Vào certificate store:</p>
+              <pre class="mt-3 bg-slate-900 text-slate-100 rounded-xl p-4 overflow-auto text-sm"><code>Certificates (Local Computer)
+└── Trusted Root Certification Authorities</code></pre>
+            </div>
+
+            <div class="rounded-2xl border border-slate-200 p-5">
+              <h3 class="font-bold text-slate-900">Wildcard SSL</h3>
+              <p class="mt-3 text-slate-600">Import file:</p>
+              <pre class="mt-3 bg-slate-900 text-slate-100 rounded-xl p-4 overflow-auto text-sm"><code>wildcard.pfx</code></pre>
+              <p class="mt-3 text-slate-600">Vào certificate store:</p>
+              <pre class="mt-3 bg-slate-900 text-slate-100 rounded-xl p-4 overflow-auto text-sm"><code>Certificates (Local Computer)
+└── Personal</code></pre>
+            </div>
+          </div>
+
+          <div class="mt-6 rounded-2xl bg-red-50 border border-red-200 p-4 text-sm text-red-800">
+            <strong>Quan trọng:</strong> khi mở MMC, chọn <span class="font-mono">Computer account</span>, không chọn <span class="font-mono">My user account</span>. Nếu import vào Current User, IIS có thể không thấy certificate.
+          </div>
+
+          <h3 class="mt-6 text-lg font-bold text-slate-900">Nên chọn Personal hay Web Hosting?</h3>
+          <p class="mt-3 text-slate-600 leading-7">
+            Với hệ thống nội bộ chỉ dùng một wildcard certificate cho AuthServer, HRM, EMR, CMS và Report, nên chọn <strong>Personal</strong>. Store <strong>Web Hosting</strong> thường dùng cho môi trường hosting lớn có rất nhiều certificate.
+          </p>
+        </section>
+
+        <section id="iis" class="bg-white border border-slate-200 rounded-3xl p-6 md:p-8 shadow-sm">
+          <h2 class="text-2xl font-bold text-slate-900">5. Binding HTTPS trong IIS</h2>
+          <p class="mt-4 text-slate-600 leading-7">
+            Sau khi import <span class="font-mono">wildcard.pfx</span>, mở IIS Manager và vào từng website để cấu hình HTTPS binding.
+          </p>
+
+          <div class="mt-6 overflow-hidden rounded-2xl border border-slate-200">
+            <table class="w-full text-sm">
+              <thead class="bg-slate-100 text-slate-700">
+                <tr>
+                  <th class="text-left px-4 py-3">Site</th>
+                  <th class="text-left px-4 py-3">Hostname</th>
+                  <th class="text-left px-4 py-3">Certificate</th>
+                  <th class="text-left px-4 py-3">SNI</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200">
+                <tr><td class="px-4 py-3 font-medium">AuthServer</td><td class="px-4 py-3 font-mono">auth.timtamduc.local</td><td class="px-4 py-3 font-mono">*.timtamduc.local</td><td class="px-4 py-3">Bật</td></tr>
+                <tr><td class="px-4 py-3 font-medium">EMR</td><td class="px-4 py-3 font-mono">emr.timtamduc.local</td><td class="px-4 py-3 font-mono">*.timtamduc.local</td><td class="px-4 py-3">Bật</td></tr>
+                <tr><td class="px-4 py-3 font-medium">HRM</td><td class="px-4 py-3 font-mono">hrm.timtamduc.local</td><td class="px-4 py-3 font-mono">*.timtamduc.local</td><td class="px-4 py-3">Bật</td></tr>
+                <tr><td class="px-4 py-3 font-medium">Report</td><td class="px-4 py-3 font-mono">report.timtamduc.local</td><td class="px-4 py-3 font-mono">*.timtamduc.local</td><td class="px-4 py-3">Bật</td></tr>
+                <tr><td class="px-4 py-3 font-medium">CMS</td><td class="px-4 py-3 font-mono">cms.timtamduc.local</td><td class="px-4 py-3 font-mono">*.timtamduc.local</td><td class="px-4 py-3">Bật</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3 class="mt-6 text-lg font-bold text-slate-900">Cấu hình binding mẫu</h3>
+          <pre class="mt-3 bg-slate-900 text-slate-100 rounded-xl p-4 overflow-auto text-sm"><code>Type: https
+IP Address: All Unassigned
+Port: 443
+Host name: auth.timtamduc.local
+Require Server Name Indication: checked
+SSL certificate: *.timtamduc.local</code></pre>
+
+          <h3 class="mt-6 text-lg font-bold text-slate-900">Cấu hình hosts file nếu chưa có DNS nội bộ</h3>
+          <p class="mt-3 text-slate-600">Trên máy client, sửa file:</p>
+          <pre class="mt-3 bg-slate-900 text-slate-100 rounded-xl p-4 overflow-auto text-sm"><code>C:\Windows\System32\drivers\etc\hosts</code></pre>
+          <p class="mt-3 text-slate-600">Thêm:</p>
+          <pre class="mt-3 bg-slate-900 text-slate-100 rounded-xl p-4 overflow-auto text-sm"><code>192.168.1.10 auth.timtamduc.local
+192.168.1.10 emr.timtamduc.local
+192.168.1.10 hrm.timtamduc.local
+192.168.1.10 report.timtamduc.local
+192.168.1.10 cms.timtamduc.local</code></pre>
+        </section>
+
+        <section id="sni" class="bg-white border border-slate-200 rounded-3xl p-6 md:p-8 shadow-sm">
+          <h2 class="text-2xl font-bold text-slate-900">6. SNI và cảnh báo “No default SSL site has been created”</h2>
+
+          <p class="mt-4 text-slate-600 leading-7">
+            Khi nhiều website HTTPS dùng chung một IP và port 443, IIS cần SNI để biết request đang đi tới hostname nào. Vì vậy, mỗi HTTPS binding nên có hostname riêng và bật <strong>Require Server Name Indication</strong>.
+          </p>
+
+          <div class="mt-6 rounded-2xl bg-slate-50 border border-slate-200 p-5">
+            <h3 class="font-bold text-slate-900">Ví dụ nhiều site dùng chung port 443</h3>
+            <pre class="mt-3 bg-slate-900 text-slate-100 rounded-xl p-4 overflow-auto text-sm"><code>auth.timtamduc.local   -&gt; 192.168.1.10:443
+emr.timtamduc.local    -&gt; 192.168.1.10:443
+hrm.timtamduc.local    -&gt; 192.168.1.10:443
+report.timtamduc.local -&gt; 192.168.1.10:443
+cms.timtamduc.local    -&gt; 192.168.1.10:443</code></pre>
+          </div>
+
+          <div class="mt-6 rounded-2xl bg-yellow-50 border border-yellow-200 p-5">
+            <h3 class="font-bold text-yellow-900">Cảnh báo IIS</h3>
+            <p class="mt-3 text-yellow-900 leading-7">
+              Nếu IIS hiển thị cảnh báo <strong>“No default SSL site has been created. To support browsers without SNI capabilities, it is recommended to create a default SSL site”</strong>, đây chỉ là cảnh báo khuyến nghị, không phải lỗi.
+            </p>
+            <p class="mt-3 text-yellow-900 leading-7">
+              Với hệ thống nội bộ dùng Windows 10/11, Chrome, Edge hoặc trình duyệt hiện đại, có thể bỏ qua cảnh báo này nếu tất cả site đều bật SNI đúng cách.
+            </p>
+          </div>
+
+          <h3 class="mt-6 text-lg font-bold text-slate-900">Nếu muốn hết cảnh báo</h3>
+          <p class="mt-3 text-slate-600 leading-7">Có thể tạo thêm một fallback/default SSL site:</p>
+          <pre class="mt-3 bg-slate-900 text-slate-100 rounded-xl p-4 overflow-auto text-sm"><code>Site name: DefaultSSL
+Binding: https
+IP Address: All Unassigned
+Port: 443
+Host name: để trống
+Require SNI: không bật
+Certificate: *.timtamduc.local</code></pre>
+
+          <div class="mt-6 rounded-2xl bg-blue-50 border border-blue-200 p-4 text-sm text-blue-900">
+            <strong>Khuyến nghị:</strong> hệ thống nội bộ hiện đại nên dùng hostname riêng cho từng site và bật SNI. Không nên cấu hình nhiều website HTTPS chung port 443 mà không có SNI.
+          </div>
+        </section>
+
+        <section id="checklist" class="bg-white border border-slate-200 rounded-3xl p-6 md:p-8 shadow-sm">
+          <h2 class="text-2xl font-bold text-slate-900">7. Checklist triển khai</h2>
+
+          <div class="mt-6 grid md:grid-cols-2 gap-4">
+            <div class="rounded-2xl border border-slate-200 p-5">
+              <h3 class="font-bold text-slate-900">OpenIddict</h3>
+              <ul class="mt-3 space-y-2 text-sm text-slate-600">
+                <li>✅ Tạo client <span class="font-mono">hrm-web</span></li>
+                <li>✅ Tạo client <span class="font-mono">emr-web</span></li>
+                <li>✅ Tạo client <span class="font-mono">report-web</span></li>
+                <li>✅ Tạo client <span class="font-mono">cms-web</span></li>
+                <li>✅ Tạo scope API tương ứng cho từng backend</li>
+                <li>✅ Cấu hình redirect URI HTTPS đúng hostname</li>
+              </ul>
+            </div>
+
+            <div class="rounded-2xl border border-slate-200 p-5">
+              <h3 class="font-bold text-slate-900">SSL/IIS</h3>
+              <ul class="mt-3 space-y-2 text-sm text-slate-600">
+                <li>✅ Tạo <span class="font-mono">rootCA.crt</span></li>
+                <li>✅ Tạo <span class="font-mono">wildcard.pfx</span></li>
+                <li>✅ Import Root CA vào Trusted Root</li>
+                <li>✅ Import Wildcard vào Local Computer / Personal</li>
+                <li>✅ Binding HTTPS cho từng site</li>
+                <li>✅ Bật SNI cho từng HTTPS binding</li>
+              </ul>
+            </div>
+          </div>
+
+          <h3 class="mt-6 text-lg font-bold text-slate-900">Mô hình cuối cùng</h3>
+          <pre class="mt-3 bg-slate-900 text-slate-100 rounded-xl p-4 overflow-auto text-sm"><code>Root CA
+  └── *.timtamduc.local
+        ├── auth.timtamduc.local
+        ├── emr.timtamduc.local
+        ├── hrm.timtamduc.local
+        ├── report.timtamduc.local
+        └── cms.timtamduc.local</code></pre>
+
+          <div class="mt-6 rounded-2xl bg-green-50 border border-green-200 p-5">
+            <h3 class="font-bold text-green-900">Kết luận</h3>
+            <p class="mt-3 text-green-900 leading-7">
+              Với hệ thống OpenIddict nội bộ gồm HRM, EMR, Report và CMS, cấu hình gọn và dễ quản lý nhất là: 4 frontend OpenIddict clients, 4 API scopes, 1 Root CA nội bộ và 1 wildcard SSL certificate <span class="font-mono">*.timtamduc.local</span>. Trên IIS, mỗi website dùng hostname riêng, cùng port 443 và bật SNI.
+            </p>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+
+</body></html>
