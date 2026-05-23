@@ -1,31 +1,1006 @@
-<html lang="en"><head>
+<html lang="vi" class="scroll-smooth"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>New Website Page</title>
+  <title>Emergency Fallback Auth - Tài liệu Kỹ thuật</title>
+
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: { 50:'#eef2ff', 100:'#e0e7ff', 500:'#6366f1', 600:'#4f46e5', 700:'#4338ca', 900:'#312e81' },
+            accent: { 50:'#ecfeff', 500:'#06b6d4', 600:'#0891b2' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-feature-settings: "cv02","cv03","cv04","cv11"; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    .dark ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    .dark ::-webkit-scrollbar-thumb { background: #334155; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+  </style>
 </head>
-<body class="bg-gray-900 text-white font-sans flex flex-col min-h-screen justify-between">
-  <header class="bg-gray-800 border-b border-gray-700 px-6 py-4 flex justify-between items-center">
-    <div class="text-xl font-bold text-blue-500">My Website Logo</div>
-    <nav class="space-x-4">
-      <a href="index.html" class="hover:text-blue-400">Home</a>
-    </nav>
-  </header>
-  
-  <main class="flex-grow max-w-4xl mx-auto w-full px-6 py-12 flex flex-col justify-center items-center text-center">
-    <h1 class="text-4xl md:text-6xl font-extrabold mb-4 bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent">
-      Welcome to your new page
-    </h1>
-    <p class="text-gray-400 text-lg mb-8 max-w-xl">
-      Double click or select this text in the editor to modify it, insert custom sections, or view code.
-    </p>
-    <a href="#" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg shadow-md transition">
-      Get Started
-    </a>
-  </main>
-  
-  <footer class="bg-gray-800 border-t border-gray-700 text-center py-6 text-gray-500 text-sm">
-    © 2026 My Website. Created with CMS Editor.
-  </footer>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-200 antialiased min-h-screen transition-colors duration-200">
+
+  <!-- Mobile Top Bar -->
+  <div class="lg:hidden flex items-center justify-between px-6 py-4 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-40">
+    <div class="flex items-center gap-3">
+      <div class="h-9 w-9 bg-rose-600 rounded-lg flex items-center justify-center text-white shadow-md shadow-rose-600/20">
+        <i data-lucide="shield-alert" class="h-5 w-5"></i>
+      </div>
+      <div>
+        <span class="font-bold text-slate-900 dark:text-white text-lg">Fallback Auth</span>
+        <span class="text-xs text-rose-500 font-semibold block -mt-1">Emergency Mode</span>
+      </div>
+    </div>
+    <div class="flex items-center gap-3">
+      <button id="theme-toggle-mobile" class="p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
+        <i data-lucide="sun" class="hidden dark:block h-5 w-5"></i>
+        <i data-lucide="moon" class="block dark:hidden h-5 w-5"></i>
+      </button>
+      <button id="menu-toggle" class="p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
+        <i data-lucide="menu" class="h-6 w-6"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="max-w-[90rem] mx-auto flex">
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-72 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 transform -translate-x-full lg:translate-x-0 lg:static lg:h-screen lg:sticky lg:top-0 transition-transform duration-300 ease-in-out flex flex-col justify-between overflow-y-auto">
+      <div class="p-6">
+        <!-- Brand -->
+        <div class="hidden lg:flex items-center gap-3 mb-6">
+          <div class="h-10 w-10 bg-rose-600 rounded-lg flex items-center justify-center text-white shadow-lg shadow-rose-600/25">
+            <i data-lucide="shield-alert" class="h-6 w-6"></i>
+          </div>
+          <div>
+            <h1 class="font-extrabold text-slate-900 dark:text-white text-xl leading-none">Fallback Auth</h1>
+            <span class="text-xs text-rose-500 font-bold">Emergency Mode v1.0</span>
+          </div>
+        </div>
+
+        <!-- Search -->
+        <div class="relative mb-6">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+            <i data-lucide="search" class="h-4 w-4"></i>
+          </div>
+          <input type="text" id="search-input" placeholder="Tìm kiếm tài liệu..." class="w-full pl-9 pr-4 py-2 text-sm bg-slate-100 dark:bg-slate-800/60 border border-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500 focus:bg-white dark:focus:bg-slate-900 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-all">
+          <span class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-xs text-slate-400 font-mono">/</span>
+        </div>
+
+        <!-- Nav -->
+        <nav class="space-y-6">
+          <div>
+            <h3 class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-3 px-3">Tổng quan</h3>
+            <ul class="space-y-1">
+              <li><a href="#muc-tieu" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-rose-600 bg-rose-50 dark:text-rose-400 dark:bg-rose-950/50 transition-colors"><i data-lucide="target" class="h-4 w-4"></i><span>1. Mục tiêu</span></a></li>
+              <li><a href="#kien-truc" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/50 transition-colors"><i data-lucide="git-branch" class="h-4 w-4"></i><span>2. Kiến trúc</span></a></li>
+              <li><a href="#nguyen-tac-db" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/50 transition-colors"><i data-lucide="database" class="h-4 w-4"></i><span>3. Nguyên tắc DB</span></a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-3 px-3">Thiết kế kỹ thuật</h3>
+            <ul class="space-y-1">
+              <li><a href="#thanh-phan" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/50 transition-colors"><i data-lucide="boxes" class="h-4 w-4"></i><span>4. Thành phần</span></a></li>
+              <li><a href="#cau-hinh" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/50 transition-colors"><i data-lucide="settings-2" class="h-4 w-4"></i><span>5. Cấu hình</span></a></li>
+              <li><a href="#api" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/50 transition-colors"><i data-lucide="plug-zap" class="h-4 w-4"></i><span>6. API</span></a></li>
+              <li><a href="#fallback-jwt" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/50 transition-colors"><i data-lucide="key-round" class="h-4 w-4"></i><span>7. Fallback JWT</span></a></li>
+              <li><a href="#validate-token" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/50 transition-colors"><i data-lucide="shield-check" class="h-4 w-4"></i><span>8. Validate Token</span></a></li>
+              <li><a href="#gioi-han-api" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/50 transition-colors"><i data-lucide="ban" class="h-4 w-4"></i><span>9. Giới hạn API nhạy cảm</span></a></li>
+              <li><a href="#angular-flow" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/50 transition-colors"><i data-lucide="workflow" class="h-4 w-4"></i><span>10. Angular Flow</span></a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-3 px-3">Vận hành</h3>
+            <ul class="space-y-1">
+              <li><a href="#quy-trinh" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/50 transition-colors"><i data-lucide="clipboard-list" class="h-4 w-4"></i><span>11. Quy trình bật Emergency</span></a></li>
+              <li><a href="#bao-mat" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/50 transition-colors"><i data-lucide="lock" class="h-4 w-4"></i><span>12. Bảo mật bắt buộc</span></a></li>
+              <li><a href="#phase" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/50 transition-colors"><i data-lucide="layers" class="h-4 w-4"></i><span>13. Phase triển khai</span></a></li>
+              <li><a href="#checklist" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/50 transition-colors"><i data-lucide="list-checks" class="h-4 w-4"></i><span>14. Checklist Test</span></a></li>
+              <li><a href="#hien-trang" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/50 transition-colors"><i data-lucide="folder-open" class="h-4 w-4"></i><span>15. Hiện trạng Code</span></a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+
+      <!-- Sidebar Footer -->
+      <div class="p-6 border-t border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="h-2 w-2 rounded-full bg-rose-500 animate-pulse"></div>
+          <span class="text-xs text-slate-500 dark:text-slate-400 font-medium">Emergency: Standby</span>
+        </div>
+        <button id="theme-toggle" class="p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">
+          <i data-lucide="sun" class="hidden dark:block h-4 w-4"></i>
+          <i data-lucide="moon" class="block dark:hidden h-4 w-4"></i>
+        </button>
+      </div>
+    </aside>
+
+    <div id="sidebar-overlay" class="fixed inset-0 z-40 bg-slate-900/50 backdrop-blur-sm hidden transition-opacity lg:hidden"></div>
+
+    <!-- Main Content -->
+    <main class="flex-1 min-w-0 px-6 py-8 lg:px-16 lg:py-12 max-w-4xl mx-auto">
+
+      <!-- Breadcrumb -->
+      <div class="flex items-center gap-2 text-xs font-semibold text-rose-600 dark:text-rose-400 uppercase tracking-wider mb-4">
+        <span>Tài liệu Kỹ thuật</span>
+        <i data-lucide="chevron-right" class="h-3 w-3"></i>
+        <span>Bảo mật &amp; Xác thực</span>
+      </div>
+
+      <!-- Header -->
+      <header class="mb-12 border-b border-slate-200 dark:border-slate-800 pb-8">
+        <div class="inline-flex items-center gap-2 px-3 py-1 bg-rose-100 dark:bg-rose-950/40 text-rose-700 dark:text-rose-400 rounded-full text-xs font-bold mb-4">
+          <i data-lucide="shield-alert" class="h-3.5 w-3.5"></i>
+          Emergency System
+        </div>
+        <h1 class="text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-4">Emergency Fallback Auth</h1>
+        <p class="text-lg lg:text-xl text-slate-600 dark:text-slate-400 font-light leading-relaxed">Cơ chế đăng nhập dự phòng khi OpenIddict/AuthServer gặp sự cố — đảm bảo hệ thống bệnh viện hoạt động liên tục trong thời gian xử lý sự cố.</p>
+      </header>
+
+      <!-- Search Results -->
+      <div id="search-results-container" class="hidden mb-8 p-6 bg-rose-50/50 dark:bg-rose-950/20 border border-rose-100 dark:border-rose-900/50 rounded-xl">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="font-bold text-rose-900 dark:text-rose-300 flex items-center gap-2">
+            <i data-lucide="search-code" class="h-5 w-5"></i><span>Kết quả tìm kiếm</span>
+          </h3>
+          <button id="clear-search" class="text-xs font-semibold text-slate-500 hover:text-slate-800 dark:hover:text-white">Xóa tìm kiếm</button>
+        </div>
+        <div id="search-results" class="space-y-3"></div>
+      </div>
+
+      <!-- ===== SECTION 1 ===== -->
+      <section id="muc-tieu" class="doc-section mb-16 scroll-mt-24">
+        <h2 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-6 flex items-center gap-3">
+          <span class="h-8 w-8 bg-rose-100 dark:bg-rose-900/50 text-rose-600 dark:text-rose-400 rounded-lg flex items-center justify-center font-bold text-base">1</span>
+          Mục tiêu
+        </h2>
+        <div class="space-y-4 leading-relaxed">
+          <p>Emergency Fallback Auth là cơ chế đăng nhập dự phòng được kích hoạt khi OpenIddict/AuthServer gặp sự cố. Hệ thống đảm bảo tính liên tục của dịch vụ y tế mà không làm giảm mức độ bảo mật tổng thể.</p>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+            <div class="p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
+              <div class="h-10 w-10 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-500 rounded-lg flex items-center justify-center mb-3">
+                <i data-lucide="check-circle-2" class="h-5 w-5"></i>
+              </div>
+              <h4 class="font-bold text-slate-900 dark:text-white mb-2">Hoạt động bình thường</h4>
+              <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">Người dùng đăng nhập bằng SSO thông qua OpenIddict AuthServer như bình thường.</p>
+            </div>
+            <div class="p-5 bg-white dark:bg-slate-900 border border-rose-200 dark:border-rose-900/40 rounded-xl shadow-sm">
+              <div class="h-10 w-10 bg-rose-50 dark:bg-rose-950/30 text-rose-500 rounded-lg flex items-center justify-center mb-3">
+                <i data-lucide="alert-triangle" class="h-5 w-5"></i>
+              </div>
+              <h4 class="font-bold text-slate-900 dark:text-white mb-2">Khi AuthServer lỗi</h4>
+              <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">Angular tự động phát hiện và hiển thị màn hình đăng nhập dự phòng thay thế.</p>
+            </div>
+            <div class="p-5 bg-white dark:bg-slate-900 border border-amber-200 dark:border-amber-900/40 rounded-xl shadow-sm">
+              <div class="h-10 w-10 bg-amber-50 dark:bg-amber-950/30 text-amber-500 rounded-lg flex items-center justify-center mb-3">
+                <i data-lucide="clock" class="h-5 w-5"></i>
+              </div>
+              <h4 class="font-bold text-slate-900 dark:text-white mb-2">Chỉ tạm thời</h4>
+              <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">Fallback chỉ dùng trong thời gian xử lý sự cố, <strong>không thay thế</strong> AuthServer chính thức.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== SECTION 2 ===== -->
+      <section id="kien-truc" class="doc-section mb-16 scroll-mt-24">
+        <h2 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-6 flex items-center gap-3">
+          <span class="h-8 w-8 bg-rose-100 dark:bg-rose-900/50 text-rose-600 dark:text-rose-400 rounded-lg flex items-center justify-center font-bold text-base">2</span>
+          Kiến trúc
+        </h2>
+        <div class="space-y-6">
+          <p>Hệ thống hoạt động theo hai luồng song song. Mỗi backend ứng dụng phải validate được cả hai loại token: <strong>OpenIddict JWT</strong> và <strong>Fallback JWT</strong>.</p>
+
+          <div class="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm">
+            <h3 class="font-bold text-slate-900 dark:text-white text-base mb-6 text-center">Sơ đồ luồng xác thực hai chế độ</h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Normal flow -->
+              <div class="p-5 bg-emerald-50/50 dark:bg-emerald-950/10 border border-emerald-200 dark:border-emerald-900/50 rounded-xl">
+                <div class="flex items-center gap-2 mb-4">
+                  <div class="h-2 w-2 rounded-full bg-emerald-500"></div>
+                  <span class="text-xs font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider">Luồng bình thường</span>
+                </div>
+                <div class="space-y-3 font-mono text-xs text-slate-700 dark:text-slate-300">
+                  <div class="flex items-center gap-2"><div class="h-8 px-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg flex items-center font-sans font-semibold text-xs flex-1">Angular EMR/HRM</div></div>
+                  <div class="flex items-center justify-center text-slate-400"><i data-lucide="arrow-down" class="h-4 w-4"></i><span class="ml-1 text-[10px] font-sans">Normal Login</span></div>
+                  <div class="flex items-center gap-2"><div class="h-8 px-3 bg-emerald-100 dark:bg-emerald-950/50 border border-emerald-300 dark:border-emerald-800 rounded-lg flex items-center font-sans font-semibold text-xs text-emerald-800 dark:text-emerald-300 flex-1">OpenIddict AuthServer</div></div>
+                  <div class="flex items-center justify-center text-slate-400"><i data-lucide="arrow-down" class="h-4 w-4"></i><span class="ml-1 text-[10px] font-sans">OpenIddict JWT</span></div>
+                  <div class="flex items-center gap-2"><div class="h-8 px-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg flex items-center font-sans font-semibold text-xs flex-1">EMR / HRM Backend</div></div>
+                </div>
+              </div>
+              <!-- Fallback flow -->
+              <div class="p-5 bg-rose-50/50 dark:bg-rose-950/10 border border-rose-200 dark:border-rose-900/50 rounded-xl">
+                <div class="flex items-center gap-2 mb-4">
+                  <div class="h-2 w-2 rounded-full bg-rose-500 animate-pulse"></div>
+                  <span class="text-xs font-bold text-rose-700 dark:text-rose-400 uppercase tracking-wider">Luồng khẩn cấp</span>
+                </div>
+                <div class="space-y-3 font-mono text-xs text-slate-700 dark:text-slate-300">
+                  <div class="flex items-center gap-2"><div class="h-8 px-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg flex items-center font-sans font-semibold text-xs flex-1">Angular EMR/HRM</div></div>
+                  <div class="flex items-center justify-center text-slate-400"><i data-lucide="arrow-down" class="h-4 w-4"></i><span class="ml-1 text-[10px] font-sans">Fallback Login</span></div>
+                  <div class="flex items-center gap-2"><div class="h-8 px-3 bg-rose-100 dark:bg-rose-950/50 border border-rose-300 dark:border-rose-800 rounded-lg flex items-center font-sans font-semibold text-xs text-rose-800 dark:text-rose-300 flex-1">Emergency Auth API</div></div>
+                  <div class="flex items-center justify-center text-slate-400"><i data-lucide="arrow-down" class="h-4 w-4"></i><span class="ml-1 text-[10px] font-sans">Fallback JWT</span></div>
+                  <div class="flex items-center gap-2"><div class="h-8 px-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg flex items-center font-sans font-semibold text-xs flex-1">AuthServer DB (Identity tables)</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== SECTION 3 ===== -->
+      <section id="nguyen-tac-db" class="doc-section mb-16 scroll-mt-24">
+        <h2 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-6 flex items-center gap-3">
+          <span class="h-8 w-8 bg-rose-100 dark:bg-rose-900/50 text-rose-600 dark:text-rose-400 rounded-lg flex items-center justify-center font-bold text-base">3</span>
+          Nguyên tắc DB
+        </h2>
+        <div class="space-y-6 leading-relaxed">
+          <p>Emergency Auth dùng chung AuthServer Database nhưng chỉ tương tác với các bảng Identity cần thiết. Không đọc/ghi vào bảng OpenIddict.</p>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- Used tables -->
+            <div class="bg-white dark:bg-slate-900 border border-emerald-200 dark:border-emerald-900/50 rounded-xl overflow-hidden shadow-sm">
+              <div class="px-4 py-3 bg-emerald-50 dark:bg-emerald-950/30 border-b border-emerald-200 dark:border-emerald-900/50 flex items-center gap-2">
+                <i data-lucide="check-circle-2" class="h-4 w-4 text-emerald-600 dark:text-emerald-400"></i>
+                <span class="text-xs font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider">Bảng dùng chung</span>
+              </div>
+              <div class="p-4 space-y-2">
+                <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">Dùng để kiểm tra tài khoản, mật khẩu, trạng thái khoá và lấy role/claim:</p>
+                <div class="space-y-1.5 font-mono text-xs">
+                  <div class="px-2 py-1.5 bg-emerald-50 dark:bg-emerald-950/20 rounded text-emerald-800 dark:text-emerald-300">AspNetUsers</div>
+                  <div class="px-2 py-1.5 bg-emerald-50 dark:bg-emerald-950/20 rounded text-emerald-800 dark:text-emerald-300">AspNetRoles</div>
+                  <div class="px-2 py-1.5 bg-emerald-50 dark:bg-emerald-950/20 rounded text-emerald-800 dark:text-emerald-300">AspNetUserRoles</div>
+                  <div class="px-2 py-1.5 bg-emerald-50 dark:bg-emerald-950/20 rounded text-emerald-800 dark:text-emerald-300">AspNetUserClaims</div>
+                  <div class="px-2 py-1.5 bg-emerald-50 dark:bg-emerald-950/20 rounded text-emerald-800 dark:text-emerald-300">AspNetUserLogins</div>
+                </div>
+              </div>
+            </div>
+            <!-- Not used -->
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm">
+              <div class="px-4 py-3 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800 flex items-center gap-2">
+                <i data-lucide="x-circle" class="h-4 w-4 text-slate-400"></i>
+                <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Không dùng trực tiếp</span>
+              </div>
+              <div class="p-4 space-y-2">
+                <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">Fallback không phải OAuth/OIDC flow nên không đọc/ghi các bảng:</p>
+                <div class="space-y-1.5 font-mono text-xs">
+                  <div class="px-2 py-1.5 bg-slate-100 dark:bg-slate-800 rounded text-slate-500 dark:text-slate-400 line-through">OpenIddictApplications</div>
+                  <div class="px-2 py-1.5 bg-slate-100 dark:bg-slate-800 rounded text-slate-500 dark:text-slate-400 line-through">OpenIddictAuthorizations</div>
+                  <div class="px-2 py-1.5 bg-slate-100 dark:bg-slate-800 rounded text-slate-500 dark:text-slate-400 line-through">OpenIddictScopes</div>
+                  <div class="px-2 py-1.5 bg-slate-100 dark:bg-slate-800 rounded text-slate-500 dark:text-slate-400 line-through">OpenIddictTokens</div>
+                </div>
+              </div>
+            </div>
+            <!-- New tables -->
+            <div class="bg-white dark:bg-slate-900 border border-brand-200 dark:border-brand-900/50 rounded-xl overflow-hidden shadow-sm">
+              <div class="px-4 py-3 bg-brand-50 dark:bg-brand-950/30 border-b border-brand-200 dark:border-brand-900/50 flex items-center gap-2">
+                <i data-lucide="plus-circle" class="h-4 w-4 text-brand-600 dark:text-brand-400"></i>
+                <span class="text-xs font-bold text-brand-700 dark:text-brand-400 uppercase tracking-wider">Bảng mới (Fallback)</span>
+              </div>
+              <div class="p-4 space-y-2">
+                <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">Ba bảng riêng biệt được thêm mới cho Emergency Auth:</p>
+                <div class="space-y-1.5 font-mono text-xs">
+                  <div class="px-2 py-1.5 bg-brand-50 dark:bg-brand-950/20 rounded text-brand-800 dark:text-brand-300">EmergencyAuthSettings</div>
+                  <div class="px-2 py-1.5 bg-brand-50 dark:bg-brand-950/20 rounded text-brand-800 dark:text-brand-300">EmergencyLoginLogs</div>
+                  <div class="px-2 py-1.5 bg-brand-50 dark:bg-brand-950/20 rounded text-brand-800 dark:text-brand-300">EmergencySessions</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== SECTION 4 ===== -->
+      <section id="thanh-phan" class="doc-section mb-16 scroll-mt-24">
+        <h2 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-6 flex items-center gap-3">
+          <span class="h-8 w-8 bg-rose-100 dark:bg-rose-900/50 text-rose-600 dark:text-rose-400 rounded-lg flex items-center justify-center font-bold text-base">4</span>
+          Thành phần hệ thống
+        </h2>
+        <div class="space-y-6 leading-relaxed">
+
+          <!-- EmergencyAuth API -->
+          <div class="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
+            <div class="flex items-start gap-4">
+              <div class="h-10 w-10 bg-rose-50 dark:bg-rose-950/30 text-rose-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                <i data-lucide="server" class="h-5 w-5"></i>
+              </div>
+              <div class="flex-1">
+                <h3 class="font-bold text-slate-900 dark:text-white mb-1">Hospital.EmergencyAuth</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">Backend API độc lập chuyên xử lý fallback login. Không phụ thuộc OpenIddict.</p>
+                <h4 class="text-xs font-bold text-slate-700 dark:text-slate-300 mb-2">Chức năng Phase 1:</h4>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <div class="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400"><i data-lucide="check" class="h-3.5 w-3.5 text-emerald-500 flex-shrink-0"></i>Kiểm tra trạng thái emergency mode</div>
+                  <div class="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400"><i data-lucide="check" class="h-3.5 w-3.5 text-emerald-500 flex-shrink-0"></i>Login fallback bằng username/password</div>
+                  <div class="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400"><i data-lucide="check" class="h-3.5 w-3.5 text-emerald-500 flex-shrink-0"></i>Kiểm tra user active/locked</div>
+                  <div class="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400"><i data-lucide="check" class="h-3.5 w-3.5 text-emerald-500 flex-shrink-0"></i>Lấy role và claim từ Identity</div>
+                  <div class="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400"><i data-lucide="check" class="h-3.5 w-3.5 text-emerald-500 flex-shrink-0"></i>Sinh fallback JWT</div>
+                  <div class="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400"><i data-lucide="check" class="h-3.5 w-3.5 text-emerald-500 flex-shrink-0"></i>Ghi audit log đăng nhập</div>
+                  <div class="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400"><i data-lucide="check" class="h-3.5 w-3.5 text-emerald-500 flex-shrink-0"></i>Tạo fallback session</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- EMR Backend + Angular -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
+              <div class="h-10 w-10 bg-brand-50 dark:bg-brand-950/30 text-brand-500 rounded-lg flex items-center justify-center mb-3">
+                <i data-lucide="cpu" class="h-5 w-5"></i>
+              </div>
+              <h3 class="font-bold text-slate-900 dark:text-white mb-2">EMR Backend</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mb-3">Validate song song hai loại token:</p>
+              <div class="space-y-1.5 text-xs">
+                <div class="flex items-center gap-2 text-slate-600 dark:text-slate-400"><i data-lucide="check-circle-2" class="h-3.5 w-3.5 text-brand-500"></i>OpenIddict token (SSO bình thường)</div>
+                <div class="flex items-center gap-2 text-slate-600 dark:text-slate-400"><i data-lucide="check-circle-2" class="h-3.5 w-3.5 text-rose-500"></i>Fallback JWT (Emergency mode)</div>
+              </div>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-3">Default authorization policy chấp nhận cả hai authentication scheme.</p>
+            </div>
+
+            <div class="p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
+              <div class="h-10 w-10 bg-cyan-50 dark:bg-cyan-950/30 text-cyan-500 rounded-lg flex items-center justify-center mb-3">
+                <i data-lucide="monitor" class="h-5 w-5"></i>
+              </div>
+              <h3 class="font-bold text-slate-900 dark:text-white mb-2">Angular EMR</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mb-3">Frontend tự động detect lỗi AuthServer và chuyển sang fallback:</p>
+              <div class="space-y-1.5 text-xs text-slate-600 dark:text-slate-400">
+                <div class="flex items-center gap-2"><i data-lucide="arrow-right" class="h-3 w-3 text-slate-400"></i>Kiểm tra discovery endpoint</div>
+                <div class="flex items-center gap-2"><i data-lucide="arrow-right" class="h-3 w-3 text-slate-400"></i>Nếu lỗi → chuyển sang <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded">/emergency-login</code></div>
+                <div class="flex items-center gap-2"><i data-lucide="arrow-right" class="h-3 w-3 text-slate-400"></i>Lưu token vào <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded">sessionStorage</code></div>
+                <div class="flex items-center gap-2"><i data-lucide="arrow-right" class="h-3 w-3 text-slate-400"></i>Hiển thị banner Emergency Mode</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== SECTION 5 ===== -->
+      <section id="cau-hinh" class="doc-section mb-16 scroll-mt-24">
+        <h2 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-6 flex items-center gap-3">
+          <span class="h-8 w-8 bg-rose-100 dark:bg-rose-900/50 text-rose-600 dark:text-rose-400 rounded-lg flex items-center justify-center font-bold text-base">5</span>
+          Cấu hình
+        </h2>
+        <div class="space-y-4 leading-relaxed">
+          <p>EmergencyAuth API và tất cả backend ứng dụng (EMR, HRM, Report) phải dùng chung <strong>issuer</strong>, <strong>audience</strong> và <strong>secret</strong> để có thể xác thực token lẫn nhau.</p>
+
+          <div class="relative bg-slate-900 rounded-xl overflow-hidden border border-slate-800">
+            <div class="flex items-center justify-between px-4 py-2 bg-slate-950 border-b border-slate-800 text-xs text-slate-400">
+              <span class="font-mono">appsettings.json</span>
+              <button class="copy-btn hover:text-white flex items-center gap-1 font-semibold" data-target="code-config">
+                <i data-lucide="copy" class="h-3 w-3"></i> Copy
+              </button>
+            </div>
+            <pre class="p-4 overflow-x-auto text-xs text-brand-100 font-mono" id="code-config">{
+  "Auth": {
+    "Fallback": {
+      "Issuer": "Hospital.Internal.EmergencyAuth",
+      "Audience": "Hospital.Internal.Apps",
+      "AccessTokenMinutes": 15,
+      "Secret": "CHANGE_TO_LONG_RANDOM_SECRET_AT_LEAST_64_CHARS",
+      "AllowedApps": [ "EMR", "HRM", "REPORT" ],
+      "AllowedRoles": [ "EmergencyAdmin", "Doctor", "Nurse" ],
+      "AllowedIpRanges": [ "192.168.1.0/24" ]
+    }
+  }
+}</pre>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+            <div class="p-4 bg-rose-50 dark:bg-rose-950/20 border-l-4 border-rose-500 rounded-r-lg">
+              <div class="flex gap-2"><i data-lucide="key" class="h-4 w-4 text-rose-500 flex-shrink-0 mt-0.5"></i>
+              <div><span class="font-bold text-xs text-rose-700 dark:text-rose-400 block mb-1">Secret tối thiểu 64 ký tự</span><span class="text-xs text-slate-600 dark:text-slate-400">Sử dụng chuỗi ngẫu nhiên đủ độ dài, không dùng password đơn giản.</span></div></div>
+            </div>
+            <div class="p-4 bg-rose-50 dark:bg-rose-950/20 border-l-4 border-rose-500 rounded-r-lg">
+              <div class="flex gap-2"><i data-lucide="git-commit-horizontal" class="h-4 w-4 text-rose-500 flex-shrink-0 mt-0.5"></i>
+              <div><span class="font-bold text-xs text-rose-700 dark:text-rose-400 block mb-1">Không commit production</span><span class="text-xs text-slate-600 dark:text-slate-400">Không commit secret production vào source code repository.</span></div></div>
+            </div>
+            <div class="p-4 bg-amber-50 dark:bg-amber-950/20 border-l-4 border-amber-500 rounded-r-lg">
+              <div class="flex gap-2"><i data-lucide="copy-check" class="h-4 w-4 text-amber-500 flex-shrink-0 mt-0.5"></i>
+              <div><span class="font-bold text-xs text-amber-700 dark:text-amber-400 block mb-1">Đồng bộ Secret</span><span class="text-xs text-slate-600 dark:text-slate-400">Secret trên EmergencyAuth API và EMR/HRM/Report backend phải giống nhau.</span></div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== SECTION 6 ===== -->
+      <section id="api" class="doc-section mb-16 scroll-mt-24">
+        <h2 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-6 flex items-center gap-3">
+          <span class="h-8 w-8 bg-rose-100 dark:bg-rose-900/50 text-rose-600 dark:text-rose-400 rounded-lg flex items-center justify-center font-bold text-base">6</span>
+          API Endpoints
+        </h2>
+        <div class="space-y-6 leading-relaxed">
+
+          <!-- Status endpoint -->
+          <div>
+            <h3 class="font-bold text-slate-900 dark:text-white text-base mb-3 flex items-center gap-2">
+              <span class="px-2 py-0.5 bg-cyan-100 dark:bg-cyan-950/50 text-cyan-700 dark:text-cyan-400 rounded font-mono text-xs font-bold">GET</span>
+              Kiểm tra trạng thái Emergency Mode
+            </h3>
+            <div class="relative bg-slate-900 rounded-xl overflow-hidden border border-slate-800 mb-3">
+              <div class="px-4 py-2 bg-slate-950 border-b border-slate-800 text-xs text-slate-400 font-mono">GET /api/emergency-auth/status</div>
+              <pre class="p-4 overflow-x-auto text-xs text-slate-300 font-mono" id="code-status-resp">// Response
+{
+  "enabled": true,
+  "reason": "AuthServer maintenance",
+  "maxDurationMinutes": 240
+}</pre>
+            </div>
+          </div>
+
+          <!-- Login endpoint -->
+          <div>
+            <h3 class="font-bold text-slate-900 dark:text-white text-base mb-3 flex items-center gap-2">
+              <span class="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-400 rounded font-mono text-xs font-bold">POST</span>
+              Đăng nhập Fallback
+            </h3>
+            <div class="relative bg-slate-900 rounded-xl overflow-hidden border border-slate-800 mb-3">
+              <div class="flex items-center justify-between px-4 py-2 bg-slate-950 border-b border-slate-800 text-xs text-slate-400">
+                <span class="font-mono">POST /api/emergency-auth/login</span>
+                <button class="copy-btn hover:text-white flex items-center gap-1 font-semibold" data-target="code-login">
+                  <i data-lucide="copy" class="h-3 w-3"></i> Copy
+                </button>
+              </div>
+              <pre class="p-4 overflow-x-auto text-xs text-brand-100 font-mono" id="code-login">// Request
+{
+  "username": "doctor01",
+  "password": "password",
+  "appCode": "EMR",
+  "reason": "AuthServer đang lỗi"
+}
+
+// Response
+{
+  "accessToken": "jwt...",
+  "expiresIn": 900,
+  "authMode": "fallback"
+}</pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== SECTION 7 ===== -->
+      <section id="fallback-jwt" class="doc-section mb-16 scroll-mt-24">
+        <h2 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-6 flex items-center gap-3">
+          <span class="h-8 w-8 bg-rose-100 dark:bg-rose-900/50 text-rose-600 dark:text-rose-400 rounded-lg flex items-center justify-center font-bold text-base">7</span>
+          Cấu trúc Fallback JWT
+        </h2>
+        <div class="space-y-4 leading-relaxed">
+          <p>Fallback token chứa các claim chuẩn kèm hai claim đặc biệt để phân biệt với OpenIddict token.</p>
+
+          <div class="relative bg-slate-900 rounded-xl overflow-hidden border border-slate-800">
+            <div class="flex items-center justify-between px-4 py-2 bg-slate-950 border-b border-slate-800 text-xs text-slate-400">
+              <span class="font-mono">JWT Claims Payload</span>
+              <button class="copy-btn hover:text-white flex items-center gap-1 font-semibold" data-target="code-jwt">
+                <i data-lucide="copy" class="h-3 w-3"></i> Copy
+              </button>
+            </div>
+            <pre class="p-4 overflow-x-auto text-xs text-brand-100 font-mono" id="code-jwt">{
+  "sub": "user-id",
+  "name": "doctor01",
+  "jti": "session-id",
+  "role": [ "Doctor" ],
+  "auth_mode": "fallback",   // Claim bắt buộc để nhận biết fallback token
+  "emergency": "true",
+  "app": "EMR"
+}</pre>
+          </div>
+
+          <div class="mt-4 p-4 bg-amber-50 dark:bg-amber-950/20 border-l-4 border-amber-500 rounded-r-lg">
+            <div class="flex gap-3">
+              <i data-lucide="info" class="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5"></i>
+              <div>
+                <span class="font-bold text-amber-700 dark:text-amber-400 block mb-1">Claim phân biệt bắt buộc</span>
+                <span class="text-sm text-slate-700 dark:text-slate-300">Claim <code class="font-mono text-xs bg-amber-100 dark:bg-amber-950/50 px-1 rounded">auth_mode = "fallback"</code> là bắt buộc. Backend dùng claim này để áp dụng policy <code class="font-mono text-xs bg-amber-100 dark:bg-amber-950/50 px-1 rounded">NoFallback</code> và chặn các thao tác nhạy cảm.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== SECTION 8 ===== -->
+      <section id="validate-token" class="doc-section mb-16 scroll-mt-24">
+        <h2 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-6 flex items-center gap-3">
+          <span class="h-8 w-8 bg-rose-100 dark:bg-rose-900/50 text-rose-600 dark:text-rose-400 rounded-lg flex items-center justify-center font-bold text-base">8</span>
+          Backend Validate Token
+        </h2>
+        <div class="space-y-4 leading-relaxed">
+          <p>Backend cấu hình hai authentication scheme song song. Token đến từ scheme nào sẽ được validate theo cấu hình tương ứng.</p>
+
+          <div class="relative bg-slate-900 rounded-xl overflow-hidden border border-slate-800">
+            <div class="flex items-center justify-between px-4 py-2 bg-slate-950 border-b border-slate-800 text-xs text-slate-400">
+              <span class="font-mono">Program.cs — AddAuthentication()</span>
+              <button class="copy-btn hover:text-white flex items-center gap-1 font-semibold" data-target="code-validate">
+                <i data-lucide="copy" class="h-3 w-3"></i> Copy
+              </button>
+            </div>
+            <pre class="p-4 overflow-x-auto text-xs text-brand-100 font-mono" id="code-validate">builder.Services.AddAuthentication()
+    .AddJwtBearer("OpenIddict", options =&gt;
+    {
+        options.Authority = "https://auth.hospital.local";
+        options.Audience = "api";
+    })
+    .AddJwtBearer("FallbackJwt", options =&gt;
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = configuration["Auth:Fallback:Issuer"],
+            ValidateAudience = true,
+            ValidAudience = configuration["Auth:Fallback:Audience"],
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(configuration["Auth:Fallback:Secret"]))
+        };
+    });</pre>
+          </div>
+
+          <h3 class="font-bold text-slate-900 dark:text-white text-base mt-6">Default Policy — chấp nhận cả hai scheme</h3>
+          <div class="relative bg-slate-900 rounded-xl overflow-hidden border border-slate-800">
+            <div class="flex items-center justify-between px-4 py-2 bg-slate-950 border-b border-slate-800 text-xs text-slate-400">
+              <span class="font-mono">Program.cs — DefaultPolicy</span>
+              <button class="copy-btn hover:text-white flex items-center gap-1 font-semibold" data-target="code-policy">
+                <i data-lucide="copy" class="h-3 w-3"></i> Copy
+              </button>
+            </div>
+            <pre class="p-4 overflow-x-auto text-xs text-brand-100 font-mono" id="code-policy">options.DefaultPolicy = new AuthorizationPolicyBuilder(
+        "OpenIddict",
+        "FallbackJwt")
+    .RequireAuthenticatedUser()
+    .Build();</pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== SECTION 9 ===== -->
+      <section id="gioi-han-api" class="doc-section mb-16 scroll-mt-24">
+        <h2 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-6 flex items-center gap-3">
+          <span class="h-8 w-8 bg-rose-100 dark:bg-rose-900/50 text-rose-600 dark:text-rose-400 rounded-lg flex items-center justify-center font-bold text-base">9</span>
+          Giới hạn API nhạy cảm
+        </h2>
+        <div class="space-y-4 leading-relaxed">
+          <p>Fallback token <strong>không được phép</strong> thực hiện các thao tác admin hoặc rủi ro cao. Sử dụng policy <code class="font-mono text-xs bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded">NoFallback</code> để chặn.</p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <h3 class="font-bold text-slate-900 dark:text-white text-sm mb-3">Khai báo policy NoFallback</h3>
+              <div class="relative bg-slate-900 rounded-xl overflow-hidden border border-slate-800">
+                <div class="flex items-center justify-between px-4 py-2 bg-slate-950 border-b border-slate-800 text-xs text-slate-400">
+                  <span class="font-mono">Program.cs</span>
+                  <button class="copy-btn hover:text-white flex items-center gap-1 font-semibold" data-target="code-nofallback-policy">
+                    <i data-lucide="copy" class="h-3 w-3"></i> Copy
+                  </button>
+                </div>
+                <pre class="p-4 overflow-x-auto text-xs text-brand-100 font-mono" id="code-nofallback-policy">options.AddPolicy("NoFallback", policy =&gt;
+{
+    policy.RequireAssertion(context =&gt;
+        context.User
+               .FindFirst("auth_mode")
+               ?.Value != "fallback");
+});</pre>
+              </div>
+            </div>
+            <div>
+              <h3 class="font-bold text-slate-900 dark:text-white text-sm mb-3">Áp dụng lên Controller</h3>
+              <div class="relative bg-slate-900 rounded-xl overflow-hidden border border-slate-800">
+                <div class="flex items-center justify-between px-4 py-2 bg-slate-950 border-b border-slate-800 text-xs text-slate-400">
+                  <span class="font-mono">UserController.cs</span>
+                  <button class="copy-btn hover:text-white flex items-center gap-1 font-semibold" data-target="code-nofallback-use">
+                    <i data-lucide="copy" class="h-3 w-3"></i> Copy
+                  </button>
+                </div>
+                <pre class="p-4 overflow-x-auto text-xs text-brand-100 font-mono" id="code-nofallback-use">[Authorize(Policy = "NoFallback")]
+[HttpPost("create-user")]
+public async Task&lt;IActionResult&gt; CreateUser()
+{
+    return Ok();
+}</pre>
+              </div>
+            </div>
+          </div>
+
+          <h3 class="font-bold text-slate-900 dark:text-white text-sm mt-4">Danh sách nên chặn với fallback token:</h3>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+            <div class="flex items-center gap-2 p-3 bg-rose-50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900/40 rounded-lg text-xs text-rose-700 dark:text-rose-400"><i data-lucide="x" class="h-3.5 w-3.5 flex-shrink-0"></i>Quản lý user</div>
+            <div class="flex items-center gap-2 p-3 bg-rose-50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900/40 rounded-lg text-xs text-rose-700 dark:text-rose-400"><i data-lucide="x" class="h-3.5 w-3.5 flex-shrink-0"></i>Quản lý role/permission</div>
+            <div class="flex items-center gap-2 p-3 bg-rose-50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900/40 rounded-lg text-xs text-rose-700 dark:text-rose-400"><i data-lucide="x" class="h-3.5 w-3.5 flex-shrink-0"></i>Cấu hình hệ thống</div>
+            <div class="flex items-center gap-2 p-3 bg-rose-50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900/40 rounded-lg text-xs text-rose-700 dark:text-rose-400"><i data-lucide="x" class="h-3.5 w-3.5 flex-shrink-0"></i>Ký số chính thức</div>
+            <div class="flex items-center gap-2 p-3 bg-rose-50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900/40 rounded-lg text-xs text-rose-700 dark:text-rose-400"><i data-lucide="x" class="h-3.5 w-3.5 flex-shrink-0"></i>Xóa dữ liệu</div>
+            <div class="flex items-center gap-2 p-3 bg-rose-50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900/40 rounded-lg text-xs text-rose-700 dark:text-rose-400"><i data-lucide="x" class="h-3.5 w-3.5 flex-shrink-0"></i>Thay đổi danh mục</div>
+            <div class="flex items-center gap-2 p-3 bg-rose-50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900/40 rounded-lg text-xs text-rose-700 dark:text-rose-400"><i data-lucide="x" class="h-3.5 w-3.5 flex-shrink-0"></i>Thanh toán/quyết toán</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== SECTION 10 ===== -->
+      <section id="angular-flow" class="doc-section mb-16 scroll-mt-24">
+        <h2 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-6 flex items-center gap-3">
+          <span class="h-8 w-8 bg-rose-100 dark:bg-rose-900/50 text-rose-600 dark:text-rose-400 rounded-lg flex items-center justify-center font-bold text-base">10</span>
+          Angular Flow
+        </h2>
+        <div class="space-y-6 leading-relaxed">
+          <div class="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm">
+            <h3 class="font-bold text-slate-900 dark:text-white text-base mb-6 text-center">Luồng xử lý đăng nhập phía Angular</h3>
+            <div class="border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden bg-slate-50/50 dark:bg-slate-900/30 divide-y divide-slate-200 dark:divide-slate-800">
+              <div class="flex items-start gap-4 p-4">
+                <span class="h-6 w-6 bg-brand-500 text-white rounded-full flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5">1</span>
+                <div><h4 class="font-bold text-sm text-slate-900 dark:text-white">Kiểm tra AuthServer</h4><p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Angular gọi <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded font-mono text-[11px]">/.well-known/openid-configuration</code> để kiểm tra trạng thái AuthServer.</p></div>
+              </div>
+              <div class="flex items-start gap-4 p-4 bg-emerald-50/30 dark:bg-emerald-950/10">
+                <span class="h-6 w-6 bg-emerald-500 text-white rounded-full flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5">✓</span>
+                <div><h4 class="font-bold text-sm text-emerald-700 dark:text-emerald-400">AuthServer OK → SSO Login</h4><p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Redirect sang OpenIddict PKCE flow như bình thường.</p></div>
+              </div>
+              <div class="flex items-start gap-4 p-4 bg-rose-50/30 dark:bg-rose-950/10">
+                <span class="h-6 w-6 bg-rose-500 text-white rounded-full flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5">✗</span>
+                <div><h4 class="font-bold text-sm text-rose-700 dark:text-rose-400">AuthServer lỗi → Emergency Login</h4><p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Chuyển hướng sang <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded font-mono text-[11px]">/emergency-login</code>.</p></div>
+              </div>
+              <div class="flex items-start gap-4 p-4">
+                <span class="h-6 w-6 bg-brand-500 text-white rounded-full flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5">2</span>
+                <div><h4 class="font-bold text-sm text-slate-900 dark:text-white">Đăng nhập fallback</h4><p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">User nhập username/password, Angular gọi Emergency Auth API.</p></div>
+              </div>
+              <div class="flex items-start gap-4 p-4">
+                <span class="h-6 w-6 bg-brand-500 text-white rounded-full flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5">3</span>
+                <div><h4 class="font-bold text-sm text-slate-900 dark:text-white">Lưu token vào sessionStorage</h4><p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Fallback token được lưu vào <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded font-mono text-[11px]">sessionStorage</code>, không dùng localStorage.</p></div>
+              </div>
+              <div class="flex items-start gap-4 p-4">
+                <span class="h-6 w-6 bg-brand-500 text-white rounded-full flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5">4</span>
+                <div><h4 class="font-bold text-sm text-slate-900 dark:text-white">Gọi API với Bearer token</h4><p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Mọi request gắn header <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded font-mono text-[11px]">Authorization: Bearer &lt;token&gt;</code>.</p></div>
+              </div>
+              <div class="flex items-start gap-4 p-4 bg-amber-50/30 dark:bg-amber-950/10">
+                <span class="h-6 w-6 bg-amber-500 text-white rounded-full flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5"><i data-lucide="megaphone" class="h-3 w-3"></i></span>
+                <div><h4 class="font-bold text-sm text-amber-700 dark:text-amber-400">Hiển thị banner Emergency Mode</h4><p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">"Bạn đang dùng chế độ đăng nhập dự phòng. Một số chức năng sẽ bị giới hạn."</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== SECTION 11 ===== -->
+      <section id="quy-trinh" class="doc-section mb-16 scroll-mt-24">
+        <h2 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-6 flex items-center gap-3">
+          <span class="h-8 w-8 bg-rose-100 dark:bg-rose-900/50 text-rose-600 dark:text-rose-400 rounded-lg flex items-center justify-center font-bold text-base">11</span>
+          Quy trình bật Emergency Mode
+        </h2>
+        <div class="space-y-4 leading-relaxed">
+          <div class="p-4 bg-amber-50 dark:bg-amber-950/20 border-l-4 border-amber-500 rounded-r-lg mb-4">
+            <div class="flex gap-3"><i data-lucide="alert-triangle" class="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5"></i>
+            <div><span class="font-bold text-amber-700 dark:text-amber-400 block mb-1">Không nên tự động bật hoàn toàn</span><span class="text-sm text-slate-700 dark:text-slate-300">Cần có xác nhận thủ công từ IT/EmergencyAdmin trước khi kích hoạt fallback mode.</span></div></div>
+          </div>
+
+          <div class="border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden bg-white dark:bg-slate-900 shadow-sm divide-y divide-slate-100 dark:divide-slate-800">
+            <div class="flex items-start gap-4 p-4">
+              <span class="h-6 w-6 bg-brand-500 text-white rounded-full flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5">1</span>
+              <div><h4 class="font-bold text-sm text-slate-900 dark:text-white">IT xác nhận AuthServer lỗi</h4><p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Kiểm tra log, monitor và xác nhận sự cố thực sự xảy ra trước khi kích hoạt fallback.</p></div>
+            </div>
+            <div class="flex items-start gap-4 p-4">
+              <span class="h-6 w-6 bg-brand-500 text-white rounded-full flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5">2</span>
+              <div><h4 class="font-bold text-sm text-slate-900 dark:text-white">EmergencyAdmin bật fallback</h4><p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Tài khoản EmergencyAdmin đăng nhập vào hệ thống quản lý và kích hoạt chế độ khẩn cấp.</p></div>
+            </div>
+            <div class="flex items-start gap-4 p-4">
+              <span class="h-6 w-6 bg-brand-500 text-white rounded-full flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5">3</span>
+              <div><h4 class="font-bold text-sm text-slate-900 dark:text-white">Nhập lý do kích hoạt</h4><p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Lý do bắt buộc phải nhập và được ghi vào audit log để phục vụ kiểm toán sau này.</p></div>
+            </div>
+            <div class="flex items-start gap-4 p-4">
+              <span class="h-6 w-6 bg-brand-500 text-white rounded-full flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5">4</span>
+              <div><h4 class="font-bold text-sm text-slate-900 dark:text-white">Hệ thống ghi log và kích hoạt</h4><p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Mọi thông tin kích hoạt được ghi nhận đầy đủ: thời gian, người kích hoạt, lý do.</p></div>
+            </div>
+            <div class="flex items-start gap-4 p-4 bg-amber-50/30 dark:bg-amber-950/10">
+              <span class="h-6 w-6 bg-amber-500 text-white rounded-full flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5"><i data-lucide="timer" class="h-3 w-3"></i></span>
+              <div><h4 class="font-bold text-sm text-amber-700 dark:text-amber-400">Fallback tối đa 4 giờ</h4><p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Hệ thống tự động vô hiệu hóa fallback sau 240 phút dù AuthServer chưa phục hồi.</p></div>
+            </div>
+            <div class="flex items-start gap-4 p-4">
+              <span class="h-6 w-6 bg-emerald-500 text-white rounded-full flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5"><i data-lucide="power-off" class="h-3 w-3"></i></span>
+              <div><h4 class="font-bold text-sm text-emerald-700 dark:text-emerald-400">Tắt fallback khi AuthServer phục hồi</h4><p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Sau khi AuthServer hoạt động trở lại, EmergencyAdmin tắt fallback mode thủ công.</p></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== SECTION 12 ===== -->
+      <section id="bao-mat" class="doc-section mb-16 scroll-mt-24">
+        <h2 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-6 flex items-center gap-3">
+          <span class="h-8 w-8 bg-rose-100 dark:bg-rose-900/50 text-rose-600 dark:text-rose-400 rounded-lg flex items-center justify-center font-bold text-base">12</span>
+          Yêu cầu Bảo mật Bắt buộc
+        </h2>
+        <div class="space-y-4 leading-relaxed">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="flex gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
+              <div class="h-8 w-8 rounded bg-rose-50 dark:bg-rose-950/30 flex items-center justify-center flex-shrink-0 text-rose-500"><i data-lucide="timer" class="h-4 w-4"></i></div>
+              <div><h4 class="font-bold text-sm text-slate-900 dark:text-white mb-0.5">Token ngắn hạn</h4><p class="text-xs text-slate-600 dark:text-slate-400">Token chỉ có hiệu lực <strong>15 phút</strong>. Không dùng refresh token trong Phase 1.</p></div>
+            </div>
+            <div class="flex gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
+              <div class="h-8 w-8 rounded bg-rose-50 dark:bg-rose-950/30 flex items-center justify-center flex-shrink-0 text-rose-500"><i data-lucide="activity" class="h-4 w-4"></i></div>
+              <div><h4 class="font-bold text-sm text-slate-900 dark:text-white mb-0.5">Audit log đầy đủ</h4><p class="text-xs text-slate-600 dark:text-slate-400">Log mọi lần đăng nhập thành công lẫn thất bại.</p></div>
+            </div>
+            <div class="flex gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
+              <div class="h-8 w-8 rounded bg-rose-50 dark:bg-rose-950/30 flex items-center justify-center flex-shrink-0 text-rose-500"><i data-lucide="user-check" class="h-4 w-4"></i></div>
+              <div><h4 class="font-bold text-sm text-slate-900 dark:text-white mb-0.5">Kiểm tra user</h4><p class="text-xs text-slate-600 dark:text-slate-400">Kiểm tra trạng thái active/locked trước khi cấp token.</p></div>
+            </div>
+            <div class="flex gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
+              <div class="h-8 w-8 rounded bg-rose-50 dark:bg-rose-950/30 flex items-center justify-center flex-shrink-0 text-rose-500"><i data-lucide="user-cog" class="h-4 w-4"></i></div>
+              <div><h4 class="font-bold text-sm text-slate-900 dark:text-white mb-0.5">Giới hạn Role</h4><p class="text-xs text-slate-600 dark:text-slate-400">Chỉ các role được whitelist mới có thể fallback login.</p></div>
+            </div>
+            <div class="flex gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
+              <div class="h-8 w-8 rounded bg-rose-50 dark:bg-rose-950/30 flex items-center justify-center flex-shrink-0 text-rose-500"><i data-lucide="hard-drive-upload" class="h-4 w-4"></i></div>
+              <div><h4 class="font-bold text-sm text-slate-900 dark:text-white mb-0.5">Không lưu localStorage</h4><p class="text-xs text-slate-600 dark:text-slate-400">Fallback token chỉ lưu trong <code class="font-mono text-xs bg-slate-100 dark:bg-slate-800 px-1 rounded">sessionStorage</code>, xóa khi đóng tab.</p></div>
+            </div>
+            <div class="flex gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
+              <div class="h-8 w-8 rounded bg-rose-50 dark:bg-rose-950/30 flex items-center justify-center flex-shrink-0 text-rose-500"><i data-lucide="ban" class="h-4 w-4"></i></div>
+              <div><h4 class="font-bold text-sm text-slate-900 dark:text-white mb-0.5">Chặn thao tác admin</h4><p class="text-xs text-slate-600 dark:text-slate-400">Fallback token không cho phép thực hiện các thao tác admin nhạy cảm.</p></div>
+            </div>
+            <div class="flex gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm md:col-span-2">
+              <div class="h-8 w-8 rounded bg-rose-50 dark:bg-rose-950/30 flex items-center justify-center flex-shrink-0 text-rose-500"><i data-lucide="key" class="h-4 w-4"></i></div>
+              <div><h4 class="font-bold text-sm text-slate-900 dark:text-white mb-0.5">Secret JWT bảo mật</h4><p class="text-xs text-slate-600 dark:text-slate-400">Secret phải dài, ngẫu nhiên và được quản lý qua secret store hoặc environment variable — không hardcode trong source code.</p></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== SECTION 13 ===== -->
+      <section id="phase" class="doc-section mb-16 scroll-mt-24">
+        <h2 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-6 flex items-center gap-3">
+          <span class="h-8 w-8 bg-rose-100 dark:bg-rose-900/50 text-rose-600 dark:text-rose-400 rounded-lg flex items-center justify-center font-bold text-base">13</span>
+          Phase Triển khai
+        </h2>
+        <div class="space-y-4 leading-relaxed">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="p-5 bg-white dark:bg-slate-900 border-2 border-brand-200 dark:border-brand-900/60 rounded-xl shadow-sm relative">
+              <span class="absolute -top-2.5 left-4 px-2 py-0.5 bg-brand-600 text-white rounded-full text-[9px] font-bold uppercase tracking-wider">Hiện tại</span>
+              <h4 class="font-bold text-slate-900 dark:text-white mb-3 flex items-center gap-2"><span class="h-5 w-5 bg-brand-100 dark:bg-brand-900/50 text-brand-600 dark:text-brand-400 rounded text-xs flex items-center justify-center font-bold">1</span>Phase 1 — MVP</h4>
+              <ul class="space-y-1.5 text-xs text-slate-600 dark:text-slate-400">
+                <li class="flex items-center gap-2"><i data-lucide="check" class="h-3.5 w-3.5 text-emerald-500"></i>Tạo EmergencyAuth API</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="h-3.5 w-3.5 text-emerald-500"></i>Login username/password</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="h-3.5 w-3.5 text-emerald-500"></i>Sinh fallback JWT</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="h-3.5 w-3.5 text-emerald-500"></i>EMR validate fallback JWT</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="h-3.5 w-3.5 text-emerald-500"></i>Angular fallback login screen</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="h-3.5 w-3.5 text-emerald-500"></i>Audit log cơ bản</li>
+              </ul>
+            </div>
+            <div class="p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
+              <h4 class="font-bold text-slate-900 dark:text-white mb-3 flex items-center gap-2"><span class="h-5 w-5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded text-xs flex items-center justify-center font-bold">2</span>Phase 2 — Security</h4>
+              <ul class="space-y-1.5 text-xs text-slate-600 dark:text-slate-400">
+                <li class="flex items-center gap-2"><i data-lucide="circle" class="h-3.5 w-3.5 text-slate-300"></i>Revoke session</li>
+                <li class="flex items-center gap-2"><i data-lucide="circle" class="h-3.5 w-3.5 text-slate-300"></i>Allowed IP range</li>
+                <li class="flex items-center gap-2"><i data-lucide="circle" class="h-3.5 w-3.5 text-slate-300"></i>Rate limit</li>
+                <li class="flex items-center gap-2"><i data-lucide="circle" class="h-3.5 w-3.5 text-slate-300"></i>NoFallback policy</li>
+                <li class="flex items-center gap-2"><i data-lucide="circle" class="h-3.5 w-3.5 text-slate-300"></i>Emergency banner</li>
+                <li class="flex items-center gap-2"><i data-lucide="circle" class="h-3.5 w-3.5 text-slate-300"></i>Giới hạn role</li>
+              </ul>
+            </div>
+            <div class="p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
+              <h4 class="font-bold text-slate-900 dark:text-white mb-3 flex items-center gap-2"><span class="h-5 w-5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded text-xs flex items-center justify-center font-bold">3</span>Phase 3 — Operation</h4>
+              <ul class="space-y-1.5 text-xs text-slate-600 dark:text-slate-400">
+                <li class="flex items-center gap-2"><i data-lucide="circle" class="h-3.5 w-3.5 text-slate-300"></i>Dashboard quản lý emergency mode</li>
+                <li class="flex items-center gap-2"><i data-lucide="circle" class="h-3.5 w-3.5 text-slate-300"></i>Lịch sử login fallback</li>
+                <li class="flex items-center gap-2"><i data-lucide="circle" class="h-3.5 w-3.5 text-slate-300"></i>Tắt/bật emergency mode</li>
+                <li class="flex items-center gap-2"><i data-lucide="circle" class="h-3.5 w-3.5 text-slate-300"></i>Max duration</li>
+                <li class="flex items-center gap-2"><i data-lucide="circle" class="h-3.5 w-3.5 text-slate-300"></i>Cảnh báo session fallback đang active</li>
+              </ul>
+            </div>
+            <div class="p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
+              <h4 class="font-bold text-slate-900 dark:text-white mb-3 flex items-center gap-2"><span class="h-5 w-5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded text-xs flex items-center justify-center font-bold">4</span>Phase 4 — Multi-app</h4>
+              <ul class="space-y-1.5 text-xs text-slate-600 dark:text-slate-400">
+                <li class="flex items-center gap-2"><i data-lucide="circle" class="h-3.5 w-3.5 text-slate-300"></i>HRM support fallback</li>
+                <li class="flex items-center gap-2"><i data-lucide="circle" class="h-3.5 w-3.5 text-slate-300"></i>Report support fallback</li>
+                <li class="flex items-center gap-2"><i data-lucide="circle" class="h-3.5 w-3.5 text-slate-300"></i>Shared fallback auth library</li>
+                <li class="flex items-center gap-2"><i data-lucide="circle" class="h-3.5 w-3.5 text-slate-300"></i>Central audit log</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== SECTION 14 ===== -->
+      <section id="checklist" class="doc-section mb-16 scroll-mt-24">
+        <h2 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-6 flex items-center gap-3">
+          <span class="h-8 w-8 bg-rose-100 dark:bg-rose-900/50 text-rose-600 dark:text-rose-400 rounded-lg flex items-center justify-center font-bold text-base">14</span>
+          Checklist Test
+        </h2>
+        <div class="space-y-3">
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm divide-y divide-slate-100 dark:divide-slate-800">
+            <div class="flex items-center gap-4 p-4">
+              <div class="h-5 w-5 rounded border-2 border-emerald-400 flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="h-3 w-3 text-emerald-500"></i></div>
+              <span class="text-sm text-slate-700 dark:text-slate-300">AuthServer chạy bình thường → login OIDC thành công.</span>
+            </div>
+            <div class="flex items-center gap-4 p-4">
+              <div class="h-5 w-5 rounded border-2 border-slate-300 dark:border-slate-600 flex-shrink-0"></div>
+              <span class="text-sm text-slate-700 dark:text-slate-300">Tắt AuthServer → Angular hiển thị màn hình fallback login.</span>
+            </div>
+            <div class="flex items-center gap-4 p-4">
+              <div class="h-5 w-5 rounded border-2 border-slate-300 dark:border-slate-600 flex-shrink-0"></div>
+              <span class="text-sm text-slate-700 dark:text-slate-300">Login fallback đúng password → vào app thành công.</span>
+            </div>
+            <div class="flex items-center gap-4 p-4">
+              <div class="h-5 w-5 rounded border-2 border-slate-300 dark:border-slate-600 flex-shrink-0"></div>
+              <span class="text-sm text-slate-700 dark:text-slate-300">Login sai password → ghi log thất bại, trả 401.</span>
+            </div>
+            <div class="flex items-center gap-4 p-4">
+              <div class="h-5 w-5 rounded border-2 border-slate-300 dark:border-slate-600 flex-shrink-0"></div>
+              <span class="text-sm text-slate-700 dark:text-slate-300">Token hết hạn sau 15 phút, API trả 401.</span>
+            </div>
+            <div class="flex items-center gap-4 p-4">
+              <div class="h-5 w-5 rounded border-2 border-slate-300 dark:border-slate-600 flex-shrink-0"></div>
+              <span class="text-sm text-slate-700 dark:text-slate-300">API nhạy cảm bị chặn với fallback token (HTTP 403).</span>
+            </div>
+            <div class="flex items-center gap-4 p-4">
+              <div class="h-5 w-5 rounded border-2 border-slate-300 dark:border-slate-600 flex-shrink-0"></div>
+              <span class="text-sm text-slate-700 dark:text-slate-300">Tắt emergency mode → không thể login fallback.</span>
+            </div>
+            <div class="flex items-center gap-4 p-4">
+              <div class="h-5 w-5 rounded border-2 border-slate-300 dark:border-slate-600 flex-shrink-0"></div>
+              <span class="text-sm text-slate-700 dark:text-slate-300">Revoke session → token không còn dùng được (Phase 2).</span>
+            </div>
+            <div class="flex items-center gap-4 p-4">
+              <div class="h-5 w-5 rounded border-2 border-slate-300 dark:border-slate-600 flex-shrink-0"></div>
+              <span class="text-sm text-slate-700 dark:text-slate-300">OpenIddict phục hồi → quay về login SSO bình thường.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== SECTION 15 ===== -->
+      <section id="hien-trang" class="doc-section mb-16 scroll-mt-24">
+        <h2 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-6 flex items-center gap-3">
+          <span class="h-8 w-8 bg-rose-100 dark:bg-rose-900/50 text-rose-600 dark:text-rose-400 rounded-lg flex items-center justify-center font-bold text-base">15</span>
+          Hiện trạng Code trong Repo
+        </h2>
+        <div class="space-y-4 leading-relaxed">
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm">
+            <div class="p-4 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800 flex items-center gap-2">
+              <i data-lucide="folder-open" class="h-4 w-4 text-brand-500"></i>
+              <span class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Vị trí file trong dự án</span>
+            </div>
+            <div class="p-4 space-y-3">
+              <div class="flex items-start gap-3">
+                <div class="h-7 w-7 bg-brand-50 dark:bg-brand-950/30 text-brand-500 rounded flex items-center justify-center flex-shrink-0"><i data-lucide="folder" class="h-3.5 w-3.5"></i></div>
+                <div><p class="text-xs font-semibold text-slate-900 dark:text-white">EmergencyAuth API</p><p class="font-mono text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">D:\Projects\auth-fallback\Hospital.EmergencyAuth</p></div>
+              </div>
+              <div class="flex items-start gap-3">
+                <div class="h-7 w-7 bg-brand-50 dark:bg-brand-950/30 text-brand-500 rounded flex items-center justify-center flex-shrink-0"><i data-lucide="file-code" class="h-3.5 w-3.5"></i></div>
+                <div><p class="text-xs font-semibold text-slate-900 dark:text-white">SQL tạo bảng</p><p class="font-mono text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">...\Hospital.EmergencyAuth\Database\001_create_emergency_auth_tables.sql</p></div>
+              </div>
+              <div class="flex items-start gap-3">
+                <div class="h-7 w-7 bg-brand-50 dark:bg-brand-950/30 text-brand-500 rounded flex items-center justify-center flex-shrink-0"><i data-lucide="route" class="h-3.5 w-3.5"></i></div>
+                <div><p class="text-xs font-semibold text-slate-900 dark:text-white">Angular EMR route fallback</p><p class="font-mono text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">/emergency-login</p></div>
+              </div>
+              <div class="flex items-start gap-3">
+                <div class="h-7 w-7 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-500 rounded flex items-center justify-center flex-shrink-0"><i data-lucide="check-circle-2" class="h-3.5 w-3.5"></i></div>
+                <div><p class="text-xs font-semibold text-slate-900 dark:text-white">EMR Backend</p><p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Đã thêm scheme <code class="font-mono bg-slate-100 dark:bg-slate-800 px-1 rounded">FallbackJwt</code>.</p></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-4 bg-amber-50 dark:bg-amber-950/20 border-l-4 border-amber-500 rounded-r-lg">
+            <div class="flex gap-3">
+              <i data-lucide="alert-triangle" class="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5"></i>
+              <div>
+                <span class="font-bold text-amber-700 dark:text-amber-400 block mb-1">Kiểm tra mapping bảng Identity</span>
+                <span class="text-sm text-slate-700 dark:text-slate-300">Cần đảm bảo mapping bảng Identity trong AuthServer DB khớp với cấu hình EmergencyAuth: nếu DB thực tế dùng <code class="font-mono text-xs bg-amber-100 dark:bg-amber-950/50 px-1 rounded">AspNetUsers/AspNetRoles</code>, giữ cấu hình hiện tại; nếu AuthServer migration đang dùng <code class="font-mono text-xs bg-amber-100 dark:bg-amber-950/50 px-1 rounded">auth.Users/auth.Roles</code>, cần đồng bộ lại mapping trước khi deploy.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400">
+        <p>© 2026 Hospital Internal Systems — Tài liệu kỹ thuật nội bộ.</p>
+        <div class="flex items-center gap-4">
+          <span>Emergency Fallback Auth</span>
+          <span>•</span>
+          <span>Phase 1 MVP</span>
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="fixed bottom-6 right-6 px-4 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl shadow-2xl flex items-center gap-2 border border-slate-800 dark:border-slate-100 opacity-0 pointer-events-none transition-all duration-300 transform translate-y-2 z-50">
+    <i data-lucide="check-circle-2" class="h-5 w-5 text-emerald-500"></i>
+    <span class="text-sm font-semibold">Đã sao chép vào bộ nhớ tạm!</span>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    const initTheme = () => {
+      const isDark = localStorage.getItem('theme') === 'dark' ||
+        (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+      document.documentElement.classList.toggle('dark', isDark);
+    };
+    const toggleTheme = () => {
+      const isDark = document.documentElement.classList.contains('dark');
+      document.documentElement.classList.toggle('dark', !isDark);
+      localStorage.setItem('theme', isDark ? 'light' : 'dark');
+    };
+    document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+    document.getElementById('theme-toggle-mobile').addEventListener('click', toggleTheme);
+    initTheme();
+
+    const menuToggle = document.getElementById('menu-toggle');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    const toggleMenu = () => {
+      sidebar.classList.toggle('-translate-x-full');
+      overlay.classList.toggle('hidden');
+    };
+    menuToggle.addEventListener('click', toggleMenu);
+    overlay.addEventListener('click', toggleMenu);
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => { if (window.innerWidth < 1024) toggleMenu(); });
+    });
+
+    const toast = document.getElementById('toast');
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const el = document.getElementById(btn.getAttribute('data-target'));
+        if (el) {
+          navigator.clipboard.writeText(el.textContent).then(() => {
+            toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-2');
+            setTimeout(() => toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-2'), 2500);
+          });
+        }
+      });
+    });
+
+    const sections = document.querySelectorAll('section.doc-section');
+    const navLinks = document.querySelectorAll('.nav-link');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(s => { if (window.scrollY + 120 >= s.offsetTop) current = s.id; });
+      navLinks.forEach(link => {
+        const active = link.getAttribute('href') === '#' + current;
+        link.classList.toggle('text-rose-600', active);
+        link.classList.toggle('bg-rose-50', active);
+        link.classList.toggle('dark:text-rose-400', active);
+        link.classList.toggle('dark:bg-rose-950/50', active);
+        link.classList.toggle('text-slate-600', !active);
+        link.classList.toggle('hover:text-slate-900', !active);
+        link.classList.toggle('hover:bg-slate-50', !active);
+        link.classList.toggle('dark:text-slate-400', !active);
+        link.classList.toggle('dark:hover:text-white', !active);
+        link.classList.toggle('dark:hover:bg-slate-800/50', !active);
+      });
+    });
+
+    const searchInput = document.getElementById('search-input');
+    const searchContainer = document.getElementById('search-results-container');
+    const searchResults = document.getElementById('search-results');
+    document.getElementById('clear-search').addEventListener('click', () => { searchInput.value = ''; searchContainer.classList.add('hidden'); });
+    const db = Array.from(sections).map(s => ({
+      id: s.id,
+      heading: s.querySelector('h2').textContent.trim(),
+      text: Array.from(s.querySelectorAll('p, li, td, code')).map(e => e.textContent).join(' ')
+    }));
+    searchInput.addEventListener('input', e => {
+      const q = e.target.value.toLowerCase().trim();
+      if (q.length < 2) { searchContainer.classList.add('hidden'); return; }
+      const matches = db.filter(i => i.heading.toLowerCase().includes(q) || i.text.toLowerCase().includes(q));
+      searchResults.innerHTML = matches.length === 0
+        ? '<p class="text-xs text-slate-500">Không tìm thấy kết quả.</p>'
+        : matches.map(m => `<a href="#${m.id}" class="block p-3 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-rose-500 transition-all"><h4 class="font-bold text-xs text-slate-900 dark:text-white">${m.heading}</h4><p class="text-[11px] text-slate-500 mt-1 line-clamp-2">...${m.text.substr(m.text.toLowerCase().indexOf(q), 150)}...</p></a>`).join('');
+      searchContainer.classList.remove('hidden');
+    });
+    window.addEventListener('keydown', e => { if (e.key === '/' && document.activeElement !== searchInput) { e.preventDefault(); searchInput.focus(); } });
+  </script>
 
 </body></html>
