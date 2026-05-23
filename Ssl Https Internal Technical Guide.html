@@ -1,0 +1,406 @@
+<html lang="vi"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tài liệu kỹ thuật cài SSL/HTTPS mạng nội bộ</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              900: '#1e3a8a'
+            }
+          },
+          boxShadow: {
+            soft: '0 16px 40px rgba(15, 23, 42, 0.08)'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+    pre { white-space: pre-wrap; word-break: break-word; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+  <div class="min-h-screen">
+    <header class="border-b border-slate-200 bg-white/90 backdrop-blur sticky top-0 z-50">
+      <div class="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between gap-4">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-brand-600">Internal Security Guide</p>
+          <h1 class="text-xl md:text-2xl font-bold text-slate-950">Cài SSL/HTTPS cho mạng nội bộ</h1>
+        </div>
+        <div class="hidden md:flex items-center gap-2 text-sm text-slate-600">
+          <span class="rounded-full bg-emerald-50 px-3 py-1 text-emerald-700 font-medium">IIS</span>
+          <span class="rounded-full bg-blue-50 px-3 py-1 text-blue-700 font-medium">ASP.NET Core</span>
+          <span class="rounded-full bg-violet-50 px-3 py-1 text-violet-700 font-medium">Internal CA</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="mx-auto max-w-7xl px-6 py-8 grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8">
+      <aside class="hidden lg:block">
+        <div class="sticky top-24 rounded-2xl border border-slate-200 bg-white p-5 shadow-soft">
+          <h2 class="font-semibold text-slate-950 mb-4">Mục lục</h2>
+          <nav class="space-y-2 text-sm">
+            <a href="#overview" class="block rounded-lg px-3 py-2 hover:bg-slate-100">1. Tổng quan</a>
+            <a href="#architecture" class="block rounded-lg px-3 py-2 hover:bg-slate-100">2. Kiến trúc đề xuất</a>
+            <a href="#domain" class="block rounded-lg px-3 py-2 hover:bg-slate-100">3. Domain &amp; DNS nội bộ</a>
+            <a href="#option-selfsigned" class="block rounded-lg px-3 py-2 hover:bg-slate-100">4. Self-Signed Certificate</a>
+            <a href="#option-ca" class="block rounded-lg px-3 py-2 hover:bg-slate-100">5. Internal CA bằng OpenSSL</a>
+            <a href="#iis" class="block rounded-lg px-3 py-2 hover:bg-slate-100">6. Cấu hình IIS HTTPS</a>
+            <a href="#kestrel" class="block rounded-lg px-3 py-2 hover:bg-slate-100">7. Cấu hình Kestrel</a>
+            <a href="#client" class="block rounded-lg px-3 py-2 hover:bg-slate-100">8. Cài CA cho client</a>
+            <a href="#openiddict" class="block rounded-lg px-3 py-2 hover:bg-slate-100">9. Lưu ý Auth/OpenIddict</a>
+            <a href="#troubleshooting" class="block rounded-lg px-3 py-2 hover:bg-slate-100">10. Troubleshooting</a>
+            <a href="#checklist" class="block rounded-lg px-3 py-2 hover:bg-slate-100">11. Checklist triển khai</a>
+          </nav>
+        </div>
+      </aside>
+
+      <section class="space-y-8">
+        <section id="overview" class="rounded-3xl bg-gradient-to-br from-brand-900 via-brand-700 to-blue-600 p-8 text-white shadow-soft">
+          <p class="text-sm font-semibold uppercase tracking-[0.25em] text-blue-100">Technical Document</p>
+          <h2 class="mt-3 text-3xl md:text-5xl font-bold tracking-tight">Hướng dẫn cài SSL/HTTPS trong mạng nội bộ</h2>
+          <p class="mt-5 max-w-3xl text-blue-50 text-lg">Tài liệu này hướng dẫn triển khai HTTPS cho các ứng dụng nội bộ như EMR, HRM, Auth Server, Report Server chạy trên IIS hoặc ASP.NET Core/Kestrel.</p>
+          <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="rounded-2xl bg-white/10 p-4 ring-1 ring-white/20">
+              <div class="text-2xl font-bold">Option 1</div>
+              <p class="text-sm text-blue-50">Self-signed cho môi trường test/lab</p>
+            </div>
+            <div class="rounded-2xl bg-white/10 p-4 ring-1 ring-white/20">
+              <div class="text-2xl font-bold">Option 2</div>
+              <p class="text-sm text-blue-50">Internal CA cho bệnh viện/doanh nghiệp</p>
+            </div>
+            <div class="rounded-2xl bg-white/10 p-4 ring-1 ring-white/20">
+              <div class="text-2xl font-bold">Option 3</div>
+              <p class="text-sm text-blue-50">Reverse Proxy quản lý SSL tập trung</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="architecture" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-soft">
+          <h2 class="text-2xl font-bold text-slate-950">1. Kiến trúc đề xuất</h2>
+          <p class="mt-3 text-slate-600">Với hệ thống nội bộ có nhiều ứng dụng, nên tách domain theo service và dùng một CA nội bộ để phát hành certificate.</p>
+          <div class="mt-6 rounded-2xl bg-slate-950 p-5 text-slate-100 font-mono text-sm overflow-x-auto">
+<pre>Internal Network
+│
+├── Internal DNS
+│   ├── auth.hospital.local  -&gt; 192.168.1.10
+│   ├── emr.hospital.local   -&gt; 192.168.1.11
+│   ├── hrm.hospital.local   -&gt; 192.168.1.12
+│   └── report.hospital.local -&gt; 192.168.1.13
+│
+├── Internal Root CA
+│   ├── auth.hospital.local.crt
+│   ├── emr.hospital.local.crt
+│   ├── hrm.hospital.local.crt
+│   └── report.hospital.local.crt
+│
+└── Client PCs
+    └── Trust Root CA certificate</pre>
+          </div>
+          <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="rounded-2xl border border-emerald-200 bg-emerald-50 p-5">
+              <h3 class="font-semibold text-emerald-900">Khuyến nghị</h3>
+              <p class="mt-2 text-sm text-emerald-800">Dùng Internal CA + Internal DNS + HTTPS binding trên IIS. Đây là hướng ổn định cho EMR/AuthServer nội bộ.</p>
+            </div>
+            <div class="rounded-2xl border border-amber-200 bg-amber-50 p-5">
+              <h3 class="font-semibold text-amber-900">Không khuyến nghị</h3>
+              <p class="mt-2 text-sm text-amber-800">Không nên dùng IP trực tiếp như https://192.168.1.10 vì khó phát hành certificate đúng chuẩn và dễ lỗi browser trust.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="domain" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-soft">
+          <h2 class="text-2xl font-bold text-slate-950">2. Chuẩn domain và DNS nội bộ</h2>
+          <p class="mt-3 text-slate-600">Mỗi ứng dụng nên có hostname rõ ràng. Certificate phải khớp với hostname người dùng truy cập.</p>
+          <div class="mt-6 overflow-hidden rounded-2xl border border-slate-200">
+            <table class="w-full text-sm">
+              <thead class="bg-slate-100 text-slate-700">
+                <tr>
+                  <th class="px-4 py-3 text-left">Ứng dụng</th>
+                  <th class="px-4 py-3 text-left">Domain đề xuất</th>
+                  <th class="px-4 py-3 text-left">IP ví dụ</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200">
+                <tr><td class="px-4 py-3">Auth Server</td><td class="px-4 py-3 font-mono">auth.hospital.local</td><td class="px-4 py-3">192.168.1.10</td></tr>
+                <tr><td class="px-4 py-3">EMR</td><td class="px-4 py-3 font-mono">emr.hospital.local</td><td class="px-4 py-3">192.168.1.11</td></tr>
+                <tr><td class="px-4 py-3">HRM</td><td class="px-4 py-3 font-mono">hrm.hospital.local</td><td class="px-4 py-3">192.168.1.12</td></tr>
+                <tr><td class="px-4 py-3">Report</td><td class="px-4 py-3 font-mono">report.hospital.local</td><td class="px-4 py-3">192.168.1.13</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <h3 class="mt-6 font-semibold text-slate-950">Cấu hình hosts file khi chưa có DNS Server</h3>
+          <div class="mt-3 rounded-2xl bg-slate-950 p-5 text-slate-100 font-mono text-sm">
+<pre># File: C:\Windows\System32\drivers\etc\hosts
+192.168.1.10 auth.hospital.local
+192.168.1.11 emr.hospital.local
+192.168.1.12 hrm.hospital.local
+192.168.1.13 report.hospital.local</pre>
+          </div>
+        </section>
+
+        <section id="option-selfsigned" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-soft">
+          <h2 class="text-2xl font-bold text-slate-950">3. Cách nhanh: Self-Signed Certificate</h2>
+          <p class="mt-3 text-slate-600">Phù hợp cho test nhanh trên IIS hoặc máy dev. Mỗi máy client phải import certificate vào Trusted Root.</p>
+          <h3 class="mt-6 font-semibold text-slate-950">Tạo certificate bằng PowerShell</h3>
+          <div class="mt-3 rounded-2xl bg-slate-950 p-5 text-slate-100 font-mono text-sm">
+<pre>New-SelfSignedCertificate `
+  -DnsName "emr.hospital.local" `
+  -CertStoreLocation "cert:\LocalMachine\My" `
+  -KeyExportPolicy Exportable `
+  -KeyLength 2048 `
+  -HashAlgorithm "SHA256" `
+  -NotAfter (Get-Date).AddYears(3)</pre>
+          </div>
+          <h3 class="mt-6 font-semibold text-slate-950">Export PFX cho server</h3>
+          <div class="mt-3 rounded-2xl bg-slate-950 p-5 text-slate-100 font-mono text-sm">
+<pre>$cert = Get-ChildItem -Path cert:\LocalMachine\My | Where-Object {$_.Subject -like "*emr.hospital.local*"}
+$pwd = ConvertTo-SecureString -String "YourStrongPassword123!" -Force -AsPlainText
+Export-PfxCertificate -Cert $cert -FilePath "C:\certs\emr.hospital.local.pfx" -Password $pwd</pre>
+          </div>
+          <h3 class="mt-6 font-semibold text-slate-950">Export CER cho client trust</h3>
+          <div class="mt-3 rounded-2xl bg-slate-950 p-5 text-slate-100 font-mono text-sm">
+<pre>Export-Certificate -Cert $cert -FilePath "C:\certs\emr.hospital.local.cer"</pre>
+          </div>
+        </section>
+
+        <section id="option-ca" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-soft">
+          <h2 class="text-2xl font-bold text-slate-950">4. Cách chuẩn: Internal CA bằng OpenSSL</h2>
+          <p class="mt-3 text-slate-600">Internal CA giúp client chỉ cần trust Root CA một lần, sau đó có thể phát hành nhiều certificate cho nhiều service nội bộ.</p>
+          <h3 class="mt-6 font-semibold text-slate-950">4.1. Tạo Root CA</h3>
+          <div class="mt-3 rounded-2xl bg-slate-950 p-5 text-slate-100 font-mono text-sm">
+<pre>mkdir C:\internal-ca
+cd C:\internal-ca
+
+openssl genrsa -out rootCA.key 4096
+
+openssl req -x509 -new -nodes -key rootCA.key -sha256 -days 3650 -out rootCA.crt \
+  -subj "/C=VN/ST=HCM/L=HCM/O=Hospital Internal CA/OU=IT/CN=Hospital Root CA"</pre>
+          </div>
+          <h3 class="mt-6 font-semibold text-slate-950">4.2. Tạo file cấu hình SAN cho EMR</h3>
+          <div class="mt-3 rounded-2xl bg-slate-950 p-5 text-slate-100 font-mono text-sm">
+<pre># File: emr-san.cnf
+[req]
+default_bits = 2048
+prompt = no
+default_md = sha256
+req_extensions = req_ext
+distinguished_name = dn
+
+[dn]
+C = VN
+ST = HCM
+L = HCM
+O = Hospital
+OU = IT
+CN = emr.hospital.local
+
+[req_ext]
+subjectAltName = @alt_names
+
+[alt_names]
+DNS.1 = emr.hospital.local
+DNS.2 = emr
+IP.1 = 192.168.1.11</pre>
+          </div>
+          <h3 class="mt-6 font-semibold text-slate-950">4.3. Tạo private key và CSR</h3>
+          <div class="mt-3 rounded-2xl bg-slate-950 p-5 text-slate-100 font-mono text-sm">
+<pre>openssl genrsa -out emr.hospital.local.key 2048
+
+openssl req -new -key emr.hospital.local.key -out emr.hospital.local.csr -config emr-san.cnf</pre>
+          </div>
+          <h3 class="mt-6 font-semibold text-slate-950">4.4. Ký certificate bằng Root CA</h3>
+          <div class="mt-3 rounded-2xl bg-slate-950 p-5 text-slate-100 font-mono text-sm">
+<pre>openssl x509 -req \
+  -in emr.hospital.local.csr \
+  -CA rootCA.crt \
+  -CAkey rootCA.key \
+  -CAcreateserial \
+  -out emr.hospital.local.crt \
+  -days 825 \
+  -sha256 \
+  -extensions req_ext \
+  -extfile emr-san.cnf</pre>
+          </div>
+          <h3 class="mt-6 font-semibold text-slate-950">4.5. Convert sang PFX cho IIS/Kestrel</h3>
+          <div class="mt-3 rounded-2xl bg-slate-950 p-5 text-slate-100 font-mono text-sm">
+<pre>openssl pkcs12 -export \
+  -out emr.hospital.local.pfx \
+  -inkey emr.hospital.local.key \
+  -in emr.hospital.local.crt \
+  -certfile rootCA.crt</pre>
+          </div>
+        </section>
+
+        <section id="iis" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-soft">
+          <h2 class="text-2xl font-bold text-slate-950">5. Cấu hình HTTPS trên IIS</h2>
+          <ol class="mt-5 space-y-4 list-decimal pl-5 text-slate-700">
+            <li>Mở IIS Manager.</li>
+            <li>Chọn server node, mở <strong>Server Certificates</strong>.</li>
+            <li>Chọn <strong>Import</strong>, trỏ tới file <code class="rounded bg-slate-100 px-1">.pfx</code>.</li>
+            <li>Chọn website cần cấu hình.</li>
+            <li>Vào <strong>Bindings...</strong> → <strong>Add</strong>.</li>
+            <li>Chọn Type: <strong>https</strong>, Port: <strong>443</strong>.</li>
+            <li>Hostname: <code class="rounded bg-slate-100 px-1">emr.hospital.local</code>.</li>
+            <li>SSL certificate: chọn certificate vừa import.</li>
+          </ol>
+          <div class="mt-6 rounded-2xl border border-blue-200 bg-blue-50 p-5 text-blue-900">
+            <strong>Lưu ý:</strong> Nếu nhiều website dùng chung port 443, cần bật SNI và mỗi website phải có hostname riêng.
+          </div>
+          <h3 class="mt-6 font-semibold text-slate-950">web.config redirect HTTP sang HTTPS</h3>
+          <div class="mt-3 rounded-2xl bg-slate-950 p-5 text-slate-100 font-mono text-sm">
+<pre>&lt;configuration&gt;
+  &lt;system.webServer&gt;
+    &lt;rewrite&gt;
+      &lt;rules&gt;
+        &lt;rule name="Redirect to HTTPS" stopProcessing="true"&gt;
+          &lt;match url="(.*)" /&gt;
+          &lt;conditions&gt;
+            &lt;add input="{HTTPS}" pattern="off" ignoreCase="true" /&gt;
+          &lt;/conditions&gt;
+          &lt;action type="Redirect" url="https://{HTTP_HOST}/{R:1}" redirectType="Permanent" /&gt;
+        &lt;/rule&gt;
+      &lt;/rules&gt;
+    &lt;/rewrite&gt;
+  &lt;/system.webServer&gt;
+&lt;/configuration&gt;</pre>
+          </div>
+        </section>
+
+        <section id="kestrel" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-soft">
+          <h2 class="text-2xl font-bold text-slate-950">6. Cấu hình HTTPS cho ASP.NET Core/Kestrel</h2>
+          <p class="mt-3 text-slate-600">Dùng khi ứng dụng chạy trực tiếp bằng Kestrel hoặc sau reverse proxy.</p>
+          <h3 class="mt-6 font-semibold text-slate-950">appsettings.json</h3>
+          <div class="mt-3 rounded-2xl bg-slate-950 p-5 text-slate-100 font-mono text-sm">
+<pre>{
+  "Kestrel": {
+    "Endpoints": {
+      "Http": {
+        "Url": "http://0.0.0.0:5000"
+      },
+      "Https": {
+        "Url": "https://0.0.0.0:5001",
+        "Certificate": {
+          "Path": "certs/emr.hospital.local.pfx",
+          "Password": "YourStrongPassword123!"
+        }
+      }
+    }
+  }
+}</pre>
+          </div>
+          <h3 class="mt-6 font-semibold text-slate-950">Program.cs</h3>
+          <div class="mt-3 rounded-2xl bg-slate-950 p-5 text-slate-100 font-mono text-sm">
+<pre>var builder = WebApplication.CreateBuilder(args);
+
+builder.WebHost.ConfigureKestrel(options =&gt;
+{
+    options.Configure(builder.Configuration.GetSection("Kestrel"));
+});
+
+var app = builder.Build();
+
+app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapControllers();
+app.Run();</pre>
+          </div>
+        </section>
+
+        <section id="client" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-soft">
+          <h2 class="text-2xl font-bold text-slate-950">7. Cài Root CA cho máy client</h2>
+          <p class="mt-3 text-slate-600">Để browser không báo lỗi certificate, máy client phải tin tưởng Root CA hoặc certificate self-signed.</p>
+          <h3 class="mt-6 font-semibold text-slate-950">Cài bằng giao diện Windows</h3>
+          <ol class="mt-4 list-decimal pl-5 space-y-3 text-slate-700">
+            <li>Copy file <code class="rounded bg-slate-100 px-1">rootCA.crt</code> hoặc <code class="rounded bg-slate-100 px-1">.cer</code> sang máy client.</li>
+            <li>Double click file certificate.</li>
+            <li>Chọn <strong>Install Certificate</strong>.</li>
+            <li>Chọn <strong>Local Machine</strong>.</li>
+            <li>Chọn <strong>Place all certificates in the following store</strong>.</li>
+            <li>Chọn <strong>Trusted Root Certification Authorities</strong>.</li>
+            <li>Finish và restart browser.</li>
+          </ol>
+          <h3 class="mt-6 font-semibold text-slate-950">Cài bằng PowerShell Admin</h3>
+          <div class="mt-3 rounded-2xl bg-slate-950 p-5 text-slate-100 font-mono text-sm">
+<pre>Import-Certificate \
+  -FilePath "C:\certs\rootCA.crt" \
+  -CertStoreLocation "Cert:\LocalMachine\Root"</pre>
+          </div>
+        </section>
+
+        <section id="openiddict" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-soft">
+          <h2 class="text-2xl font-bold text-slate-950">8. Lưu ý cho Auth Server/OpenIddict</h2>
+          <p class="mt-3 text-slate-600">Auth Server nên luôn chạy HTTPS vì liên quan cookie, token, redirect URI và SSO.</p>
+          <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="rounded-2xl border border-slate-200 p-5">
+              <h3 class="font-semibold text-slate-950">Redirect URI</h3>
+              <p class="mt-2 text-sm text-slate-600">Phải dùng HTTPS và đúng domain.</p>
+              <code class="mt-3 block rounded-xl bg-slate-100 p-3 text-sm">https://emr.hospital.local/auth-callback</code>
+            </div>
+            <div class="rounded-2xl border border-slate-200 p-5">
+              <h3 class="font-semibold text-slate-950">Cookie Secure</h3>
+              <p class="mt-2 text-sm text-slate-600">Cookie đăng nhập nên bật Secure, SameSite phù hợp.</p>
+              <code class="mt-3 block rounded-xl bg-slate-100 p-3 text-sm">Cookie.SecurePolicy = Always</code>
+            </div>
+          </div>
+          <h3 class="mt-6 font-semibold text-slate-950">Ví dụ domain hệ thống</h3>
+          <div class="mt-3 rounded-2xl bg-slate-950 p-5 text-slate-100 font-mono text-sm">
+<pre>Auth Server: https://auth.hospital.local
+EMR UI:      https://emr.hospital.local
+HRM UI:      https://hrm.hospital.local
+Report UI:   https://report.hospital.local
+API:         https://api.hospital.local</pre>
+          </div>
+        </section>
+
+        <section id="troubleshooting" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-soft">
+          <h2 class="text-2xl font-bold text-slate-950">9. Troubleshooting</h2>
+          <div class="mt-6 space-y-4">
+            <div class="rounded-2xl border border-slate-200 p-5">
+              <h3 class="font-semibold text-slate-950">Browser báo Not Secure / NET::ERR_CERT_AUTHORITY_INVALID</h3>
+              <p class="mt-2 text-slate-600">Nguyên nhân thường là client chưa trust Root CA. Cài <code class="rounded bg-slate-100 px-1">rootCA.crt</code> vào Trusted Root Certification Authorities.</p>
+            </div>
+            <div class="rounded-2xl border border-slate-200 p-5">
+              <h3 class="font-semibold text-slate-950">NET::ERR_CERT_COMMON_NAME_INVALID</h3>
+              <p class="mt-2 text-slate-600">Hostname truy cập không nằm trong SAN của certificate. Phải tạo cert có <code class="rounded bg-slate-100 px-1">DNS.1 = emr.hospital.local</code>.</p>
+            </div>
+            <div class="rounded-2xl border border-slate-200 p-5">
+              <h3 class="font-semibold text-slate-950">Không truy cập được từ máy khác trong LAN</h3>
+              <p class="mt-2 text-slate-600">Kiểm tra Windows Firewall, IIS binding, DNS/hosts file, và app có listen trên IP nội bộ không.</p>
+            </div>
+            <div class="rounded-2xl border border-slate-200 p-5">
+              <h3 class="font-semibold text-slate-950">Login OpenIddict bị loop</h3>
+              <p class="mt-2 text-slate-600">Kiểm tra HTTPS, redirect URI, issuer URL, cookie Secure/SameSite, CORS và reverse proxy header.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="checklist" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-soft">
+          <h2 class="text-2xl font-bold text-slate-950">10. Checklist triển khai</h2>
+          <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <label class="flex gap-3 rounded-2xl border border-slate-200 p-4"><input type="checkbox" class="mt-1"> <span>Đã thống nhất domain nội bộ cho từng ứng dụng</span></label>
+            <label class="flex gap-3 rounded-2xl border border-slate-200 p-4"><input type="checkbox" class="mt-1"> <span>Đã cấu hình DNS hoặc hosts file</span></label>
+            <label class="flex gap-3 rounded-2xl border border-slate-200 p-4"><input type="checkbox" class="mt-1"> <span>Đã tạo Root CA hoặc self-signed certificate</span></label>
+            <label class="flex gap-3 rounded-2xl border border-slate-200 p-4"><input type="checkbox" class="mt-1"> <span>Certificate có SAN đúng hostname</span></label>
+            <label class="flex gap-3 rounded-2xl border border-slate-200 p-4"><input type="checkbox" class="mt-1"> <span>Đã import PFX vào IIS hoặc Kestrel</span></label>
+            <label class="flex gap-3 rounded-2xl border border-slate-200 p-4"><input type="checkbox" class="mt-1"> <span>Đã bind HTTPS port 443</span></label>
+            <label class="flex gap-3 rounded-2xl border border-slate-200 p-4"><input type="checkbox" class="mt-1"> <span>Đã import Root CA vào client</span></label>
+            <label class="flex gap-3 rounded-2xl border border-slate-200 p-4"><input type="checkbox" class="mt-1"> <span>Đã test bằng Chrome/Edge từ máy client</span></label>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+</body></html>

@@ -1,759 +1,982 @@
-<html lang="vi"><head>
+<html lang="vi" class="scroll-smooth"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Internal Portal Dashboard</title>
+  <title>ConfigSafe - Tài liệu Hướng dẫn &amp; Vận hành Admin Portal</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Modern Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Tailwind Configuration for Custom Colors & Fonts -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              900: '#312e81',
+            },
+            accent: {
+              50: '#ecfeff',
+              500: '#06b6d4',
+              600: '#0891b2',
+            }
+          }
+        }
+      }
+    }
+  </script>
   <style>
-    :root {
-      --bg: #f4f7fb;
-      --panel: #ffffff;
-      --text: #172033;
-      --muted: #6b7280;
-      --primary: #2563eb;
-      --primary-soft: #eaf1ff;
-      --success: #16a34a;
-      --warning: #f59e0b;
-      --danger: #dc2626;
-      --border: #e5e7eb;
-      --shadow: 0 14px 35px rgba(15, 23, 42, 0.08);
-      --radius: 18px;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
     body {
-      margin: 0;
-      font-family: Inter, Segoe UI, Roboto, Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
+      font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     }
-
-    .app {
-      min-height: 100vh;
-      display: grid;
-      grid-template-columns: 280px 1fr;
+    /* Custom Scrollbar for modern feel */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
     }
-
-    .sidebar {
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .dark ::-webkit-scrollbar-track {
       background: #0f172a;
-      color: #e5e7eb;
-      padding: 24px 18px;
-      position: sticky;
-      top: 0;
-      height: 100vh;
     }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 28px;
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
     }
-
-    .brand-logo {
-      width: 44px;
-      height: 44px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, #38bdf8, #2563eb);
-      display: grid;
-      place-items: center;
-      font-weight: 800;
-      color: white;
+    .dark ::-webkit-scrollbar-thumb {
+      background: #334155;
     }
-
-    .brand h1 {
-      font-size: 18px;
-      margin: 0;
-    }
-
-    .brand p {
-      margin: 2px 0 0;
-      color: #94a3b8;
-      font-size: 12px;
-    }
-
-    .nav-title {
-      color: #64748b;
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      margin: 24px 12px 10px;
-    }
-
-    .nav a {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      color: #cbd5e1;
-      text-decoration: none;
-      padding: 12px 14px;
-      border-radius: 14px;
-      margin-bottom: 6px;
-      font-size: 14px;
-    }
-
-    .nav a.active,
-    .nav a:hover {
-      background: rgba(255, 255, 255, 0.1);
-      color: white;
-    }
-
-    .main {
-      padding: 22px 28px 40px;
-    }
-
-    .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 18px;
-      margin-bottom: 24px;
-    }
-
-    .search {
-      flex: 1;
-      max-width: 640px;
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      padding: 12px 18px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
-    }
-
-    .search input {
-      border: none;
-      outline: none;
-      width: 100%;
-      font-size: 14px;
-    }
-
-    .top-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .icon-btn,
-    .user-chip {
-      border: 1px solid var(--border);
-      background: var(--panel);
-      border-radius: 999px;
-      padding: 10px 14px;
-      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
-    }
-
-    .user-chip {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 700;
-      font-size: 14px;
-    }
-
-    .avatar {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: #dbeafe;
-      color: #1d4ed8;
-      display: grid;
-      place-items: center;
-      font-weight: 800;
-    }
-
-    .hero {
-      background: linear-gradient(135deg, #1d4ed8, #06b6d4);
-      color: white;
-      border-radius: 28px;
-      padding: 28px;
-      display: grid;
-      grid-template-columns: 1.5fr 1fr;
-      gap: 20px;
-      box-shadow: var(--shadow);
-      margin-bottom: 22px;
-    }
-
-    .hero h2 {
-      font-size: 30px;
-      margin: 0 0 8px;
-    }
-
-    .hero p {
-      margin: 0;
-      color: rgba(255, 255, 255, 0.85);
-      line-height: 1.6;
-    }
-
-    .hero-actions {
-      margin-top: 22px;
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      border: none;
-      border-radius: 999px;
-      padding: 12px 18px;
-      font-weight: 800;
-      cursor: pointer;
-    }
-
-    .btn-light {
-      background: white;
-      color: #1d4ed8;
-    }
-
-    .btn-outline {
-      background: rgba(255, 255, 255, 0.12);
-      color: white;
-      border: 1px solid rgba(255, 255, 255, 0.4);
-    }
-
-    .hero-card {
-      background: rgba(255, 255, 255, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.28);
-      border-radius: 22px;
-      padding: 18px;
-      backdrop-filter: blur(8px);
-    }
-
-    .hero-card strong {
-      display: block;
-      font-size: 36px;
-      margin-bottom: 4px;
-    }
-
-    .grid {
-      display: grid;
-      gap: 18px;
-    }
-
-    .kpi-grid {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      margin-bottom: 18px;
-    }
-
-    .content-grid {
-      grid-template-columns: 1.4fr 0.9fr;
-      align-items: start;
-    }
-
-    .card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 20px;
-      box-shadow: var(--shadow);
-    }
-
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-    }
-
-    .card h3 {
-      margin: 0;
-      font-size: 17px;
-    }
-
-    .link {
-      color: var(--primary);
-      font-weight: 700;
-      font-size: 13px;
-      text-decoration: none;
-    }
-
-    .kpi {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    .kpi .icon {
-      width: 46px;
-      height: 46px;
-      border-radius: 14px;
-      background: var(--primary-soft);
-      display: grid;
-      place-items: center;
-      font-size: 22px;
-    }
-
-    .kpi-label {
-      color: var(--muted);
-      font-size: 13px;
-      margin-bottom: 8px;
-    }
-
-    .kpi-value {
-      font-size: 28px;
-      font-weight: 900;
-    }
-
-    .kpi-trend {
-      margin-top: 8px;
-      color: var(--success);
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .apps {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .app-tile {
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 16px;
-      text-align: center;
-      background: #fbfdff;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .app-tile:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 14px 25px rgba(15, 23, 42, 0.08);
-    }
-
-    .app-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 16px;
-      background: var(--primary-soft);
-      margin: 0 auto 10px;
-      display: grid;
-      place-items: center;
-      font-size: 22px;
-    }
-
-    .app-tile strong {
-      display: block;
-      font-size: 14px;
-    }
-
-    .app-tile span {
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .task,
-    .feed-item,
-    .doc-item {
-      display: flex;
-      gap: 12px;
-      padding: 14px 0;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .task:last-child,
-    .feed-item:last-child,
-    .doc-item:last-child {
-      border-bottom: none;
-    }
-
-    .status-dot {
-      width: 10px;
-      height: 10px;
-      margin-top: 6px;
-      border-radius: 50%;
-      background: var(--primary);
-      flex: 0 0 auto;
-    }
-
-    .status-dot.warning {
-      background: var(--warning);
-    }
-
-    .status-dot.danger {
-      background: var(--danger);
-    }
-
-    .item-title {
-      font-weight: 800;
-      margin-bottom: 4px;
-    }
-
-    .item-meta {
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.5;
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      border-radius: 999px;
-      padding: 5px 10px;
-      font-size: 12px;
-      font-weight: 800;
-      background: #eef2ff;
-      color: #3730a3;
-    }
-
-    .two-col {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
-      margin-top: 18px;
-    }
-
-    .progress-row {
-      margin-bottom: 16px;
-    }
-
-    .progress-row label {
-      display: flex;
-      justify-content: space-between;
-      font-size: 13px;
-      color: var(--muted);
-      margin-bottom: 8px;
-      font-weight: 700;
-    }
-
-    .progress {
-      height: 10px;
-      background: #eef2f7;
-      border-radius: 999px;
-      overflow: hidden;
-    }
-
-    .progress span {
-      display: block;
-      height: 100%;
-      background: linear-gradient(90deg, #2563eb, #06b6d4);
-      border-radius: 999px;
-    }
-
-    @media (max-width: 1180px) {
-      .kpi-grid,
-      .apps {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .content-grid,
-      .hero,
-      .two-col {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 760px) {
-      .app {
-        grid-template-columns: 1fr;
-      }
-
-      .sidebar {
-        position: relative;
-        height: auto;
-      }
-
-      .topbar {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .kpi-grid,
-      .apps {
-        grid-template-columns: 1fr;
-      }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
     }
   </style>
 </head>
-<body>
-  <div class="app">
-    <aside class="sidebar">
-      <div class="brand">
-        <div class="brand-logo">IP</div>
-        <div>
-          <h1>Internal Portal</h1>
-          <p>Digital Workplace</p>
-        </div>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-200 antialiased min-h-screen transition-colors duration-200">
+  <!-- Mobile Top Bar -->
+  <div class="lg:hidden flex items-center justify-between px-6 py-4 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-40">
+    <div class="flex items-center gap-3">
+      <div class="h-9 w-9 bg-brand-500 rounded-lg flex items-center justify-center text-white shadow-md shadow-brand-500/20">
+        <i data-lucide="shield-check" class="h-5 w-5"></i>
       </div>
-
-      <div class="nav">
-        <div class="nav-title">Tổng quan</div>
-        <a href="#" class="active">🏠 Dashboard</a>
-        <a href="#">🚀 App Launcher</a>
-        <a href="#">🔔 Thông báo</a>
-        <a href="#">✅ Công việc</a>
-
-        <div class="nav-title">Nghiệp vụ</div>
-        <a href="#">🏥 EMR</a>
-        <a href="#">👥 HRM</a>
-        <a href="#">📊 Reports</a>
-        <a href="#">🧾 Tài liệu</a>
-        <a href="#">✍️ Ký số</a>
-
-        <div class="nav-title">Hệ thống</div>
-        <a href="#">🛠 Admin Portal</a>
-        <a href="#">📡 Monitoring</a>
-        <a href="#">🔐 Auth Server</a>
+      <div>
+        <span class="font-bold text-slate-900 dark:text-white text-lg">ConfigSafe</span>
+        <span class="text-xs text-brand-500 font-semibold block -mt-1">Tài liệu Admin Portal</span>
+      </div>
+    </div>
+    <div class="flex items-center gap-3">
+      <button id="theme-toggle-mobile" class="p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg" aria-label="Toggle Theme">
+        <i data-lucide="sun" class="hidden dark:block h-5 w-5"></i>
+        <i data-lucide="moon" class="block dark:hidden h-5 w-5"></i>
+      </button>
+      <button id="menu-toggle" class="p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg" aria-label="Toggle Menu">
+        <i data-lucide="menu" class="h-6 w-6"></i>
+      </button>
+    </div>
+  </div>
+  <div class="max-w-[90rem] mx-auto flex">
+    
+    <!-- Sidebar Navigation -->
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-72 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 transform -translate-x-full lg:translate-x-0 lg:static lg:h-screen lg:sticky lg:top-0 transition-transform duration-300 ease-in-out flex flex-col justify-between overflow-y-auto">
+      <div class="p-6">
+        <!-- Brand Logo -->
+        <div class="hidden lg:flex items-center gap-3 mb-6">
+          <div class="h-10 w-10 bg-brand-500 rounded-lg flex items-center justify-center text-white shadow-lg shadow-brand-500/25">
+            <i data-lucide="shield-check" class="h-6 w-6"></i>
+          </div>
+          <div>
+            <h1 class="font-extrabold text-slate-900 dark:text-white text-xl leading-none">ConfigSafe</h1>
+            <span class="text-xs text-brand-500 font-bold">v1.0.0 Enterprise</span>
+          </div>
+        </div>
+        <!-- Search Box Mockup -->
+        <div class="relative mb-6">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+            <i data-lucide="search" class="h-4 w-4"></i>
+          </div>
+          <input type="text" id="search-input" placeholder="Tìm kiếm tài liệu..." class="w-full pl-9 pr-4 py-2 text-sm bg-slate-100 dark:bg-slate-800/60 border border-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white dark:focus:bg-slate-900 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-all">
+          <span class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-xs text-slate-400 font-mono">/</span>
+        </div>
+        <!-- Navigation Menu -->
+        <nav class="space-y-8">
+          <div>
+            <h3 class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-3 px-3">Bắt đầu</h3>
+            <ul class="space-y-1">
+              <li>
+                <a href="#tong-quan" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-brand-600 bg-brand-50 dark:text-brand-400 dark:bg-brand-950/50 transition-colors">
+                  <i data-lucide="book-open" class="h-4 w-4"></i>
+                  <span>1. Tổng quan hệ thống</span>
+                </a>
+              </li>
+              <li>
+                <a href="#kien-truc" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/50 transition-colors">
+                  <i data-lucide="git-branch" class="h-4 w-4"></i>
+                  <span>2. Kiến trúc bảo mật</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-3 px-3">Tính năng Admin Portal</h3>
+            <ul class="space-y-1">
+              <li>
+                <a href="#quan-ly-app" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/50 transition-colors">
+                  <i data-lucide="app-window" class="h-4 w-4"></i>
+                  <span>Quản lý Ứng dụng</span>
+                </a>
+              </li>
+              <li>
+                <a href="#quan-ly-connections" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/50 transition-colors">
+                  <i data-lucide="database" class="h-4 w-4"></i>
+                  <span>Chuỗi kết nối (Mã hóa)</span>
+                </a>
+              </li>
+              <li>
+                <a href="#quan-ly-permissions" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/50 transition-colors">
+                  <i data-lucide="key-round" class="h-4 w-4"></i>
+                  <span>Phân quyền chi tiết</span>
+                </a>
+              </li>
+              <li>
+                <a href="#kiem-toan" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/50 transition-colors">
+                  <i data-lucide="activity" class="h-4 w-4"></i>
+                  <span>Nhật ký Kiểm toán</span>
+                </a>
+              </li>
+              <li>
+                <a href="#live-simulator" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/50 transition-colors">
+                  <i data-lucide="terminal" class="h-4 w-4"></i>
+                  <span>Bộ giả lập (Simulator)</span>
+                </a>
+              </li>
+              <li>
+                <a href="#runtime-env" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/50 transition-colors">
+                  <i data-lucide="settings-2" class="h-4 w-4"></i>
+                  <span>Cấu hình môi trường</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-3 px-3">Phát triển &amp; Triển khai</h3>
+            <ul class="space-y-1">
+              <li>
+                <a href="#huong-dan-setup" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/50 transition-colors">
+                  <i data-lucide="code" class="h-4 w-4"></i>
+                  <span>Thiết lập môi trường dev</span>
+                </a>
+              </li>
+              <li>
+                <a href="#tich-hop-oidc" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/50 transition-colors">
+                  <i data-lucide="fingerprint" class="h-4 w-4"></i>
+                  <span>Tích hợp OIDC PKCE</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <!-- Sidebar Footer Settings -->
+      <div class="p-6 border-t border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></div>
+          <span class="text-xs text-slate-500 dark:text-slate-400 font-medium">Hệ thống: Sẵn sàng</span>
+        </div>
+        <button id="theme-toggle" class="p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" aria-label="Toggle Theme">
+          <i data-lucide="sun" class="hidden dark:block h-4 w-4"></i>
+          <i data-lucide="moon" class="block dark:hidden h-4 w-4"></i>
+        </button>
       </div>
     </aside>
-
-    <main class="main">
-      <header class="topbar">
-        <div class="search">
-          🔎
-          <input placeholder="Tìm bệnh nhân, nhân viên, tài liệu, báo cáo, ứng dụng...">
-        </div>
-        <div class="top-actions">
-          <button class="icon-btn">🌙</button>
-          <button class="icon-btn">🔔</button>
-          <div class="user-chip">
-            <div class="avatar">E</div>
-            Ethan
-          </div>
-        </div>
+    <!-- Overlay on mobile -->
+    <div id="sidebar-overlay" class="fixed inset-0 z-40 bg-slate-900/50 backdrop-blur-sm hidden transition-opacity lg:hidden"></div>
+    <!-- Main Content Container -->
+    <main class="flex-1 min-w-0 px-6 py-8 lg:px-16 lg:py-12 max-w-4xl mx-auto">
+      
+      <!-- Top Meta Info / Breadcrumbs -->
+      <div class="flex items-center gap-2 text-xs font-semibold text-brand-600 dark:text-brand-400 uppercase tracking-wider mb-4">
+        <span>Tài liệu Kỹ thuật</span>
+        <i data-lucide="chevron-right" class="h-3 w-3"></i>
+        <span>Vận hành &amp; Hướng dẫn</span>
+      </div>
+      <!-- Main Header -->
+      <header class="mb-12 border-b border-slate-200 dark:border-slate-800 pb-8">
+        <h1 class="text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-4">
+          Tài liệu Chi tiết về ConfigSafe Admin Portal
+        </h1>
+        <p class="text-lg lg:text-xl text-slate-600 dark:text-slate-400 font-light leading-relaxed">
+          Giải pháp Quản lý Tập trung &amp; Mã hóa Chuỗi kết nối, Tham số Cấu hình Bảo mật cho Hệ thống Doanh nghiệp.
+        </p>
       </header>
-
-      <section class="hero">
-        <div>
-          <h2>Xin chào, Ethan 👋</h2>
-          <p>Đây là trung tâm điều hành nội bộ: truy cập nhanh hệ thống, theo dõi công việc, ký số hồ sơ, xem báo cáo và thông báo quan trọng trong ngày.</p>
-          <div class="hero-actions">
-            <button class="btn btn-light">Mở EMR</button>
-            <button class="btn btn-outline">Tạo yêu cầu IT</button>
-            <button class="btn btn-outline">Xem báo cáo</button>
-          </div>
+      <!-- Search Results Area (Hidden by default) -->
+      <div id="search-results-container" class="hidden mb-8 p-6 bg-brand-50/50 dark:bg-brand-950/20 border border-brand-100 dark:border-brand-900/50 rounded-xl">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="font-bold text-brand-900 dark:text-brand-300 flex items-center gap-2">
+            <i data-lucide="search-code" class="h-5 w-5"></i>
+            <span>Kết quả tìm kiếm</span>
+          </h3>
+          <button id="clear-search" class="text-xs font-semibold text-slate-500 hover:text-slate-800 dark:hover:text-white">Xóa tìm kiếm</button>
         </div>
-        <div class="hero-card">
-          <span>Hồ sơ cần xử lý</span>
-          <strong>24</strong>
-          <p>12 hồ sơ chờ ký, 7 yêu cầu duyệt, 5 ticket đang mở.</p>
+        <div id="search-results" class="space-y-3">
+          <!-- Dynamically filled -->
+        </div>
+      </div>
+      <!-- Section: 1. Tổng quan -->
+      <section id="tong-quan" class="doc-section mb-16 scroll-mt-24">
+        <h2 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-6 flex items-center gap-3">
+          <span class="h-8 w-8 bg-brand-100 dark:bg-brand-900/50 text-brand-600 dark:text-brand-400 rounded-lg flex items-center justify-center font-bold text-base">1</span>
+          Tổng quan về ConfigSafe
+        </h2>
+        
+        <div class="prose prose-slate dark:prose-invert max-w-none space-y-4">
+          <p class="leading-relaxed">
+            Trong các kiến trúc hệ thống hiện đại (microservices, đa người thuê - multi-tenant), việc quản trị tập trung cấu hình và bảo mật các thông tin nhạy cảm như <strong>chuỗi kết nối cơ sở dữ liệu (connection strings)</strong>, API Keys và Credentials là một thách thức lớn. 
+          </p>
+          <p class="leading-relaxed">
+            <strong>ConfigSafe</strong> ra đời nhằm giải quyết vấn đề lộ lọt tài nguyên hệ thống bằng cách mã hóa toàn bộ dữ liệu cấu hình nhạy cảm dưới database và chỉ thực hiện giải mã trực tiếp trong bộ nhớ hệ thống (in-memory) khi có yêu cầu hợp lệ từ các Client Web API được ủy quyền.
+          </p>
+          <!-- Core Problems Solved Cards -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+            <div class="p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
+              <div class="h-10 w-10 bg-rose-50 dark:bg-rose-950/30 text-rose-500 rounded-lg flex items-center justify-center mb-3">
+                <i data-lucide="eye-off" class="h-5 w-5"></i>
+              </div>
+              <h4 class="font-bold text-slate-900 dark:text-white mb-2">Loại bỏ Clear-Text Password</h4>
+              <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                Không lưu trữ thông tin đăng nhập thô trong mã nguồn, file cấu hình cục bộ (<code class="text-xs font-mono">appsettings.json</code>, <code class="text-xs font-mono">.env</code>).
+              </p>
+            </div>
+            <div class="p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
+              <div class="h-10 w-10 bg-brand-50 dark:bg-brand-950/30 text-brand-500 rounded-lg flex items-center justify-center mb-3">
+                <i data-lucide="sliders" class="h-5 w-5"></i>
+              </div>
+              <h4 class="font-bold text-slate-900 dark:text-white mb-2">Quản lý Tập trung &amp; Phân vùng</h4>
+              <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                Quản lý tất cả chuỗi kết nối phân tách theo từng ứng dụng, môi trường (Prod, Staging, Dev) và Tenant (Khách hàng/Chi nhánh).
+              </p>
+            </div>
+            <div class="p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
+              <div class="h-10 w-10 bg-cyan-50 dark:bg-cyan-950/30 text-cyan-500 rounded-lg flex items-center justify-center mb-3">
+                <i data-lucide="user-check" class="h-5 w-5"></i>
+              </div>
+              <h4 class="font-bold text-slate-900 dark:text-white mb-2">Ủy quyền Granular khắt khe</h4>
+              <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                Định nghĩa tường minh ứng dụng khách nào (Client App) được quyền đọc tài nguyên kết nối nào thông qua bảng ánh xạ phân quyền.
+              </p>
+            </div>
+            <div class="p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
+              <div class="h-10 w-10 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-500 rounded-lg flex items-center justify-center mb-3">
+                <i data-lucide="history" class="h-5 w-5"></i>
+              </div>
+              <h4 class="font-bold text-slate-900 dark:text-white mb-2">Kiểm toán Truy cập Toàn diện</h4>
+              <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                Mọi hành động đọc, giải mã hoặc thay đổi cấu hình đều được ghi nhận dấu vết (Audit log) kèm thông tin định danh, IP, User Agent.
+              </p>
+            </div>
+          </div>
+          
+          <!-- Note Alert Box -->
+          <div class="mt-6 p-4 bg-amber-50 dark:bg-amber-950/20 border-l-4 border-amber-500 rounded-r-lg text-slate-700 dark:text-slate-300">
+            <div class="flex gap-3">
+              <i data-lucide="alert-triangle" class="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5"></i>
+              <div>
+                <span class="font-bold block mb-1">Lưu ý quan trọng</span>
+                <span class="text-sm">Trang Admin Portal này hoạt động như một trung tâm quản lý cấu hình và kiểm toán (Configuration &amp; Audit Center). Chỉ những tài khoản có vai trò <strong>Admin</strong> (được xác thực thông qua Central Identity Server) mới được cấp quyền truy cập.</span>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
-
-      <section class="grid kpi-grid">
-        <div class="card kpi">
-          <div>
-            <div class="kpi-label">Bệnh nhân hôm nay</div>
-            <div class="kpi-value">186</div>
-            <div class="kpi-trend">+8.4% so với hôm qua</div>
+      <!-- Section: 2. Kiến trúc bảo mật -->
+      <section id="kien-truc" class="doc-section mb-16 scroll-mt-24">
+        <h2 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-6 flex items-center gap-3">
+          <span class="h-8 w-8 bg-brand-100 dark:bg-brand-900/50 text-brand-600 dark:text-brand-400 rounded-lg flex items-center justify-center font-bold text-base">2</span>
+          Kiến trúc Bảo mật &amp; Luồng Dữ liệu
+        </h2>
+        <div class="space-y-6">
+          <p class="leading-relaxed">
+            Hệ thống ConfigSafe vận hành dựa trên cơ chế **"Zero Plain-text Storage"** và **"Least Privilege Access"**.
+          </p>
+          <!-- CSS/SVG Architecture Flow Diagram -->
+          <div class="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm">
+            <h3 class="font-bold text-slate-900 dark:text-white text-base mb-6 text-center">Sơ đồ Luồng Hoạt động và Truy xuất Thông tin Bảo mật</h3>
+            
+            <div class="flex flex-col xl:flex-row items-center justify-between gap-6 xl:gap-2">
+              
+              <!-- Client SPA Node -->
+              <div class="w-full xl:w-52 p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 text-center flex flex-col items-center">
+                <div class="h-10 w-10 rounded-full bg-cyan-100 dark:bg-cyan-950/50 text-cyan-600 dark:text-cyan-400 flex items-center justify-center mb-2 shadow-inner">
+                  <i data-lucide="chrome" class="h-5 w-5"></i>
+                </div>
+                <h4 class="text-sm font-bold text-slate-900 dark:text-white leading-tight">Angular Frontend</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Chỉ gửi HTTP GET đến Web API thông thường</p>
+              </div>
+              <!-- Connect Arrow 1 -->
+              <div class="flex xl:flex-col items-center gap-2 text-cyan-500">
+                <i data-lucide="arrow-down" class="h-5 w-5 block xl:hidden"></i>
+                <div class="hidden xl:flex flex-col items-center">
+                  <span class="text-[10px] font-semibold font-mono tracking-tight text-slate-400">1. HTTP GET /patients</span>
+                  <i data-lucide="arrow-right" class="h-5 w-5"></i>
+                </div>
+              </div>
+              <!-- Client API Node -->
+              <div class="w-full xl:w-56 p-4 rounded-xl border border-brand-200 dark:border-brand-900/50 bg-brand-50/20 dark:bg-brand-950/20 text-center flex flex-col items-center">
+                <div class="h-10 w-10 rounded-full bg-brand-100 dark:bg-brand-950 text-brand-600 dark:text-brand-400 flex items-center justify-center mb-2 shadow-inner">
+                  <i data-lucide="server" class="h-5 w-5"></i>
+                </div>
+                <h4 class="text-sm font-bold text-slate-900 dark:text-white leading-tight">EMR / HRM API Service</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Yêu cầu chuỗi kết nối từ Config Service nếu cache hết hạn</p>
+              </div>
+              <!-- Connect Arrow 2 -->
+              <div class="flex xl:flex-col items-center gap-2 text-brand-500">
+                <i data-lucide="arrow-down" class="h-5 w-5 block xl:hidden"></i>
+                <div class="hidden xl:flex flex-col items-center">
+                  <span class="text-[10px] font-semibold font-mono tracking-tight text-slate-400">2. ClientCredentials Auth</span>
+                  <i data-lucide="arrow-right" class="h-5 w-5"></i>
+                </div>
+              </div>
+              <!-- Config Service Node -->
+              <div class="w-full xl:w-56 p-4 rounded-xl border border-violet-200 dark:border-violet-900/50 bg-violet-50/20 dark:bg-violet-950/20 text-center flex flex-col items-center relative">
+                <span class="absolute -top-2.5 right-4 px-2 py-0.5 bg-violet-600 text-white rounded-full text-[9px] font-bold uppercase tracking-wider">Xử lý chính</span>
+                <div class="h-10 w-10 rounded-full bg-violet-100 dark:bg-violet-950 text-violet-600 dark:text-violet-400 flex items-center justify-center mb-2 shadow-inner">
+                  <i data-lucide="shield-alert" class="h-5 w-5"></i>
+                </div>
+                <h4 class="text-sm font-bold text-slate-900 dark:text-white leading-tight">Config Service API</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Xác thực -&gt; Kiểm tra quyền -&gt; Giải mã AES</p>
+              </div>
+              <!-- Connect Arrow 3 -->
+              <div class="flex xl:flex-col items-center gap-2 text-violet-500">
+                <i data-lucide="arrow-down" class="h-5 w-5 block xl:hidden"></i>
+                <div class="hidden xl:flex flex-col items-center">
+                  <span class="text-[10px] font-semibold font-mono tracking-tight text-slate-400">3. Query Encrypted</span>
+                  <i data-lucide="arrow-right" class="h-5 w-5"></i>
+                </div>
+              </div>
+              <!-- Config DB Node -->
+              <div class="w-full xl:w-52 p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 text-center flex flex-col items-center">
+                <div class="h-10 w-10 rounded-full bg-rose-100 dark:bg-rose-950/50 text-rose-600 dark:text-rose-400 flex items-center justify-center mb-2 shadow-inner">
+                  <i data-lucide="hard-drive" class="h-5 w-5"></i>
+                </div>
+                <h4 class="text-sm font-bold text-slate-900 dark:text-white leading-tight">Config Database</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Lưu trữ các chuỗi kết nối đã được mã hóa AES-256</p>
+              </div>
+            </div>
           </div>
-          <div class="icon">🏥</div>
-        </div>
-
-        <div class="card kpi">
-          <div>
-            <div class="kpi-label">Hồ sơ chờ ký</div>
-            <div class="kpi-value">12</div>
-            <div class="kpi-trend" style="color: var(--warning);">Cần xử lý sớm</div>
+          <!-- Cryptographic explanation -->
+          <div class="space-y-4">
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white mt-6">Cơ chế Mã hóa &amp; Bảo mật</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              
+              <div class="space-y-2">
+                <h4 class="font-bold text-slate-900 dark:text-white text-sm flex items-center gap-2">
+                  <i data-lucide="lock" class="h-4 w-4 text-violet-500"></i>
+                  Mã hóa AES-256
+                </h4>
+                <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                  Khi cấu hình được ghi thêm mới thông qua Admin Portal, server sử dụng thuật toán mã hóa đối xứng AES với khóa Master Key độ dài 256-bit được quản trị nghiêm ngặt ở cấp hệ thống để mã hóa dữ liệu đầu vào.
+                </p>
+              </div>
+              <div class="space-y-2">
+                <h4 class="font-bold text-slate-900 dark:text-white text-sm flex items-center gap-2">
+                  <i data-lucide="key" class="h-4 w-4 text-emerald-500"></i>
+                  Giải mã In-Memory
+                </h4>
+                <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                  Chuỗi kết nối sau khi lưu trữ sẽ không bao giờ xuất hiện dưới dạng thô trên ổ đĩa. Khi Client API yêu cầu, dữ liệu được tải vào RAM, giải mã và trả về qua kênh TLS (HTTPS), sau đó Client API lưu cache tạm thời.
+                </p>
+              </div>
+              <div class="space-y-2">
+                <h4 class="font-bold text-slate-900 dark:text-white text-sm flex items-center gap-2">
+                  <i data-lucide="shield" class="h-4 w-4 text-brand-500"></i>
+                  Phân quyền Xác thực
+                </h4>
+                <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                  Sử dụng hai lớp xác thực riêng biệt: Lớp xác thực người dùng cho Portal Admin thông qua OIDC PKCE flow; Lớp xác thực dịch vụ (M2M) dùng Client Credentials và xác nhận quyền trong cơ sở dữ liệu.
+                </p>
+              </div>
+            </div>
           </div>
-          <div class="icon">✍️</div>
-        </div>
-
-        <div class="card kpi">
-          <div>
-            <div class="kpi-label">Ticket IT</div>
-            <div class="kpi-value">5</div>
-            <div class="kpi-trend">2 ticket ưu tiên cao</div>
-          </div>
-          <div class="icon">🛠</div>
-        </div>
-
-        <div class="card kpi">
-          <div>
-            <div class="kpi-label">API Health</div>
-            <div class="kpi-value">99.9%</div>
-            <div class="kpi-trend">Hệ thống ổn định</div>
-          </div>
-          <div class="icon">📡</div>
         </div>
       </section>
-
-      <section class="grid content-grid">
-        <div>
-          <div class="card">
-            <div class="card-header">
-              <h3>Ứng dụng thường dùng</h3>
-              <a class="link" href="#">Quản lý ứng dụng</a>
+      <!-- Section: 3. Tính năng Admin Portal -->
+      <section id="quan-ly-app" class="doc-section mb-16 scroll-mt-24">
+        <h2 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-6 flex items-center gap-3">
+          <span class="h-8 w-8 bg-brand-100 dark:bg-brand-900/50 text-brand-600 dark:text-brand-400 rounded-lg flex items-center justify-center font-bold text-base">3</span>
+          Quản lý Ứng dụng (Applications)
+        </h2>
+        <div class="space-y-4 leading-relaxed">
+          <p>
+            Mục này cho phép người quản trị đăng ký, cập nhật thông tin và kiểm soát trạng thái hoạt động của các Client Web API tham gia truy xuất cấu hình. Mỗi ứng dụng đăng ký sẽ tương ứng với một định danh Client duy nhất trong hệ thống.
+          </p>
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm">
+            <div class="p-4 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800 flex items-center gap-2">
+              <span class="h-2 w-2 rounded-full bg-indigo-500"></span>
+              <span class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Cấu trúc Dữ liệu Ứng dụng (ConfigApp)</span>
             </div>
-
-            <div class="apps">
-              <div class="app-tile">
-                <div class="app-icon">🏥</div>
-                <strong>EMR</strong>
-                <span>Bệnh án điện tử</span>
-              </div>
-              <div class="app-tile">
-                <div class="app-icon">👥</div>
-                <strong>HRM</strong>
-                <span>Nhân sự</span>
-              </div>
-              <div class="app-tile">
-                <div class="app-icon">📊</div>
-                <strong>Report</strong>
-                <span>BI &amp; báo cáo</span>
-              </div>
-              <div class="app-tile">
-                <div class="app-icon">🔐</div>
-                <strong>Auth</strong>
-                <span>SSO &amp; phân quyền</span>
-              </div>
-              <div class="app-tile">
-                <div class="app-icon">✍️</div>
-                <strong>eSign</strong>
-                <span>Ký số hồ sơ</span>
-              </div>
-              <div class="app-tile">
-                <div class="app-icon">📁</div>
-                <strong>File Hub</strong>
-                <span>Lưu trữ tài liệu</span>
-              </div>
-              <div class="app-tile">
-                <div class="app-icon">⚙️</div>
-                <strong>Workflow</strong>
-                <span>Quy trình duyệt</span>
-              </div>
-              <div class="app-tile">
-                <div class="app-icon">🤖</div>
-                <strong>AI Assistant</strong>
-                <span>Trợ lý nội bộ</span>
-              </div>
+            <div class="p-4">
+              <table class="w-full text-left text-sm border-collapse">
+                <thead>
+                  <tr class="border-b border-slate-100 dark:border-slate-850 text-slate-500 dark:text-slate-400 font-semibold">
+                    <th class="pb-2 w-1/4">Thuộc tính</th>
+                    <th class="pb-2 w-1/4">Kiểu dữ liệu</th>
+                    <th class="pb-2">Mô tả chi tiết</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-800 font-mono text-xs">
+                  <tr>
+                    <td class="py-3 font-semibold text-slate-900 dark:text-white">code</td>
+                    <td class="py-3 text-brand-600 dark:text-brand-400">string</td>
+                    <td class="py-3 text-slate-600 dark:text-slate-400 font-sans">Mã ứng dụng viết hoa (Ví dụ: <code class="bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded">EMR</code>, <code class="bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded">HRM</code>, <code class="bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded">REPORT</code>). Dùng để ánh xạ quyền.</td>
+                  </tr>
+                  <tr>
+                    <td class="py-3 font-semibold text-slate-900 dark:text-white">name</td>
+                    <td class="py-3 text-brand-600 dark:text-brand-400">string</td>
+                    <td class="py-3 text-slate-600 dark:text-slate-400 font-sans">Tên mô tả tường minh (Ví dụ: <code class="bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded">Electronic Medical Record</code>).</td>
+                  </tr>
+                  <tr>
+                    <td class="py-3 font-semibold text-slate-900 dark:text-white">apiClientId</td>
+                    <td class="py-3 text-brand-600 dark:text-brand-400">string</td>
+                    <td class="py-3 text-slate-600 dark:text-slate-400 font-sans">Mã định danh Client ID gửi qua headers khi gọi API lấy chuỗi kết nối.</td>
+                  </tr>
+                  <tr>
+                    <td class="py-3 font-semibold text-slate-900 dark:text-white">apiClientSecret</td>
+                    <td class="py-3 text-brand-600 dark:text-brand-400">string (Write-only)</td>
+                    <td class="py-3 text-slate-600 dark:text-slate-400 font-sans">Mật khẩu API Client Secret thô (chỉ được hiển thị một lần duy nhất lúc tạo mới). Hệ thống sẽ băm (hash) mật khẩu này bằng thuật toán an toàn trước khi ghi xuống Database.</td>
+                  </tr>
+                  <tr>
+                    <td class="py-3 font-semibold text-slate-900 dark:text-white">isActive</td>
+                    <td class="py-3 text-brand-600 dark:text-brand-400">boolean</td>
+                    <td class="py-3 text-slate-600 dark:text-slate-400 font-sans">Trạng thái ứng dụng. Nếu đặt là <code class="text-rose-500 font-bold">false</code>, mọi truy xuất từ Client này sẽ ngay lập tức bị từ chối.</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
-
-          <div class="two-col">
-            <div class="card">
-              <div class="card-header">
-                <h3>Công việc hôm nay</h3>
-                <a class="link" href="#">Xem tất cả</a>
-              </div>
-
-              <div class="task">
-                <div class="status-dot danger"></div>
-                <div>
-                  <div class="item-title">Ký 12 phiếu xét nghiệm</div>
-                  <div class="item-meta">Ưu tiên cao · Hạn xử lý trước 16:00</div>
-                </div>
-              </div>
-              <div class="task">
-                <div class="status-dot warning"></div>
-                <div>
-                  <div class="item-title">Duyệt yêu cầu nghỉ phép</div>
-                  <div class="item-meta">3 yêu cầu từ phòng Hành chính</div>
-                </div>
-              </div>
-              <div class="task">
-                <div class="status-dot"></div>
-                <div>
-                  <div class="item-title">Kiểm tra báo cáo doanh thu</div>
-                  <div class="item-meta">Báo cáo tự động lúc 17:30</div>
-                </div>
+          <div class="p-4 bg-emerald-50/50 dark:bg-emerald-950/20 border-l-4 border-emerald-500 rounded-r-lg text-slate-700 dark:text-slate-300 text-sm">
+            <span class="font-bold text-emerald-700 dark:text-emerald-400 block mb-1">Mẹo bảo mật</span>
+            Khi tạo mới ứng dụng, hệ thống hỗ trợ nút <strong>Generate Secret</strong> tạo ngẫu nhiên chuỗi bảo mật 16 ký tự an toàn. Hãy đảm bảo bạn sao chép chuỗi này và cấu hình cho Client App ngay lập tức vì hệ thống sẽ mã hóa và băm chuỗi này nên không thể đọc lại từ cơ sở dữ liệu.
+          </div>
+        </div>
+      </section>
+      <!-- Section: Chuỗi kết nối -->
+      <section id="quan-ly-connections" class="doc-section mb-16 scroll-mt-24">
+        <h2 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-6 flex items-center gap-3">
+          <span class="h-8 w-8 bg-brand-100 dark:bg-brand-900/50 text-brand-600 dark:text-brand-400 rounded-lg flex items-center justify-center font-bold text-base">4</span>
+          Quản lý Chuỗi kết nối (Connections)
+        </h2>
+        <div class="space-y-4 leading-relaxed">
+          <p>
+            Đây là phân hệ lưu trữ thông tin nhạy cảm nhất. Giao diện cho phép tạo lập các chuỗi kết nối phân bổ theo App Code sở hữu, Tenant Code cụ thể và Môi trường.
+          </p>
+          <h3 class="font-bold text-slate-900 dark:text-white text-base mt-4">1. Cơ chế phân mảnh chuỗi kết nối</h3>
+          <p>
+            Để hỗ trợ đầy đủ kiến trúc Multi-tenancy và CI/CD Pipeline, mỗi chuỗi kết nối được phân chia theo ba chiều:
+          </p>
+          
+          <ul class="list-disc pl-6 space-y-2 text-sm text-slate-650 dark:text-slate-350">
+            <li><strong>App Code</strong>: Xác định cơ sở dữ liệu này thuộc sở hữu của phân hệ nào (Ví dụ: Database của phân hệ EMR).</li>
+            <li><strong>Tenant Code</strong>: Xác định dữ liệu kết nối này thuộc về khách hàng hoặc chi nhánh cụ thể nào (Ví dụ: Chi nhánh bệnh viện <code class="bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded">BV001</code>). Nếu dùng chung cho tất cả các bên, trường này được cấu hình là <code class="font-semibold text-indigo-500">Default (Global)</code> (giá trị lưu dưới cơ sở dữ liệu là <code class="font-mono">null</code>).</li>
+            <li><strong>Environment</strong>: Xác định môi trường chạy ứng dụng. Gồm 3 tùy chọn: <code class="bg-emerald-100 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-400 px-1.5 py-0.5 rounded text-xs font-bold">Production</code>, <code class="bg-amber-100 dark:bg-amber-950/50 text-amber-700 dark:text-amber-400 px-1.5 py-0.5 rounded text-xs font-bold">Staging</code>, và <code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-xs font-bold">Development</code>.</li>
+          </ul>
+          <h3 class="font-bold text-slate-900 dark:text-white text-base mt-6">2. Quy trình Giải mã &amp; Kiểm toán (Decryption &amp; Auditing)</h3>
+          <p>
+            Tại danh sách chuỗi kết nối trên giao diện, mật khẩu và chi tiết chuỗi kết nối thô sẽ hiển thị dạng ẩn chấm tròn để tránh lộ mật khẩu trong các tình huống quay phim, chụp màn hình hoặc chia sẻ màn hình.
+          </p>
+          <p>
+            Khi quản trị viên có quyền nhấn nút <code class="bg-slate-150 dark:bg-slate-800 px-2 py-1 rounded text-xs inline-flex items-center gap-1 font-semibold"><i data-lucide="eye" class="h-3 w-3"></i> Decrypt</code>:
+          </p>
+          <div class="border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden bg-slate-50/50 dark:bg-slate-900/30 p-5 space-y-3">
+            <div class="flex items-start gap-3">
+              <span class="h-5 w-5 bg-brand-500 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">1</span>
+              <div>
+                <h4 class="font-bold text-sm text-slate-900 dark:text-white">Gửi Yêu cầu Giải mã Bảo mật</h4>
+                <p class="text-xs text-slate-555 dark:text-slate-400 mt-0.5">Frontend gửi một request HTTPS POST tới endpoint <code class="text-brand-500 font-mono text-[11px]">/api/configadmin/connections/{id}/decrypt</code> kèm token xác thực quản trị viên.</p>
               </div>
             </div>
-
-            <div class="card">
-              <div class="card-header">
-                <h3>Vận hành hệ thống</h3>
-                <span class="badge">Realtime</span>
+            <div class="flex items-start gap-3">
+              <span class="h-5 w-5 bg-brand-500 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">2</span>
+              <div>
+                <h4 class="font-bold text-sm text-slate-900 dark:text-white">Giải mã In-Memory tại Backend</h4>
+                <p class="text-xs text-slate-555 dark:text-slate-400 mt-0.5">Backend dùng khóa hệ thống giải mã chuỗi từ Database, ghi nhận tức thời hành động này thành một bản ghi <span class="text-amber-500 font-semibold font-mono text-[11px]">DECRYPT_CONNECTION</span> vào Audit Log.</p>
               </div>
-
-              <div class="progress-row">
-                <label><span>SQL Server</span><span>76%</span></label>
-                <div class="progress"><span style="width: 76%"></span></div>
-              </div>
-              <div class="progress-row">
-                <label><span>API Latency</span><span>42%</span></label>
-                <div class="progress"><span style="width: 42%"></span></div>
-              </div>
-              <div class="progress-row">
-                <label><span>Queue Jobs</span><span>58%</span></label>
-                <div class="progress"><span style="width: 58%"></span></div>
-              </div>
-              <div class="progress-row">
-                <label><span>Storage</span><span>64%</span></label>
-                <div class="progress"><span style="width: 64%"></span></div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="h-5 w-5 bg-brand-500 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">3</span>
+              <div>
+                <h4 class="font-bold text-sm text-slate-900 dark:text-white">Trả về Kết quả &amp; Hiển thị</h4>
+                <p class="text-xs text-slate-555 dark:text-slate-400 mt-0.5">Phần mềm nhận chuỗi kết nối thô, hiển thị hộp thoại cho phép copy và lưu trữ tạm trong bộ nhớ cục bộ của Component Angular (không lưu localStorage).</p>
               </div>
             </div>
           </div>
         </div>
-
-        <aside class="grid">
-          <div class="card">
-            <div class="card-header">
-              <h3>Thông báo nội bộ</h3>
-              <a class="link" href="#">Đăng tin</a>
-            </div>
-
-            <div class="feed-item">
-              <div class="status-dot"></div>
-              <div>
-                <div class="item-title">Bảo trì hệ thống lúc 22:00</div>
-                <div class="item-meta">IT Department · 10 phút trước</div>
-              </div>
-            </div>
-            <div class="feed-item">
-              <div class="status-dot warning"></div>
-              <div>
-                <div class="item-title">Cập nhật quy trình ký số</div>
-                <div class="item-meta">Phòng Quản lý chất lượng · Hôm nay</div>
-              </div>
-            </div>
-            <div class="feed-item">
-              <div class="status-dot"></div>
-              <div>
-                <div class="item-title">Lịch đào tạo EMR phiên bản mới</div>
-                <div class="item-meta">HRM · Thứ sáu tuần này</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-header">
-              <h3>Tài liệu gần đây</h3>
-              <a class="link" href="#">File Hub</a>
-            </div>
-
-            <div class="doc-item">
-              <div>📄</div>
-              <div>
-                <div class="item-title">SOP tiếp nhận bệnh nhân.pdf</div>
-                <div class="item-meta">Cập nhật bởi Admin · 2 giờ trước</div>
-              </div>
-            </div>
-            <div class="doc-item">
-              <div>📊</div>
-              <div>
-                <div class="item-title">Báo cáo vận hành tháng.xlsx</div>
-                <div class="item-meta">Report Engine · Hôm nay</div>
-              </div>
-            </div>
-            <div class="doc-item">
-              <div>🧾</div>
-              <div>
-                <div class="item-title">Quy định phân quyền hệ thống.docx</div>
-                <div class="item-meta">Auth Team · Hôm qua</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-header">
-              <h3>AI Assistant</h3>
-              <span class="badge">Beta</span>
-            </div>
-            <p class="item-meta">Hỏi nhanh dữ liệu nội bộ, quy trình, báo cáo hoặc tình trạng hồ sơ.</p>
-            <div class="search" style="box-shadow:none; margin-top: 14px; max-width:none;">
-              🤖
-              <input placeholder="Ví dụ: Hồ sơ nào chưa ký hôm nay?">
-            </div>
-          </div>
-        </aside>
       </section>
+      <!-- Section: Phân quyền truy cập -->
+      <section id="quan-ly-permissions" class="doc-section mb-16 scroll-mt-24">
+        <h2 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-6 flex items-center gap-3">
+          <span class="h-8 w-8 bg-brand-100 dark:bg-brand-900/50 text-brand-600 dark:text-brand-400 rounded-lg flex items-center justify-center font-bold text-base">5</span>
+          Phân quyền chi tiết (Permissions)
+        </h2>
+        <div class="space-y-4 leading-relaxed">
+          <p>
+            Đây là rào chắn phân quyền quan trọng nhất của ConfigSafe. Một Client App (được xác thực thông qua Client ID/Secret) **chỉ có thể truy xuất chuỗi kết nối** nếu có một bản ghi phân quyền tương ứng cho phép truy xuất.
+          </p>
+          <div class="p-4 bg-slate-900 text-slate-300 rounded-xl font-mono text-sm border border-slate-800 space-y-2">
+            <div class="text-slate-500">// Ví dụ về logic kiểm tra quyền tại Backend khi EMR API yêu cầu kết nối:</div>
+            <div><span class="text-violet-400">if</span> (clientApp.code === <span class="text-emerald-300">"EMR"</span> &amp;&amp; targetAppCode === <span class="text-emerald-300">"EMR"</span> &amp;&amp; connectionName === <span class="text-emerald-300">"Default"</span>) {</div>
+            <div class="pl-4"><span class="text-slate-400">AllowReadConnection()</span>; <span class="text-slate-500">// Thành công</span></div>
+            <div>} <span class="text-violet-400">else</span> {</div>
+            <div class="pl-4"><span class="text-slate-400">ThrowForbiddenException()</span>; <span class="text-slate-550">// Bị từ chối (HTTP 403)</span></div>
+            <div>}</div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+            <div class="p-5 border border-slate-200 dark:border-slate-800 rounded-xl bg-white dark:bg-slate-900">
+              <h4 class="font-bold text-sm text-emerald-600 dark:text-emerald-400 mb-2 flex items-center gap-2">
+                <i data-lucide="check-circle-2" class="h-4 w-4"></i> Quyền được Khai báo (Whitelisted)
+              </h4>
+              <p class="text-xs text-slate-600 dark:text-slate-400">
+                Cho phép các luồng xử lý liên thông. Ví dụ: <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded">Report API</code> được cấp quyền đọc chuỗi kết nối của cả hai phân hệ <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded">EMR</code> và <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded">HRM</code> để làm báo cáo tổng hợp.
+              </p>
+            </div>
+            
+            <div class="p-5 border border-slate-200 dark:border-slate-800 rounded-xl bg-white dark:bg-slate-900">
+              <h4 class="font-bold text-sm text-rose-600 dark:text-rose-400 mb-2 flex items-center gap-2">
+                <i data-lucide="x-circle" class="h-4 w-4"></i> Chặn Mặc định (Default-Deny)
+              </h4>
+              <p class="text-xs text-slate-600 dark:text-slate-400">
+                Bảo vệ ngăn ngừa xâm nhập chéo. Nếu kẻ tấn công chiếm được thông tin đăng nhập của <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded">EMR API</code>, chúng cũng không thể gửi yêu cầu lấy chuỗi kết nối cơ sở dữ liệu nhân sự của <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded">HRM API</code>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Section: Nhật ký kiểm toán -->
+      <section id="kiem-toan" class="doc-section mb-16 scroll-mt-24">
+        <h2 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-6 flex items-center gap-3">
+          <span class="h-8 w-8 bg-brand-100 dark:bg-brand-900/50 text-brand-600 dark:text-brand-400 rounded-lg flex items-center justify-center font-bold text-base">6</span>
+          Nhật ký Kiểm toán (Audit Trail)
+        </h2>
+        <div class="space-y-4 leading-relaxed">
+          <p>
+            Mọi sự kiện mang tính bảo mật đều được ghi lại tức thì vào bảng Audit Log để phục vụ mục đích rà soát, đối chiếu khi xảy ra sự cố bảo mật (Security Auditing). Các trường dữ liệu kiểm toán bao gồm:
+          </p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            
+            <div class="flex gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
+              <div class="h-8 w-8 rounded bg-slate-100 dark:bg-slate-800 flex items-center justify-center flex-shrink-0 text-slate-600 dark:text-slate-400">
+                <i data-lucide="tag" class="h-4 w-4"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-sm text-slate-900 dark:text-white mb-0.5">Hành động (Action)</h4>
+                <p class="text-xs text-slate-600 dark:text-slate-400">
+                  Phân loại sự kiện: <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded text-slate-700 dark:text-slate-300">GET_CONNECTION_SUCCESS</code>, <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded text-slate-700 dark:text-slate-300">GET_CONNECTION_DENIED</code>, <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded text-slate-700 dark:text-slate-300">DECRYPT_CONNECTION</code>, <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded text-slate-700 dark:text-slate-300">CREATE_APP</code>.
+                </p>
+              </div>
+            </div>
+            <div class="flex gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
+              <div class="h-8 w-8 rounded bg-slate-100 dark:bg-slate-800 flex items-center justify-center flex-shrink-0 text-slate-600 dark:text-slate-400">
+                <i data-lucide="user" class="h-4 w-4"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-sm text-slate-900 dark:text-white mb-0.5">Nhân tố Thực hiện (Client ID / User)</h4>
+                <p class="text-xs text-slate-600 dark:text-slate-400">
+                  Ghi nhận rõ thao tác đó được thực hiện bởi Lập trình viên quản trị hệ thống (ví dụ: <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded">PhucPV</code>) hay bởi API của ứng dụng khách (ví dụ: <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded">emr-api</code>).
+                </p>
+              </div>
+            </div>
+            <div class="flex gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
+              <div class="h-8 w-8 rounded bg-slate-100 dark:bg-slate-800 flex items-center justify-center flex-shrink-0 text-slate-600 dark:text-slate-400">
+                <i data-lucide="network" class="h-4 w-4"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-sm text-slate-900 dark:text-white mb-0.5">Địa chỉ IP &amp; Thiết bị (IP Address / UA)</h4>
+                <p class="text-xs text-slate-600 dark:text-slate-400">
+                  Lưu trữ IP nguồn gửi yêu cầu để phát hiện các request bất thường từ dải IP lạ bên ngoài mạng nội bộ.
+                </p>
+              </div>
+            </div>
+            <div class="flex gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
+              <div class="h-8 w-8 rounded bg-slate-100 dark:bg-slate-800 flex items-center justify-center flex-shrink-0 text-slate-600 dark:text-slate-400">
+                <i data-lucide="info" class="h-4 w-4"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-sm text-slate-900 dark:text-white mb-0.5">Kết quả &amp; Lý do (Result &amp; Reason)</h4>
+                <p class="text-xs text-slate-600 dark:text-slate-400">
+                  Ghi nhận trạng thái: <span class="text-emerald-500 font-bold">Success</span> hoặc <span class="text-rose-500 font-bold">Failed</span> cùng nguyên nhân từ chối (ví dụ: <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded">Client secret invalid</code>).
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Section: Live Simulator -->
+      <section id="live-simulator" class="doc-section mb-16 scroll-mt-24">
+        <h2 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-6 flex items-center gap-3">
+          <span class="h-8 w-8 bg-brand-100 dark:bg-brand-900/50 text-brand-600 dark:text-brand-400 rounded-lg flex items-center justify-center font-bold text-base">7</span>
+          Live Simulator (Giả lập Yêu cầu bảo mật)
+        </h2>
+        <div class="space-y-4 leading-relaxed">
+          <p>
+            Trang Admin Portal tích hợp sẵn một **Bộ mô phỏng Console trực tiếp** (Live Console Simulator). Tính năng này vô cùng đắc lực giúp lập trình viên và kỹ sư vận hành hệ thống hình dung trực quan cách thức các dịch vụ API tương tác với Config Safe mà không cần phải triển khai cài đặt các dịch vụ thực tế.
+          </p>
+          <h3 class="font-bold text-slate-900 dark:text-white text-base mt-4">Quy trình giả lập từng bước trên Console:</h3>
+          <!-- Mock Terminal / Console flow representation -->
+          <div class="p-6 bg-slate-950 rounded-2xl border border-slate-800 font-mono text-xs text-slate-300 space-y-3 shadow-xl">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-3 text-slate-500">
+              <div class="flex items-center gap-2">
+                <span class="h-3 w-3 rounded-full bg-rose-500"></span>
+                <span class="h-3 w-3 rounded-full bg-yellow-500"></span>
+                <span class="h-3 w-3 rounded-full bg-green-500"></span>
+              </div>
+              <span>Live Console Trace Logs</span>
+            </div>
+            
+            <div class="space-y-2">
+              <div>[14:44:48] <span class="text-slate-400">Initializing Request from Frontend...</span></div>
+              <div>[14:44:49] <span class="text-cyan-400">[FRONTEND] HTTP GET https://emr-api.company.local/api/patients?tenant=BV001</span></div>
+              <div>[14:44:50] <span class="text-yellow-400">[EMR API] Request received. Checking Memory Cache for connection string 'Default'...</span></div>
+              <div>[14:44:51] <span class="text-rose-400">[EMR API] ❌ Cache Miss. Access credentials must be resolved from Config Service.</span></div>
+              <div>[14:44:51] <span class="text-brand-400">[EMR API] HTTP GET http://config.company.local/api/connections/default?name=Default</span></div>
+              <div class="pl-4 text-slate-500">Headers: X-Client-Id="emr-api", X-Client-Secret="********", X-Environment="Production", X-Tenant-Code="BV001"</div>
+              <div>[14:44:52] <span class="text-emerald-400">[CONFIG SERVICE] Client authenticated: 'emr-api' verified successfully.</span></div>
+              <div>[14:44:52] <span class="text-emerald-400">[CONFIG SERVICE] Checking authorization permission: ClientApp 'EMR' -&gt; ConnectionName 'Default'...</span></div>
+              <div>[14:44:52] <span class="text-emerald-500">[CONFIG SERVICE] ✅ Access Approved. Fetching encrypted string from Config Database...</span></div>
+              <div>[14:44:53] <span class="text-indigo-400">[CONFIG SERVICE] Decrypting database string in-memory using Master AES key...</span></div>
+              <div>[14:44:53] <span class="text-emerald-500">[CONFIG SERVICE] Writing Audit Log: GET_CONNECTION_SUCCESS. Sending decrypted payload.</span></div>
+              <div>[14:44:54] <span class="text-slate-400">[EMR API] Received decrypted payload. Resolved ConnectionString: "Server=emr-db.local;Database=EMR_BV001;User Id=emr_app;Password=********;"</span></div>
+              <div>[14:44:55] <span class="text-slate-400">[EMR API] Caching connection string in memory for 10 minutes. Querying data...</span></div>
+              <div>[14:44:56] <span class="text-emerald-400">[EMR API] Query completed. Returning data objects (JSON) to Frontend.</span></div>
+            </div>
+          </div>
+          <p class="text-sm">
+            Trình giả lập này sử dụng hàm <code class="font-mono text-xs bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded text-brand-600 dark:text-brand-400">fetchSecureConnection</code> trong service của Angular để kết nối trực tiếp với backend thực tế, tạo ra các giao dịch thật dưới cơ sở dữ liệu để kiểm tra tính chính xác của các phân quyền cấu hình.
+          </p>
+        </div>
+      </section>
+      <!-- Section: Runtime Env -->
+      <section id="runtime-env" class="doc-section mb-16 scroll-mt-24">
+        <h2 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-6 flex items-center gap-3">
+          <span class="h-8 w-8 bg-brand-100 dark:bg-brand-900/50 text-brand-600 dark:text-brand-400 rounded-lg flex items-center justify-center font-bold text-base">8</span>
+          Cấu hình môi trường thời gian chạy (Environment Config)
+        </h2>
+        <div class="space-y-4 leading-relaxed">
+          <p>
+            Phân hệ này cho phép lập trình viên ghi đè (override) các địa chỉ URL dịch vụ, máy chủ định danh hoặc Client ID trực tiếp trên trình duyệt của mình mà không cần thay đổi tệp tin mã nguồn tĩnh <code class="font-mono text-xs bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded">environment.ts</code>.
+          </p>
+          <div class="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl space-y-3">
+            <h4 class="font-bold text-slate-900 dark:text-white text-sm">Các khóa cấu hình lưu trữ trong trình duyệt:</h4>
+            <div class="space-y-2 text-xs">
+              <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2">
+                <span class="font-mono font-bold text-slate-800 dark:text-slate-200">configsafe_env_override</span>
+                <span class="text-slate-500">Lưu đè cấu hình cho Admin Portal (API Base URL, OAuth Server URL...)</span>
+              </div>
+              <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2">
+                <span class="font-mono font-bold text-slate-800 dark:text-slate-200">configsafe_env_override_emr</span>
+                <span class="text-slate-500">Lưu đè địa chỉ API và máy chủ OIDC của phân hệ EMR Frontend</span>
+              </div>
+              <div class="flex items-center justify-between pb-1">
+                <span class="font-mono font-bold text-slate-800 dark:text-slate-200">configsafe_env_override_report</span>
+                <span class="text-slate-500">Lưu đè địa chỉ Máy chủ Báo cáo (Report Engine Host URL)</span>
+              </div>
+            </div>
+          </div>
+          
+          <p class="text-sm">
+            Khi thay đổi các giá trị này và nhấn <strong>Save Environment Override</strong>, ứng dụng Angular sẽ ghi dữ liệu vào <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded">localStorage</code> và tự động làm mới trang (reload) để khởi tạo lại toàn bộ HttpClient và OIDC Service với các cấu hình mới.
+          </p>
+        </div>
+      </section>
+      <!-- Section: Triển khai & Cấu hình -->
+      <section id="huong-dan-setup" class="doc-section mb-16 scroll-mt-24">
+        <h2 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-6 flex items-center gap-3">
+          <span class="h-8 w-8 bg-brand-100 dark:bg-brand-900/50 text-brand-600 dark:text-brand-400 rounded-lg flex items-center justify-center font-bold text-base">9</span>
+          Hướng dẫn Triển khai Phát triển (Dev Setup)
+        </h2>
+        <div class="space-y-4 leading-relaxed">
+          <p>
+            Dự án Admin Portal chạy trên framework **Angular v21.2.0** với trình quản lý package **npm v11.11.0**. Hãy làm theo các bước dưới đây để thiết lập môi trường phát triển dưới máy tính cá nhân.
+          </p>
+          <h3 class="font-bold text-slate-900 dark:text-white text-base mt-4">1. Các lệnh khởi động cơ bản</h3>
+          
+          <!-- Code Block with Copy Action -->
+          <div class="relative bg-slate-900 rounded-xl overflow-hidden border border-slate-800 group">
+            <div class="flex items-center justify-between px-4 py-2 bg-slate-950 border-b border-slate-800 text-xs text-slate-400">
+              <span class="font-mono">Terminal / Bash</span>
+              <button class="copy-btn hover:text-white flex items-center gap-1 font-semibold" data-target="setup-code">
+                <i data-lucide="copy" class="h-3 w-3"></i> Copy
+              </button>
+            </div>
+            <pre class="p-4 overflow-x-auto text-xs text-brand-100 font-mono" id="setup-code"><code># 1. Di chuyển vào thư mục dự án
+cd admin-portal
+# 2. Cài đặt các thư viện phụ thuộc (dependencies)
+npm install
+# 3. Khởi chạy máy chủ phát triển (Development Server)
+npm run start
+# hoặc
+ng serve</code></pre>
+          </div>
+          <p class="text-sm">
+            Sau khi máy chủ khởi chạy thành công, ứng dụng sẽ chạy trên cổng mặc định tại địa chỉ <a href="http://localhost:4200/" target="_blank" class="text-brand-500 font-semibold underline">http://localhost:4200/</a>.
+          </p>
+          <h3 class="font-bold text-slate-900 dark:text-white text-base mt-6">2. Chạy Kiểm thử &amp; Build</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            
+            <div class="p-5 border border-slate-200 dark:border-slate-800 rounded-xl bg-white dark:bg-slate-900">
+              <h4 class="font-bold text-slate-900 dark:text-white text-sm mb-2">Chạy Unit Test với Vitest</h4>
+              <p class="text-xs text-slate-650 dark:text-slate-400 mb-3">
+                Dự án sử dụng Vitest thay cho Karma cũ để thực hiện test nhanh chóng hơn.
+              </p>
+              <pre class="bg-slate-950 p-3 rounded-lg font-mono text-[11px] text-slate-300">npm run test</pre>
+            </div>
+            <div class="p-5 border border-slate-200 dark:border-slate-800 rounded-xl bg-white dark:bg-slate-900">
+              <h4 class="font-bold text-slate-900 dark:text-white text-sm mb-2">Build Product Bundle</h4>
+              <p class="text-xs text-slate-650 dark:text-slate-400 mb-3">
+                Biên dịch tối ưu hóa tài nguyên tĩnh lưu trữ vào thư mục <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded">dist/</code>.
+              </p>
+              <pre class="bg-slate-950 p-3 rounded-lg font-mono text-[11px] text-slate-300">npm run build</pre>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Section: Tích hợp OIDC PKCE -->
+      <section id="tich-hop-oidc" class="doc-section mb-16 scroll-mt-24">
+        <h2 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-6 flex items-center gap-3">
+          <span class="h-8 w-8 bg-brand-100 dark:bg-brand-900/50 text-brand-600 dark:text-brand-400 rounded-lg flex items-center justify-center font-bold text-base">10</span>
+          Cơ chế xác thực liên hợp OIDC PKCE
+        </h2>
+        <div class="space-y-4 leading-relaxed">
+          <p>
+            Để đảm bảo an toàn tuyệt đối cho hệ thống quản trị, Admin Portal tích hợp tiêu chuẩn xác thực **OpenID Connect (OIDC)** kết hợp cơ chế bảo vệ mã hóa **Proof Key for Code Exchange (PKCE)** để chống lại các cuộc tấn công đánh chặn Authorization Code.
+          </p>
+          <h3 class="font-bold text-slate-900 dark:text-white text-base mt-4">Luồng xác thực diễn ra như sau:</h3>
+          
+          <div class="p-6 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl space-y-4">
+            
+            <div class="flex items-start gap-3">
+              <div class="h-6 w-6 rounded-full bg-brand-500 text-white flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5">1</div>
+              <div>
+                <h4 class="font-bold text-sm text-slate-900 dark:text-white">Sinh mã khóa bí mật Code Verifier</h4>
+                <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                  Khi admin nhấn đăng nhập, Angular sử dụng thư viện mã hóa của trình duyệt (<code class="bg-slate-100 dark:bg-slate-800 dark:text-slate-350 px-1 rounded">window.crypto</code>) tạo ra chuỗi ngẫu nhiên dài 56 ký tự gọi là **Code Verifier**.
+                </p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <div class="h-6 w-6 rounded-full bg-brand-500 text-white flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5">2</div>
+              <div>
+                <h4 class="font-bold text-sm text-slate-900 dark:text-white">Tạo Code Challenge &amp; Chuyển hướng</h4>
+                <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                  Code Verifier được băm SHA-256 rồi mã hóa dạng Base64url để tạo thành **Code Challenge**. Trình duyệt chuyển hướng người dùng đến máy chủ Auth Server với các tham số: Client ID, Redirect Callback URI, Scope và Code Challenge.
+                </p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <div class="h-6 w-6 rounded-full bg-brand-500 text-white flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5">3</div>
+              <div>
+                <h4 class="font-bold text-sm text-slate-900 dark:text-white">Trao đổi Mã token và đối chiếu Code Verifier</h4>
+                <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                  Sau khi xác thực tài khoản thành công tại Auth Server, trình duyệt chuyển hướng quay lại Admin Portal kèm tham số <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded">code</code>. Angular Portal gửi POST request chứa mã này kèm **Code Verifier** thô đã lưu trong trình duyệt. Auth Server tự băm Code Verifier thô này để đối chiếu với Code Challenge đã nhận ở Bước 2. Nếu khớp, Auth Server trả về Access Token JWT.
+                </p>
+              </div>
+            </div>
+          </div>
+          <h3 class="font-bold text-slate-900 dark:text-white text-base mt-6">Cấu hình tập tin môi trường mẫu:</h3>
+          
+          <div class="relative bg-slate-900 rounded-xl overflow-hidden border border-slate-800 group">
+            <div class="flex items-center justify-between px-4 py-2 bg-slate-950 border-b border-slate-800 text-xs text-slate-400">
+              <span class="font-mono">src/environments/environment.ts</span>
+              <button class="copy-btn hover:text-white flex items-center gap-1 font-semibold" data-target="env-code">
+                <i data-lucide="copy" class="h-3 w-3"></i> Copy
+              </button>
+            </div>
+            <pre class="p-4 overflow-x-auto text-xs text-brand-100 font-mono" id="env-code"><code>export const environment = {
+  production: false,
+  apiBaseUrl: 'http://localhost:8082/api',
+  authServerUrl: 'http://localhost:8082',
+  clientId: 'angular-spa',
+  redirectUri: 'http://localhost:4200/auth/callback',
+  postLogoutRedirectUri: 'http://localhost:4200/'
+};</code></pre>
+          </div>
+        </div>
+      </section>
+      <!-- Footer Info -->
+      <footer class="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400">
+        <p>© 2026 ConfigSafe Enterprise. Tài liệu vận hành nội bộ.</p>
+        <div class="flex items-center gap-4">
+          <a href="#" class="hover:text-slate-950 dark:hover:text-white font-medium">Bảo mật thông tin</a>
+          <span>•</span>
+          <a href="#" class="hover:text-slate-950 dark:hover:text-white font-medium">Phiên bản v1.0.0</a>
+        </div>
+      </footer>
     </main>
   </div>
-
+  <!-- Toast Notification element for Copy Action -->
+  <div id="toast" class="fixed bottom-6 right-6 px-4 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl shadow-2xl flex items-center gap-2 border border-slate-800 dark:border-slate-100 opacity-0 pointer-events-none transition-all duration-300 transform translate-y-2 z-50">
+    <i data-lucide="check-circle-2" class="h-5 w-5 text-emerald-500"></i>
+    <span class="text-sm font-semibold">Đã sao chép vào bộ nhớ tạm!</span>
+  </div>
+  <!-- Interactive JavaScript -->
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+    // Theme Management (Light / Dark Mode)
+    const initTheme = () => {
+      const isDark = localStorage.getItem('theme') === 'dark' || 
+        (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+      
+      if (isDark) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    };
+    const toggleTheme = () => {
+      const isDark = document.documentElement.classList.contains('dark');
+      if (isDark) {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+      } else {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+      }
+    };
+    document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+    document.getElementById('theme-toggle-mobile').addEventListener('click', toggleTheme);
+    initTheme();
+    // Mobile Menu Navigation Toggle
+    const menuToggle = document.getElementById('menu-toggle');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    const toggleMenu = () => {
+      sidebar.classList.toggle('-translate-x-full');
+      overlay.classList.toggle('hidden');
+    };
+    menuToggle.addEventListener('click', toggleMenu);
+    overlay.addEventListener('click', toggleMenu);
+    // Close sidebar when clicking menu links on mobile
+    const navLinks = document.querySelectorAll('.nav-link');
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth < 1024) {
+          toggleMenu();
+        }
+      });
+    });
+    // Copy to Clipboard Logic with Toast Notification
+    const copyButtons = document.querySelectorAll('.copy-btn');
+    const toast = document.getElementById('toast');
+    copyButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const targetId = btn.getAttribute('data-target');
+        const codeElement = document.getElementById(targetId);
+        if (codeElement) {
+          const text = codeElement.textContent;
+          navigator.clipboard.writeText(text).then(() => {
+            // Show toast
+            toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-2');
+            setTimeout(() => {
+              toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-2');
+            }, 2500);
+          }).catch(err => {
+            console.error('Failed to copy text: ', err);
+          });
+        }
+      });
+    });
+    // Sidebar ScrollSpy active link mapping
+    const sections = document.querySelectorAll('section.doc-section');
+    window.addEventListener('scroll', () => {
+      let currentSectionId = '';
+      const scrollPosition = window.scrollY + 120; // offset for top headers
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.offsetHeight;
+        if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+          currentSectionId = section.getAttribute('id');
+        }
+      });
+      if (currentSectionId) {
+        navLinks.forEach(link => {
+          link.classList.remove('text-brand-600', 'bg-brand-50', 'dark:text-brand-400', 'dark:bg-brand-950/50');
+          link.classList.add('text-slate-600', 'hover:text-slate-900', 'hover:bg-slate-50', 'dark:text-slate-400', 'dark:hover:text-white', 'dark:hover:bg-slate-800/50');
+          const href = link.getAttribute('href');
+          if (href === '#' + currentSectionId) {
+            link.classList.add('text-brand-600', 'bg-brand-50', 'dark:text-brand-400', 'dark:bg-brand-950/50');
+            link.classList.remove('text-slate-600', 'hover:text-slate-900', 'hover:bg-slate-50', 'dark:text-slate-400', 'dark:hover:text-white', 'dark:hover:bg-slate-800/50');
+          }
+        });
+      }
+    });
+    // Mock Search Feature
+    const searchInput = document.getElementById('search-input');
+    const searchResultsContainer = document.getElementById('search-results-container');
+    const searchResults = document.getElementById('search-results');
+    const clearSearchBtn = document.getElementById('clear-search');
+    // Build database of searchable terms from sections
+    const searchDb = [];
+    sections.forEach(section => {
+      const heading = section.querySelector('h2').textContent.trim();
+      const id = section.getAttribute('id');
+      const paragraphs = Array.from(section.querySelectorAll('p, table, li')).map(el => el.textContent).join(' ');
+      searchDb.push({ id, heading, text: paragraphs });
+    });
+    searchInput.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase().trim();
+      if (query.length < 2) {
+        searchResultsContainer.classList.add('hidden');
+        return;
+      }
+      const matches = searchDb.filter(item => 
+        item.heading.toLowerCase().includes(query) || 
+        item.text.toLowerCase().includes(query)
+      );
+      searchResults.innerHTML = '';
+      if (matches.length === 0) {
+        searchResults.innerHTML = '<p class="text-xs text-slate-500">Không tìm thấy kết quả phù hợp.</p>';
+      } else {
+        matches.forEach(match => {
+          const resultItem = document.createElement('a');
+          resultItem.href = '#' + match.id;
+          resultItem.className = 'block p-3 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-brand-500 transition-all';
+          resultItem.innerHTML = `
+            <h4 class="font-bold text-xs text-slate-900 dark:text-white">${match.heading}</h4>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">...${match.text.substr(match.text.toLowerCase().indexOf(query), 150)}...</p>
+          `;
+          searchResults.innerHTML += resultItem.outerHTML;
+        });
+      }
+      searchResultsContainer.classList.remove('hidden');
+    });
+    clearSearchBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      searchResultsContainer.classList.add('hidden');
+    });
+    // '/' Key shortcut for search focus
+    window.addEventListener('keydown', (e) => {
+      if (e.key === '/' && document.activeElement !== searchInput) {
+        e.preventDefault();
+        searchInput.focus();
+      }
+    });
+  </script>
 
 </body></html>
