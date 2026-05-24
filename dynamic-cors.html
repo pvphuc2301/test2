@@ -1,0 +1,798 @@
+<html lang="en" class="scroll-smooth"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic CORS Configuration - Technical Documentation</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: { 50:'#f0fdf4', 100:'#dcfce7', 500:'#22c55e', 600:'#16a34a', 700:'#15803d', 900:'#14532d' },
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-feature-settings: "cv02","cv03","cv04","cv11"; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    .dark ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    .dark ::-webkit-scrollbar-thumb { background: #334155; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-200 antialiased min-h-screen transition-colors duration-200">
+
+  <!-- Mobile Top Bar -->
+  <div class="lg:hidden flex items-center justify-between px-6 py-4 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-40">
+    <div class="flex items-center gap-3">
+      <div class="h-9 w-9 bg-brand-600 rounded-lg flex items-center justify-center text-white shadow-md shadow-brand-600/20">
+        <i data-lucide="globe-lock" class="h-5 w-5"></i>
+      </div>
+      <div>
+        <span class="font-bold text-slate-900 dark:text-white text-lg">Dynamic CORS</span>
+        <span class="text-xs text-brand-600 font-semibold block -mt-1">DB-Managed Configuration</span>
+      </div>
+    </div>
+    <div class="flex items-center gap-3">
+      <button id="theme-toggle-mobile" class="p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
+        <i data-lucide="sun" class="hidden dark:block h-5 w-5"></i>
+        <i data-lucide="moon" class="block dark:hidden h-5 w-5"></i>
+      </button>
+      <button id="menu-toggle" class="p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
+        <i data-lucide="menu" class="h-6 w-6"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="max-w-[90rem] mx-auto flex">
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-72 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 transform -translate-x-full lg:translate-x-0 lg:static lg:h-screen lg:sticky lg:top-0 transition-transform duration-300 ease-in-out flex flex-col justify-between overflow-y-auto">
+      <div class="p-6">
+        <div class="hidden lg:flex items-center gap-3 mb-6">
+          <div class="h-10 w-10 bg-brand-600 rounded-lg flex items-center justify-center text-white shadow-lg shadow-brand-600/25">
+            <i data-lucide="globe-lock" class="h-6 w-6"></i>
+          </div>
+          <div>
+            <h1 class="font-extrabold text-slate-900 dark:text-white text-xl leading-none">Dynamic CORS</h1>
+            <span class="text-xs text-brand-600 font-bold">DB-Managed v1.0</span>
+          </div>
+        </div>
+
+        <!-- Search -->
+        <div class="relative mb-6">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+            <i data-lucide="search" class="h-4 w-4"></i>
+          </div>
+          <input type="text" id="search-input" placeholder="Search documentation..." class="w-full pl-9 pr-4 py-2 text-sm bg-slate-100 dark:bg-slate-800/60 border border-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white dark:focus:bg-slate-900 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-all">
+          <span class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-xs text-slate-400 font-mono">/</span>
+        </div>
+
+        <!-- Nav -->
+        <nav class="space-y-6">
+          <div>
+            <h3 class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-3 px-3">Architecture</h3>
+            <ul class="space-y-1">
+              <li><a href="#architecture" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-brand-700 bg-brand-50 dark:text-brand-400 dark:bg-brand-900/30 transition-colors"><i data-lucide="git-branch" class="h-4 w-4"></i><span>1. System Architecture</span></a></li>
+              <li><a href="#schema" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/50 transition-colors"><i data-lucide="table" class="h-4 w-4"></i><span>2. Database Schema</span></a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-3 px-3">Backend</h3>
+            <ul class="space-y-1">
+              <li><a href="#backend" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/50 transition-colors"><i data-lucide="server" class="h-4 w-4"></i><span>3. Backend Implementation</span></a></li>
+              <li><a href="#api" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/50 transition-colors"><i data-lucide="plug-zap" class="h-4 w-4"></i><span>4. Admin API Reference</span></a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-3 px-3">Frontend &amp; Ops</h3>
+            <ul class="space-y-1">
+              <li><a href="#angular-ui" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/50 transition-colors"><i data-lucide="monitor" class="h-4 w-4"></i><span>5. Angular UI</span></a></li>
+              <li><a href="#diagnostics" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/50 transition-colors"><i data-lucide="stethoscope" class="h-4 w-4"></i><span>6. Verification &amp; Diagnostics</span></a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+
+      <div class="p-6 border-t border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="h-2 w-2 rounded-full bg-brand-500 animate-pulse"></div>
+          <span class="text-xs text-slate-500 dark:text-slate-400 font-medium">Cache: Active</span>
+        </div>
+        <button id="theme-toggle" class="p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">
+          <i data-lucide="sun" class="hidden dark:block h-4 w-4"></i>
+          <i data-lucide="moon" class="block dark:hidden h-4 w-4"></i>
+        </button>
+      </div>
+    </aside>
+
+    <div id="sidebar-overlay" class="fixed inset-0 z-40 bg-slate-900/50 backdrop-blur-sm hidden transition-opacity lg:hidden"></div>
+
+    <!-- Main Content -->
+    <main class="flex-1 min-w-0 px-6 py-8 lg:px-16 lg:py-12 max-w-4xl mx-auto">
+
+      <!-- Breadcrumb -->
+      <div class="flex items-center gap-2 text-xs font-semibold text-brand-700 dark:text-brand-400 uppercase tracking-wider mb-4">
+        <span>Technical Documentation</span>
+        <i data-lucide="chevron-right" class="h-3 w-3"></i>
+        <span>Security &amp; Networking</span>
+      </div>
+
+      <!-- Header -->
+      <header class="mb-12 border-b border-slate-200 dark:border-slate-800 pb-8">
+        <div class="inline-flex items-center gap-2 px-3 py-1 bg-brand-100 dark:bg-brand-900/40 text-brand-700 dark:text-brand-400 rounded-full text-xs font-bold mb-4">
+          <i data-lucide="globe-lock" class="h-3.5 w-3.5"></i>
+          Runtime — No Restart Required
+        </div>
+        <h1 class="text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-4">Dynamic Database-Managed CORS</h1>
+        <p class="text-lg lg:text-xl text-slate-600 dark:text-slate-400 font-light leading-relaxed">Allowed origins resolved, validated, and updated dynamically at runtime — without application pool recycles, server restarts, or redeployments.</p>
+      </header>
+
+      <!-- Search Results -->
+      <div id="search-results-container" class="hidden mb-8 p-6 bg-brand-50/50 dark:bg-brand-900/20 border border-brand-100 dark:border-brand-900/50 rounded-xl">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="font-bold text-brand-900 dark:text-brand-300 flex items-center gap-2">
+            <i data-lucide="search-code" class="h-5 w-5"></i><span>Search Results</span>
+          </h3>
+          <button id="clear-search" class="text-xs font-semibold text-slate-500 hover:text-slate-800 dark:hover:text-white">Clear</button>
+        </div>
+        <div id="search-results" class="space-y-3"></div>
+      </div>
+
+      <!-- ===== SECTION 1 ===== -->
+      <section id="architecture" class="doc-section mb-16 scroll-mt-24">
+        <h2 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-6 flex items-center gap-3">
+          <span class="h-8 w-8 bg-brand-100 dark:bg-brand-900/50 text-brand-700 dark:text-brand-400 rounded-lg flex items-center justify-center font-bold text-base">1</span>
+          System Architecture
+        </h2>
+        <div class="space-y-6 leading-relaxed">
+          <p>The database-managed CORS solution enables allowed origins to be resolved, validated, and updated dynamically at runtime. No application pool recycle, server restart, or redeployment is required when CORS origins change.</p>
+
+          <!-- Architecture diagram -->
+          <div class="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm">
+            <h3 class="font-bold text-slate-900 dark:text-white text-base mb-6 text-center">Runtime CORS Resolution Flow</h3>
+
+            <div class="flex flex-col gap-0 items-center">
+              <!-- Row 1: Browser -->
+              <div class="w-full max-w-xs p-4 bg-cyan-50 dark:bg-cyan-950/20 border border-cyan-200 dark:border-cyan-900/50 rounded-xl text-center">
+                <div class="h-8 w-8 bg-cyan-100 dark:bg-cyan-950/50 text-cyan-600 dark:text-cyan-400 rounded-lg flex items-center justify-center mx-auto mb-2"><i data-lucide="globe" class="h-4 w-4"></i></div>
+                <p class="font-bold text-xs text-slate-900 dark:text-white">Browser Client</p>
+                <p class="text-[10px] text-slate-500 mt-0.5">Sends preflight OPTIONS request with Origin header</p>
+              </div>
+
+              <div class="flex flex-col items-center py-2 text-slate-400">
+                <i data-lucide="arrow-down" class="h-4 w-4"></i>
+                <span class="text-[10px] font-mono mt-0.5">OPTIONS + Origin</span>
+              </div>
+
+              <!-- Row 2: ASP.NET -->
+              <div class="w-full max-w-xs p-4 bg-brand-50 dark:bg-brand-900/20 border-2 border-brand-300 dark:border-brand-700 rounded-xl text-center relative">
+                <span class="absolute -top-2.5 right-4 px-2 py-0.5 bg-brand-600 text-white rounded-full text-[9px] font-bold uppercase tracking-wider">Core Logic</span>
+                <div class="h-8 w-8 bg-brand-100 dark:bg-brand-900/50 text-brand-700 dark:text-brand-400 rounded-lg flex items-center justify-center mx-auto mb-2"><i data-lucide="shield" class="h-4 w-4"></i></div>
+                <p class="font-bold text-xs text-slate-900 dark:text-white">DatabaseCorsPolicyProvider</p>
+                <p class="text-[10px] text-slate-500 mt-0.5">ICorsPolicyProvider — Builds CorsPolicy dynamically from cache</p>
+              </div>
+
+              <div class="flex flex-col items-center py-2 text-slate-400">
+                <i data-lucide="arrow-down" class="h-4 w-4"></i>
+                <span class="text-[10px] font-mono mt-0.5">GetCachedOrigins()</span>
+              </div>
+
+              <!-- Row 3: Cache + DB side by side -->
+              <div class="w-full grid grid-cols-2 gap-4 max-w-sm">
+                <div class="p-4 bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/50 rounded-xl text-center">
+                  <div class="h-8 w-8 bg-amber-100 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 rounded-lg flex items-center justify-center mx-auto mb-2"><i data-lucide="zap" class="h-4 w-4"></i></div>
+                  <p class="font-bold text-xs text-slate-900 dark:text-white">Memory Cache</p>
+                  <p class="text-[10px] text-slate-500 mt-0.5">TTL: 5 min</p>
+                </div>
+                <div class="p-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl text-center">
+                  <div class="h-8 w-8 bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-400 rounded-lg flex items-center justify-center mx-auto mb-2"><i data-lucide="database" class="h-4 w-4"></i></div>
+                  <p class="font-bold text-xs text-slate-900 dark:text-white">SQL Server</p>
+                  <p class="text-[10px] text-slate-500 mt-0.5">CorsOrigins table</p>
+                </div>
+              </div>
+
+              <div class="flex flex-col items-center py-2 text-slate-400">
+                <i data-lucide="arrow-down" class="h-4 w-4"></i>
+                <span class="text-[10px] font-mono mt-0.5">Access-Control-Allow-Origin</span>
+              </div>
+
+              <!-- Row 4: Response -->
+              <div class="w-full max-w-xs p-3 bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-900/50 rounded-xl text-center">
+                <p class="font-bold text-xs text-emerald-700 dark:text-emerald-400">204 No Content — CORS headers returned</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Key highlights -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
+              <div class="h-10 w-10 bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 rounded-lg flex items-center justify-center mb-3"><i data-lucide="refresh-ccw" class="h-5 w-5"></i></div>
+              <h4 class="font-bold text-slate-900 dark:text-white mb-1">No Restart Needed</h4>
+              <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">Origin changes take effect within 5 minutes or instantly after a cache invalidation call.</p>
+            </div>
+            <div class="p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
+              <div class="h-10 w-10 bg-amber-50 dark:bg-amber-950/30 text-amber-500 rounded-lg flex items-center justify-center mb-3"><i data-lucide="zap" class="h-5 w-5"></i></div>
+              <h4 class="font-bold text-slate-900 dark:text-white mb-1">Cache-Aside Pattern</h4>
+              <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">IMemoryCache prevents a database query on every incoming API request. Expires after 5 minutes.</p>
+            </div>
+            <div class="p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
+              <div class="h-10 w-10 bg-rose-50 dark:bg-rose-950/30 text-rose-500 rounded-lg flex items-center justify-center mb-3"><i data-lucide="shield-off" class="h-5 w-5"></i></div>
+              <h4 class="font-bold text-slate-900 dark:text-white mb-1">Resilience Fallback</h4>
+              <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">If SQL Server is unreachable, the store falls back to <code class="font-mono text-[10px] bg-slate-100 dark:bg-slate-800 px-1 rounded">Cors:FallbackOrigins</code> in appsettings.json.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== SECTION 2 ===== -->
+      <section id="schema" class="doc-section mb-16 scroll-mt-24">
+        <h2 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-6 flex items-center gap-3">
+          <span class="h-8 w-8 bg-brand-100 dark:bg-brand-900/50 text-brand-700 dark:text-brand-400 rounded-lg flex items-center justify-center font-bold text-base">2</span>
+          Database Schema — CorsOrigins
+        </h2>
+        <div class="space-y-6 leading-relaxed">
+          <p>Origins are stored in the <code class="font-mono text-xs bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded">CorsOrigins</code> table inside the <code class="font-mono text-xs bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded">auth</code> schema in SQL Server.</p>
+
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm">
+            <div class="p-4 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800 flex items-center gap-2">
+              <span class="h-2 w-2 rounded-full bg-brand-500"></span>
+              <span class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">auth.CorsOrigins — Column Definitions</span>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-sm border-collapse">
+                <thead>
+                  <tr class="border-b border-slate-100 dark:border-slate-800 text-slate-500 dark:text-slate-400 font-semibold">
+                    <th class="px-4 pb-3 pt-3 w-1/5 text-xs">Column</th>
+                    <th class="px-4 pb-3 pt-3 w-1/5 text-xs">Type</th>
+                    <th class="px-4 pb-3 pt-3 w-1/5 text-xs">Constraints</th>
+                    <th class="px-4 pb-3 pt-3 text-xs">Description</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                  <tr>
+                    <td class="px-4 py-3 font-mono font-semibold text-xs text-brand-700 dark:text-brand-400">Id</td>
+                    <td class="px-4 py-3 font-mono text-xs text-slate-600 dark:text-slate-400">UNIQUEIDENTIFIER</td>
+                    <td class="px-4 py-3 text-xs"><span class="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 rounded text-slate-600 dark:text-slate-400 font-mono">PK · NEWID()</span></td>
+                    <td class="px-4 py-3 text-xs text-slate-600 dark:text-slate-400">Unique identifier of the origin record</td>
+                  </tr>
+                  <tr>
+                    <td class="px-4 py-3 font-mono font-semibold text-xs text-brand-700 dark:text-brand-400">AppCode</td>
+                    <td class="px-4 py-3 font-mono text-xs text-slate-600 dark:text-slate-400">NVARCHAR(50)</td>
+                    <td class="px-4 py-3 text-xs"><span class="px-1.5 py-0.5 bg-rose-100 dark:bg-rose-950/40 rounded text-rose-600 dark:text-rose-400 font-mono">NOT NULL</span></td>
+                    <td class="px-4 py-3 text-xs text-slate-600 dark:text-slate-400">Target application code (e.g. <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded">ADMIN</code>, <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded">EMR</code>, <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded">HRM</code>)</td>
+                  </tr>
+                  <tr>
+                    <td class="px-4 py-3 font-mono font-semibold text-xs text-brand-700 dark:text-brand-400">Origin</td>
+                    <td class="px-4 py-3 font-mono text-xs text-slate-600 dark:text-slate-400">NVARCHAR(300)</td>
+                    <td class="px-4 py-3 text-xs"><span class="px-1.5 py-0.5 bg-rose-100 dark:bg-rose-950/40 rounded text-rose-600 dark:text-rose-400 font-mono">NOT NULL</span></td>
+                    <td class="px-4 py-3 text-xs text-slate-600 dark:text-slate-400">Absolute allowed origin URL (e.g. <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded">https://admin.timtamduc.local</code>)</td>
+                  </tr>
+                  <tr>
+                    <td class="px-4 py-3 font-mono font-semibold text-xs text-brand-700 dark:text-brand-400">Environment</td>
+                    <td class="px-4 py-3 font-mono text-xs text-slate-600 dark:text-slate-400">NVARCHAR(50)</td>
+                    <td class="px-4 py-3 text-xs"><span class="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 rounded text-slate-500 dark:text-slate-400 font-mono">NULL</span></td>
+                    <td class="px-4 py-3 text-xs text-slate-600 dark:text-slate-400">Target environment (e.g. <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded">Production</code>, <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded">Development</code>)</td>
+                  </tr>
+                  <tr>
+                    <td class="px-4 py-3 font-mono font-semibold text-xs text-brand-700 dark:text-brand-400">IsActive</td>
+                    <td class="px-4 py-3 font-mono text-xs text-slate-600 dark:text-slate-400">BIT</td>
+                    <td class="px-4 py-3 text-xs"><span class="px-1.5 py-0.5 bg-rose-100 dark:bg-rose-950/40 rounded text-rose-600 dark:text-rose-400 font-mono">NOT NULL · 1</span></td>
+                    <td class="px-4 py-3 text-xs text-slate-600 dark:text-slate-400">State of the origin. Inactive origins are ignored at runtime.</td>
+                  </tr>
+                  <tr>
+                    <td class="px-4 py-3 font-mono font-semibold text-xs text-brand-700 dark:text-brand-400">Description</td>
+                    <td class="px-4 py-3 font-mono text-xs text-slate-600 dark:text-slate-400">NVARCHAR(500)</td>
+                    <td class="px-4 py-3 text-xs"><span class="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 rounded text-slate-500 dark:text-slate-400 font-mono">NULL</span></td>
+                    <td class="px-4 py-3 text-xs text-slate-600 dark:text-slate-400">Optional developer-friendly description</td>
+                  </tr>
+                  <tr>
+                    <td class="px-4 py-3 font-mono font-semibold text-xs text-brand-700 dark:text-brand-400">CreationTime</td>
+                    <td class="px-4 py-3 font-mono text-xs text-slate-600 dark:text-slate-400">DATETIME2</td>
+                    <td class="px-4 py-3 text-xs"><span class="px-1.5 py-0.5 bg-rose-100 dark:bg-rose-950/40 rounded text-rose-600 dark:text-rose-400 font-mono">NOT NULL · GETDATE()</span></td>
+                    <td class="px-4 py-3 text-xs text-slate-600 dark:text-slate-400">Creation timestamp (auto-populated)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Seed Data -->
+          <h3 class="font-bold text-slate-900 dark:text-white text-base mt-4">Initial Seed Data</h3>
+          <p class="text-sm">The database seeder pre-populates default production endpoints and local developer URLs to prevent CORS preflight blocking in all environments:</p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm">
+              <div class="px-4 py-3 bg-emerald-50 dark:bg-emerald-950/30 border-b border-emerald-200 dark:border-emerald-900/50 flex items-center gap-2">
+                <i data-lucide="building-2" class="h-4 w-4 text-emerald-600 dark:text-emerald-400"></i>
+                <span class="text-xs font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider">Production Origins</span>
+              </div>
+              <div class="p-4 space-y-2 font-mono text-xs">
+                <div class="flex items-center gap-2"><span class="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 rounded text-[10px] text-slate-500 w-16 text-center">ADMIN</span><span class="text-slate-700 dark:text-slate-300">https://admin.timtamduc.local</span></div>
+                <div class="flex items-center gap-2"><span class="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 rounded text-[10px] text-slate-500 w-16 text-center">EMR</span><span class="text-slate-700 dark:text-slate-300">https://emr.timtamduc.local</span></div>
+                <div class="flex items-center gap-2"><span class="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 rounded text-[10px] text-slate-500 w-16 text-center">HRM</span><span class="text-slate-700 dark:text-slate-300">https://hrm.timtamduc.local</span></div>
+                <div class="flex items-center gap-2"><span class="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 rounded text-[10px] text-slate-500 w-16 text-center">REPORT</span><span class="text-slate-700 dark:text-slate-300">https://report.timtamduc.local</span></div>
+                <div class="flex items-center gap-2"><span class="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 rounded text-[10px] text-slate-500 w-16 text-center">CMS</span><span class="text-slate-700 dark:text-slate-300">https://cms.timtamduc.local</span></div>
+              </div>
+            </div>
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm">
+              <div class="px-4 py-3 bg-amber-50 dark:bg-amber-950/30 border-b border-amber-200 dark:border-amber-900/50 flex items-center gap-2">
+                <i data-lucide="code-2" class="h-4 w-4 text-amber-600 dark:text-amber-400"></i>
+                <span class="text-xs font-bold text-amber-700 dark:text-amber-400 uppercase tracking-wider">Development Origins</span>
+              </div>
+              <div class="p-4 space-y-2 font-mono text-xs">
+                <div class="flex items-center gap-2"><span class="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 rounded text-[10px] text-slate-500 w-16 text-center">ADMIN</span><span class="text-slate-700 dark:text-slate-300">http://localhost:4200</span></div>
+                <div class="flex items-center gap-2"><span class="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 rounded text-[10px] text-slate-500 w-16 text-center">ADMIN</span><span class="text-slate-700 dark:text-slate-300">https://localhost:4200</span></div>
+                <div class="flex items-center gap-2"><span class="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 rounded text-[10px] text-slate-500 w-16 text-center">ADMIN</span><span class="text-slate-700 dark:text-slate-300">http://localhost:8089</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== SECTION 3 ===== -->
+      <section id="backend" class="doc-section mb-16 scroll-mt-24">
+        <h2 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-6 flex items-center gap-3">
+          <span class="h-8 w-8 bg-brand-100 dark:bg-brand-900/50 text-brand-700 dark:text-brand-400 rounded-lg flex items-center justify-center font-bold text-base">3</span>
+          Backend Implementation
+        </h2>
+        <div class="space-y-8 leading-relaxed">
+
+          <!-- CorsOriginStore -->
+          <div class="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
+            <div class="flex items-start gap-4">
+              <div class="h-10 w-10 bg-amber-50 dark:bg-amber-950/30 text-amber-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                <i data-lucide="database-zap" class="h-5 w-5"></i>
+              </div>
+              <div class="flex-1">
+                <h3 class="font-bold text-slate-900 dark:text-white mb-1 flex items-center gap-2">
+                  Cache-Aside Store
+                  <code class="text-xs font-mono bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded text-slate-600 dark:text-slate-400">CorsOriginStore.cs</code>
+                </h3>
+                <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">Handles allowed origin retrieval with a 5-minute <code class="font-mono text-xs bg-slate-100 dark:bg-slate-800 px-1 rounded">IMemoryCache</code> absolute expiration to prevent querying the database on every request.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div class="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+                    <h4 class="text-xs font-bold text-slate-700 dark:text-slate-300 mb-2 flex items-center gap-1.5"><i data-lucide="zap" class="h-3.5 w-3.5 text-amber-500"></i>Cache Hit</h4>
+                    <p class="text-xs text-slate-600 dark:text-slate-400">Returns cached origin list directly from memory. Zero database I/O.</p>
+                  </div>
+                  <div class="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+                    <h4 class="text-xs font-bold text-slate-700 dark:text-slate-300 mb-2 flex items-center gap-1.5"><i data-lucide="database" class="h-3.5 w-3.5 text-brand-500"></i>Cache Miss</h4>
+                    <p class="text-xs text-slate-600 dark:text-slate-400">Queries SQL Server, populates cache, resets TTL to 5 minutes.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Resilience fallback -->
+          <div class="p-4 bg-rose-50 dark:bg-rose-950/20 border-l-4 border-rose-500 rounded-r-lg">
+            <div class="flex gap-3">
+              <i data-lucide="shield-off" class="h-5 w-5 text-rose-500 flex-shrink-0 mt-0.5"></i>
+              <div>
+                <span class="font-bold text-rose-700 dark:text-rose-400 block mb-1">Resilience Fallback</span>
+                <span class="text-sm text-slate-700 dark:text-slate-300">If SQL Server is down or unreachable, the store catches the exception, logs a warning, and falls back to <code class="font-mono text-xs bg-rose-100 dark:bg-rose-950/50 px-1 rounded">Cors:FallbackOrigins</code> in <code class="font-mono text-xs bg-rose-100 dark:bg-rose-950/50 px-1 rounded">appsettings.json</code> to prevent a global API service interruption.</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- DatabaseCorsPolicyProvider -->
+          <div class="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
+            <div class="flex items-start gap-4">
+              <div class="h-10 w-10 bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 rounded-lg flex items-center justify-center flex-shrink-0">
+                <i data-lucide="shield" class="h-5 w-5"></i>
+              </div>
+              <div class="flex-1">
+                <h3 class="font-bold text-slate-900 dark:text-white mb-1 flex items-center gap-2">
+                  Custom Policy Provider
+                  <code class="text-xs font-mono bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded text-slate-600 dark:text-slate-400">DatabaseCorsPolicyProvider.cs</code>
+                </h3>
+                <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">Implements <code class="font-mono text-xs bg-slate-100 dark:bg-slate-800 px-1 rounded">ICorsPolicyProvider</code> to build <code class="font-mono text-xs bg-slate-100 dark:bg-slate-800 px-1 rounded">CorsPolicy</code> dynamically at runtime from the cached origin list.</p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div class="flex items-center gap-2 p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg text-xs text-slate-700 dark:text-slate-300"><i data-lucide="check-circle-2" class="h-3.5 w-3.5 text-brand-500 flex-shrink-0"></i>Allow credentials</div>
+                  <div class="flex items-center gap-2 p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg text-xs text-slate-700 dark:text-slate-300"><i data-lucide="check-circle-2" class="h-3.5 w-3.5 text-brand-500 flex-shrink-0"></i>Any header</div>
+                  <div class="flex items-center gap-2 p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg text-xs text-slate-700 dark:text-slate-300"><i data-lucide="check-circle-2" class="h-3.5 w-3.5 text-brand-500 flex-shrink-0"></i>Any method</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Security warning -->
+          <div class="p-4 bg-amber-50 dark:bg-amber-950/20 border-l-4 border-amber-500 rounded-r-lg">
+            <div class="flex gap-3">
+              <i data-lucide="triangle-alert" class="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5"></i>
+              <div>
+                <span class="font-bold text-amber-700 dark:text-amber-400 block mb-1">Security Constraint — Never combine AllowAnyOrigin() with AllowCredentials()</span>
+                <span class="text-sm text-slate-700 dark:text-slate-300">This is insecure and rejected by modern browsers. The provider always passes the exact list of cached origin strings via <code class="font-mono text-xs bg-amber-100 dark:bg-amber-950/50 px-1 rounded">.WithOrigins(origins)</code> rather than using a wildcard.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== SECTION 4 ===== -->
+      <section id="api" class="doc-section mb-16 scroll-mt-24">
+        <h2 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-6 flex items-center gap-3">
+          <span class="h-8 w-8 bg-brand-100 dark:bg-brand-900/50 text-brand-700 dark:text-brand-400 rounded-lg flex items-center justify-center font-bold text-base">4</span>
+          Admin API Reference
+        </h2>
+        <div class="space-y-6 leading-relaxed">
+          <div class="p-4 bg-brand-50/50 dark:bg-brand-900/20 border-l-4 border-brand-500 rounded-r-lg">
+            <div class="flex gap-3">
+              <i data-lucide="lock" class="h-5 w-5 text-brand-600 dark:text-brand-400 flex-shrink-0 mt-0.5"></i>
+              <span class="text-sm text-slate-700 dark:text-slate-300">All endpoints require administrative rights and OIDC tokens verified under the <code class="font-mono text-xs bg-brand-100 dark:bg-brand-900/50 px-1 rounded">Admin.FullAccess</code> policy (<code class="font-mono text-xs bg-brand-100 dark:bg-brand-900/50 px-1 rounded">ConfigAdminController.cs</code>).</span>
+            </div>
+          </div>
+
+          <!-- Endpoint cards -->
+          <div class="space-y-4">
+
+            <!-- GET -->
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm">
+              <div class="flex items-center gap-3 px-5 py-4 border-b border-slate-100 dark:border-slate-800">
+                <span class="px-2 py-0.5 bg-cyan-100 dark:bg-cyan-950/50 text-cyan-700 dark:text-cyan-400 rounded font-mono text-xs font-bold">GET</span>
+                <code class="font-mono text-sm text-slate-800 dark:text-slate-200">/api/configadmin/cors</code>
+                <span class="ml-auto text-xs text-slate-500">List all origins</span>
+              </div>
+              <div class="px-5 py-3 text-xs text-slate-600 dark:text-slate-400">Returns a list of <code class="font-mono bg-slate-100 dark:bg-slate-800 px-1 rounded">CorsOrigin</code> JSON objects ordered by creation time.</div>
+            </div>
+
+            <!-- POST -->
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm">
+              <div class="flex items-center gap-3 px-5 py-4 border-b border-slate-100 dark:border-slate-800">
+                <span class="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-400 rounded font-mono text-xs font-bold">POST</span>
+                <code class="font-mono text-sm text-slate-800 dark:text-slate-200">/api/configadmin/cors</code>
+                <span class="ml-auto text-xs text-slate-500">Create origin</span>
+              </div>
+              <div class="px-5 py-4 space-y-3">
+                <div class="text-xs text-slate-600 dark:text-slate-400 space-y-1">
+                  <p><strong class="text-slate-800 dark:text-slate-200">Validation:</strong> Enforces absolute URI — must start with <code class="font-mono bg-slate-100 dark:bg-slate-800 px-1 rounded">http://</code> or <code class="font-mono bg-slate-100 dark:bg-slate-800 px-1 rounded">https://</code> with a valid hostname.</p>
+                  <p><strong class="text-slate-800 dark:text-slate-200">Side effects:</strong> Calls <code class="font-mono bg-slate-100 dark:bg-slate-800 px-1 rounded">_corsStore.InvalidateCache()</code> immediately. Writes audit log.</p>
+                </div>
+                <div class="relative bg-slate-900 rounded-xl overflow-hidden border border-slate-800">
+                  <div class="flex items-center justify-between px-4 py-2 bg-slate-950 border-b border-slate-800 text-xs text-slate-400">
+                    <span class="font-mono">Request Body</span>
+                    <button class="copy-btn hover:text-white flex items-center gap-1 font-semibold" data-target="code-post">
+                      <i data-lucide="copy" class="h-3 w-3"></i> Copy
+                    </button>
+                  </div>
+                  <pre class="p-4 overflow-x-auto text-xs text-brand-100 font-mono" id="code-post">{
+  "appCode": "EMR",
+  "origin": "https://emr.timtamduc.local",
+  "environment": "Production",
+  "isActive": true,
+  "description": "EMR Production Frontend"
+}</pre>
+                </div>
+              </div>
+            </div>
+
+            <!-- PUT -->
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm">
+              <div class="flex items-center gap-3 px-5 py-4 border-b border-slate-100 dark:border-slate-800">
+                <span class="px-2 py-0.5 bg-amber-100 dark:bg-amber-950/50 text-amber-700 dark:text-amber-400 rounded font-mono text-xs font-bold">PUT</span>
+                <code class="font-mono text-sm text-slate-800 dark:text-slate-200">/api/configadmin/cors/{id}</code>
+                <span class="ml-auto text-xs text-slate-500">Update origin</span>
+              </div>
+              <div class="px-5 py-3 text-xs text-slate-600 dark:text-slate-400">Request body identical to creation. Invalidates cache immediately and writes audit log.</div>
+            </div>
+
+            <!-- DELETE -->
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm">
+              <div class="flex items-center gap-3 px-5 py-4 border-b border-slate-100 dark:border-slate-800">
+                <span class="px-2 py-0.5 bg-rose-100 dark:bg-rose-950/50 text-rose-700 dark:text-rose-400 rounded font-mono text-xs font-bold">DELETE</span>
+                <code class="font-mono text-sm text-slate-800 dark:text-slate-200">/api/configadmin/cors/{id}</code>
+                <span class="ml-auto text-xs text-slate-500">Remove origin</span>
+              </div>
+              <div class="px-5 py-3 text-xs text-slate-600 dark:text-slate-400">Invalidates cache immediately and writes audit log.</div>
+            </div>
+
+            <!-- Clear Cache -->
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm">
+              <div class="flex items-center gap-3 px-5 py-4 border-b border-slate-100 dark:border-slate-800">
+                <span class="px-2 py-0.5 bg-violet-100 dark:bg-violet-950/50 text-violet-700 dark:text-violet-400 rounded font-mono text-xs font-bold">POST</span>
+                <code class="font-mono text-sm text-slate-800 dark:text-slate-200">/api/configadmin/cors/clear-cache</code>
+                <span class="ml-auto text-xs text-slate-500">Invalidate cache</span>
+              </div>
+              <div class="px-5 py-4 space-y-3">
+                <p class="text-xs text-slate-600 dark:text-slate-400">Explicitly invalidates the cache key <code class="font-mono bg-slate-100 dark:bg-slate-800 px-1 rounded">cors-origins</code>. Writes audit log.</p>
+                <div class="relative bg-slate-900 rounded-xl overflow-hidden border border-slate-800">
+                  <div class="px-4 py-2 bg-slate-950 border-b border-slate-800 text-xs text-slate-400 font-mono">Response</div>
+                  <pre class="p-4 text-xs text-brand-100 font-mono">{"message": "CORS memory cache cleared successfully."}</pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== SECTION 5 ===== -->
+      <section id="angular-ui" class="doc-section mb-16 scroll-mt-24">
+        <h2 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-6 flex items-center gap-3">
+          <span class="h-8 w-8 bg-brand-100 dark:bg-brand-900/50 text-brand-700 dark:text-brand-400 rounded-lg flex items-center justify-center font-bold text-base">5</span>
+          Angular UI Configuration
+        </h2>
+        <div class="space-y-6 leading-relaxed">
+          <p>The dynamic CORS management panel is added to the main administrator shell under the <strong>CORS Origins</strong> tab.</p>
+
+          <!-- Mock UI table -->
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm">
+            <!-- Toolbar -->
+            <div class="flex items-center justify-between px-5 py-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30">
+              <div>
+                <h3 class="font-bold text-slate-900 dark:text-white text-sm">CORS Allowed Origins</h3>
+                <p class="text-xs text-slate-500 mt-0.5">Manage dynamic browser-level allowed origins mapped by app and environment.</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <button class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-semibold rounded-lg transition-colors">
+                  <i data-lucide="trash-2" class="h-3.5 w-3.5"></i> Clear Cache
+                </button>
+                <button class="flex items-center gap-1.5 px-3 py-1.5 bg-brand-600 hover:bg-brand-700 text-white text-xs font-semibold rounded-lg transition-colors">
+                  <i data-lucide="plus" class="h-3.5 w-3.5"></i> Add
+                </button>
+              </div>
+            </div>
+            <!-- Table header -->
+            <div class="grid grid-cols-12 gap-2 px-5 py-2 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+              <div class="col-span-2">App Code</div>
+              <div class="col-span-4">Allowed Origin</div>
+              <div class="col-span-2">Environment</div>
+              <div class="col-span-2">Status</div>
+              <div class="col-span-2">Actions</div>
+            </div>
+            <!-- Row 1 -->
+            <div class="grid grid-cols-12 gap-2 px-5 py-3 border-b border-slate-100 dark:border-slate-800 items-center hover:bg-slate-50/50 dark:hover:bg-slate-800/20 transition-colors">
+              <div class="col-span-2"><span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400 rounded font-mono text-xs font-bold">ADMIN</span></div>
+              <div class="col-span-4 font-mono text-xs text-slate-700 dark:text-slate-300 truncate">https://admin.timtamduc.local</div>
+              <div class="col-span-2 text-xs text-slate-500">Production</div>
+              <div class="col-span-2"><span class="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 rounded text-xs font-bold">ACTIVE</span></div>
+              <div class="col-span-2 flex items-center gap-1">
+                <button class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-500"><i data-lucide="pencil" class="h-3.5 w-3.5"></i></button>
+                <button class="p-1.5 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded text-slate-500 hover:text-rose-500"><i data-lucide="trash-2" class="h-3.5 w-3.5"></i></button>
+              </div>
+            </div>
+            <!-- Row 2 -->
+            <div class="grid grid-cols-12 gap-2 px-5 py-3 border-b border-slate-100 dark:border-slate-800 items-center hover:bg-slate-50/50 dark:hover:bg-slate-800/20 transition-colors">
+              <div class="col-span-2"><span class="px-2 py-0.5 bg-teal-100 dark:bg-teal-950/40 text-teal-700 dark:text-teal-400 rounded font-mono text-xs font-bold">EMR</span></div>
+              <div class="col-span-4 font-mono text-xs text-slate-700 dark:text-slate-300 truncate">https://emr.timtamduc.local</div>
+              <div class="col-span-2 text-xs text-slate-500">Production</div>
+              <div class="col-span-2"><span class="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 rounded text-xs font-bold">ACTIVE</span></div>
+              <div class="col-span-2 flex items-center gap-1">
+                <button class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-500"><i data-lucide="pencil" class="h-3.5 w-3.5"></i></button>
+                <button class="p-1.5 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded text-slate-500 hover:text-rose-500"><i data-lucide="trash-2" class="h-3.5 w-3.5"></i></button>
+              </div>
+            </div>
+            <!-- Row 3 -->
+            <div class="grid grid-cols-12 gap-2 px-5 py-3 items-center hover:bg-slate-50/50 dark:hover:bg-slate-800/20 transition-colors">
+              <div class="col-span-2"><span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400 rounded font-mono text-xs font-bold">ADMIN</span></div>
+              <div class="col-span-4 font-mono text-xs text-slate-700 dark:text-slate-300 truncate">http://localhost:4200</div>
+              <div class="col-span-2 text-xs text-amber-600 dark:text-amber-400">Development</div>
+              <div class="col-span-2"><span class="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 rounded text-xs font-bold">ACTIVE</span></div>
+              <div class="col-span-2 flex items-center gap-1">
+                <button class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-500"><i data-lucide="pencil" class="h-3.5 w-3.5"></i></button>
+                <button class="p-1.5 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded text-slate-500 hover:text-rose-500"><i data-lucide="trash-2" class="h-3.5 w-3.5"></i></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Key features -->
+          <h3 class="font-bold text-slate-900 dark:text-white text-base">Key UI Features</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="flex gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
+              <div class="h-8 w-8 rounded bg-slate-100 dark:bg-slate-800 flex items-center justify-center flex-shrink-0 text-brand-500"><i data-lucide="table-2" class="h-4 w-4"></i></div>
+              <div><h4 class="font-bold text-sm text-slate-900 dark:text-white mb-0.5">Glassmorphic Grid Table</h4><p class="text-xs text-slate-600 dark:text-slate-400">Lists App Code, Origin, Environment, Active Status, Description, and Creation Time.</p></div>
+            </div>
+            <div class="flex gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
+              <div class="h-8 w-8 rounded bg-slate-100 dark:bg-slate-800 flex items-center justify-center flex-shrink-0 text-amber-500"><i data-lucide="regex" class="h-4 w-4"></i></div>
+              <div><h4 class="font-bold text-sm text-slate-900 dark:text-white mb-0.5">Regex URL Validation</h4><p class="text-xs text-slate-600 dark:text-slate-400">Modal form blocks submission if the origin isn't a valid absolute URL — validates protocol, host, and bans trailing slashes.</p></div>
+            </div>
+            <div class="flex gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
+              <div class="h-8 w-8 rounded bg-slate-100 dark:bg-slate-800 flex items-center justify-center flex-shrink-0 text-violet-500"><i data-lucide="trash-2" class="h-4 w-4"></i></div>
+              <div><h4 class="font-bold text-sm text-slate-900 dark:text-white mb-0.5">Instant Cache Clearing</h4><p class="text-xs text-slate-600 dark:text-slate-400">Clicking Clear Cache triggers immediate invalidation, forcing a fresh database pull on the next client request.</p></div>
+            </div>
+            <div class="flex gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm">
+              <div class="h-8 w-8 rounded bg-slate-100 dark:bg-slate-800 flex items-center justify-center flex-shrink-0 text-rose-500"><i data-lucide="activity" class="h-4 w-4"></i></div>
+              <div><h4 class="font-bold text-sm text-slate-900 dark:text-white mb-0.5">Audit Log Feed</h4><p class="text-xs text-slate-600 dark:text-slate-400">Every add, edit, delete, or cache clear updates the Audit Logs tab (e.g. <code class="font-mono text-[10px] bg-slate-100 dark:bg-slate-800 px-1 rounded">ADMIN_CREATE_CORS_ORIGIN</code>, <code class="font-mono text-[10px] bg-slate-100 dark:bg-slate-800 px-1 rounded">ADMIN_CLEAR_CORS_CACHE</code>).</p></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== SECTION 6 ===== -->
+      <section id="diagnostics" class="doc-section mb-16 scroll-mt-24">
+        <h2 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-6 flex items-center gap-3">
+          <span class="h-8 w-8 bg-brand-100 dark:bg-brand-900/50 text-brand-700 dark:text-brand-400 rounded-lg flex items-center justify-center font-bold text-base">6</span>
+          Verification &amp; Diagnostics
+        </h2>
+        <div class="space-y-6 leading-relaxed">
+          <p>Administrators can verify CORS policy evaluation using <code class="font-mono text-xs bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded">curl.exe</code> preflight requests directly from PowerShell.</p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            <!-- Authorized test -->
+            <div class="space-y-3">
+              <h3 class="font-bold text-slate-900 dark:text-white text-sm flex items-center gap-2">
+                <span class="h-5 w-5 bg-emerald-100 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 rounded-full flex items-center justify-center"><i data-lucide="check" class="h-3 w-3"></i></span>
+                Test Authorized Origin
+              </h3>
+              <div class="relative bg-slate-900 rounded-xl overflow-hidden border border-slate-800">
+                <div class="flex items-center justify-between px-4 py-2 bg-slate-950 border-b border-slate-800 text-xs text-slate-400">
+                  <span class="font-mono">PowerShell</span>
+                  <button class="copy-btn hover:text-white flex items-center gap-1 font-semibold" data-target="code-curl-ok">
+                    <i data-lucide="copy" class="h-3 w-3"></i> Copy
+                  </button>
+                </div>
+                <pre class="p-4 overflow-x-auto text-xs text-brand-100 font-mono" id="code-curl-ok">curl.exe -i -X OPTIONS http://localhost:8089/api/configadmin/cors `
+  -H "Origin: http://localhost:4200" `
+  -H "Access-Control-Request-Method: GET"</pre>
+              </div>
+              <div class="relative bg-slate-900 rounded-xl overflow-hidden border border-emerald-800/50">
+                <div class="flex items-center gap-2 px-4 py-2 bg-emerald-950/30 border-b border-emerald-800/50 text-xs text-emerald-400">
+                  <i data-lucide="check-circle-2" class="h-3.5 w-3.5"></i>
+                  <span class="font-mono">Expected Response</span>
+                </div>
+                <pre class="p-4 overflow-x-auto text-xs font-mono text-emerald-300">HTTP/1.1 204 No Content
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Methods: GET
+Access-Control-Allow-Origin: http://localhost:4200
+Vary: Origin</pre>
+              </div>
+            </div>
+
+            <!-- Unauthorized test -->
+            <div class="space-y-3">
+              <h3 class="font-bold text-slate-900 dark:text-white text-sm flex items-center gap-2">
+                <span class="h-5 w-5 bg-rose-100 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 rounded-full flex items-center justify-center"><i data-lucide="x" class="h-3 w-3"></i></span>
+                Test Unauthorized Origin
+              </h3>
+              <div class="relative bg-slate-900 rounded-xl overflow-hidden border border-slate-800">
+                <div class="flex items-center justify-between px-4 py-2 bg-slate-950 border-b border-slate-800 text-xs text-slate-400">
+                  <span class="font-mono">PowerShell</span>
+                  <button class="copy-btn hover:text-white flex items-center gap-1 font-semibold" data-target="code-curl-deny">
+                    <i data-lucide="copy" class="h-3 w-3"></i> Copy
+                  </button>
+                </div>
+                <pre class="p-4 overflow-x-auto text-xs text-brand-100 font-mono" id="code-curl-deny">curl.exe -i -X OPTIONS http://localhost:8089/api/configadmin/cors `
+  -H "Origin: http://example.com" `
+  -H "Access-Control-Request-Method: GET"</pre>
+              </div>
+              <div class="relative bg-slate-900 rounded-xl overflow-hidden border border-rose-800/50">
+                <div class="flex items-center gap-2 px-4 py-2 bg-rose-950/30 border-b border-rose-800/50 text-xs text-rose-400">
+                  <i data-lucide="x-circle" class="h-3.5 w-3.5"></i>
+                  <span class="font-mono">Expected Response</span>
+                </div>
+                <pre class="p-4 overflow-x-auto text-xs font-mono text-rose-300">HTTP/1.1 204 No Content
+(No Access-Control-Allow-Origin header)
+(No Access-Control-Allow-Credentials header)
+
+→ Browser blocks the request automatically.</pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-600 dark:text-slate-400">
+            <strong class="text-slate-800 dark:text-slate-200 block mb-1">How to interpret the results</strong>
+            An authorized origin returns <code class="font-mono bg-slate-200 dark:bg-slate-700 px-1 rounded">Access-Control-Allow-Origin</code> and <code class="font-mono bg-slate-200 dark:bg-slate-700 px-1 rounded">Access-Control-Allow-Credentials</code> headers, confirming the browser will permit the cross-origin request. An unauthorized origin returns a bare <code class="font-mono bg-slate-200 dark:bg-slate-700 px-1 rounded">204</code> with no CORS headers — the browser silently blocks the response.
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400">
+        <p>© 2026 Internal Systems — Dynamic CORS Technical Reference</p>
+        <div class="flex items-center gap-4">
+          <span>ASP.NET Core · IMemoryCache · SQL Server</span>
+          <span>•</span>
+          <span>v1.0</span>
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="fixed bottom-6 right-6 px-4 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl shadow-2xl flex items-center gap-2 border border-slate-800 dark:border-slate-100 opacity-0 pointer-events-none transition-all duration-300 transform translate-y-2 z-50">
+    <i data-lucide="check-circle-2" class="h-5 w-5 text-emerald-500"></i>
+    <span class="text-sm font-semibold">Copied to clipboard!</span>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    const initTheme = () => {
+      const isDark = localStorage.getItem('theme') === 'dark' ||
+        (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+      document.documentElement.classList.toggle('dark', isDark);
+    };
+    const toggleTheme = () => {
+      const isDark = document.documentElement.classList.contains('dark');
+      document.documentElement.classList.toggle('dark', !isDark);
+      localStorage.setItem('theme', isDark ? 'light' : 'dark');
+    };
+    document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+    document.getElementById('theme-toggle-mobile').addEventListener('click', toggleTheme);
+    initTheme();
+
+    const menuToggle = document.getElementById('menu-toggle');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    const toggleMenu = () => {
+      sidebar.classList.toggle('-translate-x-full');
+      overlay.classList.toggle('hidden');
+    };
+    menuToggle.addEventListener('click', toggleMenu);
+    overlay.addEventListener('click', toggleMenu);
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => { if (window.innerWidth < 1024) toggleMenu(); });
+    });
+
+    const toast = document.getElementById('toast');
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const el = document.getElementById(btn.getAttribute('data-target'));
+        if (el) {
+          navigator.clipboard.writeText(el.textContent).then(() => {
+            toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-2');
+            setTimeout(() => toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-2'), 2500);
+          });
+        }
+      });
+    });
+
+    const sections = document.querySelectorAll('section.doc-section');
+    const navLinks = document.querySelectorAll('.nav-link');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(s => { if (window.scrollY + 120 >= s.offsetTop) current = s.id; });
+      navLinks.forEach(link => {
+        const active = link.getAttribute('href') === '#' + current;
+        link.classList.toggle('text-brand-700', active);
+        link.classList.toggle('bg-brand-50', active);
+        link.classList.toggle('dark:text-brand-400', active);
+        link.classList.toggle('dark:bg-brand-900/30', active);
+        link.classList.toggle('text-slate-600', !active);
+        link.classList.toggle('hover:text-slate-900', !active);
+        link.classList.toggle('hover:bg-slate-50', !active);
+        link.classList.toggle('dark:text-slate-400', !active);
+        link.classList.toggle('dark:hover:text-white', !active);
+        link.classList.toggle('dark:hover:bg-slate-800/50', !active);
+      });
+    });
+
+    const searchInput = document.getElementById('search-input');
+    const searchContainer = document.getElementById('search-results-container');
+    const searchResults = document.getElementById('search-results');
+    document.getElementById('clear-search').addEventListener('click', () => { searchInput.value = ''; searchContainer.classList.add('hidden'); });
+    const db = Array.from(sections).map(s => ({
+      id: s.id,
+      heading: s.querySelector('h2').textContent.trim(),
+      text: Array.from(s.querySelectorAll('p, li, td, code')).map(e => e.textContent).join(' ')
+    }));
+    searchInput.addEventListener('input', e => {
+      const q = e.target.value.toLowerCase().trim();
+      if (q.length < 2) { searchContainer.classList.add('hidden'); return; }
+      const matches = db.filter(i => i.heading.toLowerCase().includes(q) || i.text.toLowerCase().includes(q));
+      searchResults.innerHTML = matches.length === 0
+        ? '<p class="text-xs text-slate-500">No results found.</p>'
+        : matches.map(m => `<a href="#${m.id}" class="block p-3 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-brand-500 transition-all"><h4 class="font-bold text-xs text-slate-900 dark:text-white">${m.heading}</h4><p class="text-[11px] text-slate-500 mt-1 line-clamp-2">...${m.text.substr(m.text.toLowerCase().indexOf(q), 150)}...</p></a>`).join('');
+      searchContainer.classList.remove('hidden');
+    });
+    window.addEventListener('keydown', e => { if (e.key === '/' && document.activeElement !== searchInput) { e.preventDefault(); searchInput.focus(); } });
+  </script>
+
+</body></html>
