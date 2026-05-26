@@ -1,0 +1,234 @@
+<html lang="en"><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Low Code Engine Library Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              ink: "#172033",
+              muted: "#637083",
+              line: "#d8dee8",
+              panel: "#f7f8fa",
+              accent: "#185fa5"
+            }
+          }
+        }
+      };
+    </script>
+  </head>
+  <body class="bg-white text-ink antialiased">
+    <header class="border-b border-line bg-white">
+      <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
+        <div>
+          <h1 class="text-2xl font-semibold tracking-normal">Low Code Engine Library Guide</h1>
+          <p class="mt-1 text-sm text-muted">How to consume, rebuild, package, and update the Angular render engine library.</p>
+        </div>
+        <button id="printBtn" class="rounded-md border border-line px-3 py-2 text-sm font-medium hover:bg-panel">
+          Print
+        </button>
+      </div>
+    </header>
+
+    <main class="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-6 py-8 lg:grid-cols-[240px_1fr]">
+      <nav class="h-max rounded-md border border-line bg-panel p-4 text-sm lg:sticky lg:top-6">
+        <div class="mb-3 font-semibold">Contents</div>
+        <a class="nav-link block rounded px-2 py-1.5 hover:bg-white" href="#overview">Overview</a>
+        <a class="nav-link block rounded px-2 py-1.5 hover:bg-white" href="#consumer">Use in Another Product</a>
+        <a class="nav-link block rounded px-2 py-1.5 hover:bg-white" href="#provider">Provider Setup</a>
+        <a class="nav-link block rounded px-2 py-1.5 hover:bg-white" href="#mount">Mount Schema</a>
+        <a class="nav-link block rounded px-2 py-1.5 hover:bg-white" href="#rebuild">Rebuild After Updates</a>
+        <a class="nav-link block rounded px-2 py-1.5 hover:bg-white" href="#troubleshooting">Troubleshooting</a>
+      </nav>
+
+      <article class="space-y-10">
+        <section id="overview" class="scroll-mt-6">
+          <h2 class="text-xl font-semibold">Overview</h2>
+          <p class="mt-3 text-muted">
+            <code>low-code-engine</code> is an Angular library built from the Metadata project. It exposes the render engine,
+            runtime components, registry, state/query/action services, and <code>provideLowCodeEngine()</code>.
+          </p>
+          <div class="mt-4 rounded-md border border-line bg-panel p-4">
+            <div class="text-sm font-semibold">Important rule</div>
+            <p class="mt-1 text-sm text-muted">
+              Install the library in consumer apps from a packed <code>.tgz</code> file or registry package, not from
+              <code>dist/low-code-engine</code> directly. Direct file installs can become symlinks and cause duplicate Angular runtimes.
+            </p>
+          </div>
+        </section>
+
+        <section id="consumer" class="scroll-mt-6">
+          <h2 class="text-xl font-semibold">Use in Another Product</h2>
+          <p class="mt-3 text-muted">Install the required peer dependency and the packed engine package.</p>
+          <pre class="code mt-4"><code>npm install angular-oauth2-oidc@^20.0.2
+npm install D:\Projects\TTD\package-cache\low-code-engine-0.0.1.tgz</code></pre>
+        </section>
+
+        <section id="provider" class="scroll-mt-6">
+          <h2 class="text-xl font-semibold">Provider Setup</h2>
+          <p class="mt-3 text-muted">Register Angular Router, OAuth, the engine providers, and built-in components.</p>
+          <pre class="code mt-4"><code>import { APP_INITIALIZER, ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { provideRouter } from '@angular/router';
+import { provideOAuthClient } from 'angular-oauth2-oidc';
+import { BUILT_IN_COMPONENTS, ComponentRegistry, provideLowCodeEngine } from 'low-code-engine';
+
+function registerBuiltIns(registry: ComponentRegistry) {
+  return () =&gt; {
+    registry.registerPlugin({
+      id: 'built-in',
+      name: 'Built-in components',
+      version: '0.0.1',
+      components: BUILT_IN_COMPONENTS.map(component =&gt; ({
+        ...component,
+        schema: (component as { schema?: [] }).schema ?? []
+      }))
+    });
+  };
+}
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideBrowserGlobalErrorListeners(),
+    provideRouter([]),
+    provideOAuthClient(),
+    provideLowCodeEngine({
+      apiUrl: '',
+      authServerUrl: '',
+      clientId: '',
+      graphqlUrl: ''
+    }),
+    {
+      provide: APP_INITIALIZER,
+      useFactory: registerBuiltIns,
+      deps: [ComponentRegistry],
+      multi: true
+    }
+  ]
+};</code></pre>
+        </section>
+
+        <section id="mount" class="scroll-mt-6">
+          <h2 class="text-xl font-semibold">Mount Schema</h2>
+          <p class="mt-3 text-muted">Inject <code>RendererService</code> and mount metadata into a normal DOM element.</p>
+          <pre class="code mt-4"><code>import { AfterViewInit, Component, ElementRef, ViewChild, inject } from '@angular/core';
+import { RendererService } from 'low-code-engine';
+
+@Component({
+  selector: 'app-root',
+  template: '&lt;div #renderHost&gt;&lt;/div&gt;'
+})
+export class App implements AfterViewInit {
+  @ViewChild('renderHost', { static: true }) renderHost!: ElementRef&lt;HTMLElement&gt;;
+
+  private readonly renderer = inject(RendererService);
+  private destroyRender?: () =&gt; void;
+
+  async ngAfterViewInit() {
+    this.destroyRender = await this.renderer.mount({
+      id: 'root',
+      type: 'row',
+      children: [
+        {
+          id: 'title',
+          type: 'text',
+          props: { text: 'Rendered by low-code-engine' }
+        }
+      ]
+    }, this.renderHost.nativeElement);
+  }
+
+  ngOnDestroy() {
+    this.destroyRender?.();
+  }
+}</code></pre>
+        </section>
+
+        <section id="rebuild" class="scroll-mt-6">
+          <h2 class="text-xl font-semibold">Rebuild After Library Updates</h2>
+          <ol class="mt-4 space-y-4">
+            <li class="rounded-md border border-line p-4">
+              <div class="font-semibold">1. Build the library from Metadata</div>
+              <pre class="code mt-3"><code>cd D:\Projects\TTD\Metadata
+npm run build:engine</code></pre>
+            </li>
+            <li class="rounded-md border border-line p-4">
+              <div class="font-semibold">2. Pack the built library into a tarball</div>
+              <pre class="code mt-3"><code>New-Item -ItemType Directory -Force -Path D:\Projects\TTD\package-cache
+npm pack D:\Projects\TTD\Metadata\dist\low-code-engine --pack-destination D:\Projects\TTD\package-cache</code></pre>
+            </li>
+            <li class="rounded-md border border-line p-4">
+              <div class="font-semibold">3. Install the new tarball in the consuming product</div>
+              <pre class="code mt-3"><code>cd D:\Projects\TTD\metadata-engine-consumer
+npm install D:\Projects\TTD\package-cache\low-code-engine-0.0.1.tgz</code></pre>
+            </li>
+            <li class="rounded-md border border-line p-4">
+              <div class="font-semibold">4. Rebuild and serve the consumer</div>
+              <pre class="code mt-3"><code>npm run build -- --configuration development
+npx http-server dist\metadata-engine-consumer\browser -p 4300 -a 127.0.0.1 -c-1</code></pre>
+            </li>
+          </ol>
+        </section>
+
+        <section id="troubleshooting" class="scroll-mt-6">
+          <h2 class="text-xl font-semibold">Troubleshooting</h2>
+          <div class="mt-4 divide-y divide-line rounded-md border border-line">
+            <div class="p-4">
+              <div class="font-semibold">NG0203 injection error</div>
+              <p class="mt-1 text-sm text-muted">
+                Check for duplicate Angular runtimes. Do not install the library from <code>dist/low-code-engine</code> as a direct file link.
+                Use <code>npm pack</code> and install the generated <code>.tgz</code>.
+              </p>
+            </div>
+            <div class="p-4">
+              <div class="font-semibold">No provider for OAuthService</div>
+              <p class="mt-1 text-sm text-muted">
+                Install <code>angular-oauth2-oidc</code> and add <code>provideOAuthClient()</code> to the consumer app providers.
+              </p>
+            </div>
+            <div class="p-4">
+              <div class="font-semibold">Old error still appears after rebuild</div>
+              <p class="mt-1 text-sm text-muted">
+                Restart the server and open a cache-busted URL such as <code>http://127.0.0.1:4300/?v=new-build</code>.
+              </p>
+            </div>
+          </div>
+        </section>
+      </article>
+    </main>
+
+    <script>
+      document.querySelectorAll("pre.code").forEach((pre) => {
+        pre.className = "code relative overflow-x-auto rounded-md bg-slate-950 p-4 pr-20 text-sm leading-6 text-slate-100";
+        const button = document.createElement("button");
+        button.textContent = "Copy";
+        button.className = "absolute right-3 top-3 rounded bg-white/10 px-2 py-1 text-xs font-medium text-white hover:bg-white/20";
+        button.addEventListener("click", async () => {
+          await navigator.clipboard.writeText(pre.innerText.trim());
+          button.textContent = "Copied";
+          setTimeout(() => (button.textContent = "Copy"), 1200);
+        });
+        pre.appendChild(button);
+      });
+
+      document.getElementById("printBtn").addEventListener("click", () => window.print());
+
+      const links = [...document.querySelectorAll(".nav-link")];
+      const sections = links.map((link) => document.querySelector(link.getAttribute("href")));
+      const observer = new IntersectionObserver(
+        (entries) => {
+          const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+          if (!visible) return;
+          links.forEach((link) => {
+            const active = link.getAttribute("href") === `#${visible.target.id}`;
+            link.classList.toggle("bg-white", active);
+            link.classList.toggle("font-semibold", active);
+          });
+        },
+        { rootMargin: "-20% 0px -65% 0px", threshold: [0.1, 0.25, 0.5] }
+      );
+      sections.forEach((section) => observer.observe(section));
+    </script>
+  
+</body></html>
