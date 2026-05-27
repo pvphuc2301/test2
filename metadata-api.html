@@ -1,0 +1,241 @@
+<html lang="vi" class="scroll-smooth"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tài liệu Kiến trúc - Meta CMS Backend</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom scrollbar for a cleaner look */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        .active-toc-link { color: #3b82f6; font-weight: 600; border-left-color: #3b82f6; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans leading-relaxed selection:bg-blue-200">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm fixed top-0 w-full z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"></path>
+                </svg>
+                <h1 class="text-xl font-bold text-slate-900">Meta CMS Backend</h1>
+            </div>
+            <div class="text-sm text-slate-500">v1.0 Documentation</div>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-12 flex items-start gap-8">
+        
+        <!-- Sidebar / Table of Contents -->
+        <aside class="hidden lg:block w-64 shrink-0 sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto pr-4">
+            <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4">Nội dung</h3>
+            <nav id="toc" class="space-y-1 border-l-2 border-slate-100">
+                <!-- TOC items will be injected by JS -->
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 min-w-0 bg-white shadow-sm rounded-xl p-8 border border-slate-200 content-section">
+            
+            <section id="tong-quan" class="mb-12 scroll-mt-24">
+                <h2 class="text-3xl font-bold text-slate-900 mb-4">1. Tổng quan hệ thống</h2>
+                <p class="mb-4">Meta CMS Backend là một hệ thống quản trị nội dung mang hơi hướng <strong>Low-code/No-code</strong>. Thay vì quản lý nội dung dạng bài viết truyền thống, hệ thống quản lý các <code>App</code>, <code>Page</code>, cấu trúc giao diện dưới dạng <code>SchemaJson</code>, và các nguồn dữ liệu động (<code>DataSource</code>, <code>Query</code>).</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+                    <div class="bg-blue-50 p-4 rounded-lg border border-blue-100">
+                        <div class="font-bold text-blue-700 mb-1">Cốt lõi</div>
+                        <div class="text-sm">ASP.NET Core, C#, Entity Framework Core (SQL Server)</div>
+                    </div>
+                    <div class="bg-purple-50 p-4 rounded-lg border border-purple-100">
+                        <div class="font-bold text-purple-700 mb-1">Giao tiếp API</div>
+                        <div class="text-sm">GraphQL sử dụng thư viện HotChocolate. Hỗ trợ Filtering, Sorting, Projections.</div>
+                    </div>
+                    <div class="bg-emerald-50 p-4 rounded-lg border border-emerald-100">
+                        <div class="font-bold text-emerald-700 mb-1">Xác thực &amp; Bảo mật</div>
+                        <div class="text-sm">Tích hợp OpenIddict (OAuth2 / OIDC server nhúng).</div>
+                    </div>
+                </div>
+            </section>
+
+            <hr class="border-slate-100 mb-12">
+
+            <section id="mo-hinh-du-lieu" class="mb-12 scroll-mt-24">
+                <h2 class="text-3xl font-bold text-slate-900 mb-4">2. Mô hình liên kết dữ liệu (ERD)</h2>
+                <p class="mb-6">Cơ sở dữ liệu được tổ chức để lưu trữ cấu trúc ứng dụng đa phiên bản (Versioning) và dữ liệu động.</p>
+
+                <h3 class="text-xl font-semibold text-slate-800 mb-3" id="thuc-the-ung-dung">2.1. Nhóm thực thể Ứng dụng &amp; Giao diện</h3>
+                <ul class="space-y-4 mb-6">
+                    <li class="p-4 bg-slate-50 rounded-lg">
+                        <strong>App (Ứng dụng)</strong>: Đại diện cho một ứng dụng hoặc workspace.
+                        <ul class="list-disc ml-6 mt-2 text-sm text-slate-600">
+                            <li>Các trường JSON: <code>ThemeJson</code>, <code>VariablesJson</code>, <code>GlobalActionsJson</code>, <code>TemplatesJson</code>. (Cho phép lưu trữ linh hoạt giao diện và biến môi trường của App).</li>
+                        </ul>
+                    </li>
+                    <li class="p-4 bg-slate-50 rounded-lg">
+                        <strong>AppVersion (Phiên bản App)</strong>: Quản lý versioning (Semantic Versioning: Major.Minor.Patch) cho App.
+                        <ul class="list-disc ml-6 mt-2 text-sm text-slate-600">
+                            <li>Lưu trữ <code>SchemaJson</code> toàn cục.</li>
+                            <li>Trạng thái: <code>Draft</code>, <code>Published</code>, <code>Archived</code>.</li>
+                        </ul>
+                    </li>
+                    <li class="p-4 bg-slate-50 rounded-lg">
+                        <strong>Page (Trang)</strong>: Trực thuộc App (1 App - N Page).
+                        <ul class="list-disc ml-6 mt-2 text-sm text-slate-600">
+                            <li>Chứa cấu hình <code>PropertiesJson</code> và thông tin định tuyến (Slug, IsHomePage).</li>
+                        </ul>
+                    </li>
+                    <li class="p-4 bg-slate-50 rounded-lg">
+                        <strong>PageVersion (Phiên bản Trang)</strong>: Sự kết hợp giữa <code>AppVersion</code> và <code>Page</code>.
+                        <ul class="list-disc ml-6 mt-2 text-sm text-slate-600">
+                            <li>Mỗi phiên bản App sẽ chốt một <code>SchemaJson</code> (Cấu trúc UI trang) riêng cho trang đó.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h3 class="text-xl font-semibold text-slate-800 mb-3" id="thuc-the-du-lieu">2.2. Nhóm thực thể Dữ liệu &amp; Truy vấn</h3>
+                <ul class="space-y-4">
+                    <li class="p-4 bg-slate-50 rounded-lg">
+                        <strong>DataSource (Nguồn dữ liệu)</strong>: Điểm kết nối đến DB, API bên ngoài. Lưu trữ cấu hình dạng <code>ConfigJson</code>.
+                    </li>
+                    <li class="p-4 bg-slate-50 rounded-lg">
+                        <strong>Query (Truy vấn)</strong>: Các script/query gắn với 1 App và 1 DataSource. Được định nghĩa qua <code>QueryConfigJson</code>. Có cờ <code>RunOnMount</code> xác định xem query có chạy ngay khi giao diện được tải hay không.
+                    </li>
+                </ul>
+            </section>
+
+            <hr class="border-slate-100 mb-12">
+
+            <section id="giao-tiep-graphql" class="mb-12 scroll-mt-24">
+                <h2 class="text-3xl font-bold text-slate-900 mb-4">3. Lớp Giao tiếp GraphQL</h2>
+                <p class="mb-4">Meta CMS sử dụng HotChocolate để bộc lộ dữ liệu qua Endpoint <code>/graphql</code>. Các GraphQL Query chính bao gồm:</p>
+                
+                <div class="bg-slate-800 text-slate-50 p-4 rounded-lg overflow-x-auto text-sm font-mono mb-4">
+                    <pre><code>// RootQuery.cs hỗ trợ
+- GetApps()
+- GetAppByName(string name)
+- GetPages()
+- GetAppVersions()
+- GetPageVersions()
+- GetDataSources()
+- GetQueries()</code></pre>
+                </div>
+                
+                <h3 class="text-lg font-semibold text-slate-800 mb-2 mt-6" id="tinh-nang-graphql">Tính năng nổi bật</h3>
+                <ul class="list-disc ml-6 space-y-2 text-slate-700">
+                    <li><strong>Projections, Filtering, Sorting:</strong> Cho phép Frontend chỉ truy vấn các trường cần thiết, linh hoạt lọc dữ liệu trực tiếp tại lớp CSDL mà không cần viết thêm mã C#.</li>
+                    <li><strong>App Resolvers (AppResolvers.cs):</strong> GraphQL tự động tính toán và trả về các trường mở rộng không lưu trực tiếp dạng cột DB, ví dụ: <code>CurrentDraftVersion</code>, <code>PublishedVersion</code>.</li>
+                    <li><strong>Ánh xạ JSON động:</strong> Các trường <code>VariablesJson</code> và <code>GlobalActionsJson</code> được tự động deserialize thành kiểu <code>AnyType</code> trong GraphQL, giúp Frontend nhận được object thật thay vì chuỗi JSON.</li>
+                </ul>
+            </section>
+
+            <hr class="border-slate-100 mb-12">
+
+            <section id="cau-hinh-dong" class="mb-12 scroll-mt-24">
+                <h2 class="text-3xl font-bold text-slate-900 mb-4">4. Cấu hình &amp; Kết nối Động (ConfigService)</h2>
+                <p class="mb-4">Trong <code>Program.cs</code>, hệ thống thực hiện một quy trình nạp cấu hình mạnh mẽ để lấy chuỗi kết nối (Connection String) từ xa:</p>
+                <ol class="list-decimal ml-6 space-y-3 text-slate-700">
+                    <li>Gọi đến <strong>AuthServer</strong> (Identity Provider) để lấy môi trường của Backend (<code>backend-env?appCode=CMS</code>).</li>
+                    <li>Phân tích JSON trả về để tìm <code>ConfigServiceUrl</code>.</li>
+                    <li>Gọi đến <strong>ConfigService</strong> cung cấp <code>ClientId</code>, <code>ClientSecret</code>, <code>Environment</code>, và <code>TenantCode</code> để lấy chuỗi kết nối <code>DbContext</code> đã được giải mã động.</li>
+                </ol>
+                <p class="mt-4 text-sm bg-yellow-50 text-yellow-800 p-3 rounded border border-yellow-200">
+                    <strong>Lưu ý:</strong> Nếu không gọi được ConfigService, hệ thống có cơ chế Fallback (dự phòng) kết nối đến LocalDB: <code>Server=(localdb)\mssqllocaldb;Database=MetaUI_CMS...</code>
+                </p>
+            </section>
+
+            <hr class="border-slate-100 mb-12">
+
+            <section id="cach-su-dung" class="mb-12 scroll-mt-24">
+                <h2 class="text-3xl font-bold text-slate-900 mb-4">5. Hướng dẫn sử dụng</h2>
+                
+                <h3 class="text-xl font-semibold text-slate-800 mb-3" id="khoi-chay">5.1. Khởi chạy Backend</h3>
+                <p class="mb-4">Backend được cấu hình với CORS mặc định trỏ tới môi trường cục bộ và frontend cụ thể. Khởi chạy bằng .NET CLI:</p>
+                <div class="bg-slate-800 text-slate-50 p-4 rounded-lg text-sm font-mono mb-6">
+                    <pre><code>dotnet restore
+dotnet ef database update  # Chạy migration nếu cần
+dotnet run</code></pre>
+                </div>
+
+                <h3 class="text-xl font-semibold text-slate-800 mb-3" id="vi-du-truy-van">5.2. Tương tác với GraphQL</h3>
+                <p class="mb-4">Khi ứng dụng chạy, bạn có thể truy cập môi trường Banana Cake Pop (GraphQL IDE IDE) qua <code>http://localhost:[port]/graphql</code>.</p>
+                <p class="mb-2 font-medium">Ví dụ truy vấn lấy chi tiết một ứng dụng kèm giao diện (Schema) của trang chủ:</p>
+                <div class="bg-slate-800 text-slate-50 p-4 rounded-lg overflow-x-auto text-sm font-mono">
+                    <pre><code class="language-graphql">query {
+  appByName(name: "My App") {
+    id
+    slug
+    variables         # Đã được parse từ JSON -&gt; Object
+    globalActions     # Đã được parse từ JSON -&gt; List
+    publishedVersion
+    pages(where: { isHomePage: { eq: true } }) {
+      name
+      propertiesJson
+      versions {
+        schemaJson    # Schema giao diện để render frontend
+      }
+    }
+  }
+}</code></pre>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Script to generate TOC and handle scroll-spy -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const toc = document.getElementById('toc');
+            const sections = document.querySelectorAll('.content-section h2, .content-section h3');
+            const tocLinks = [];
+
+            // Generate TOC
+            sections.forEach(section => {
+                if (!section.id) return;
+                
+                const link = document.createElement('a');
+                link.href = `#${section.id}`;
+                link.textContent = section.textContent;
+                
+                // Styling based on heading level
+                if (section.tagName.toLowerCase() === 'h2') {
+                    link.className = 'block pl-4 py-1.5 text-sm text-slate-600 hover:text-blue-600 hover:bg-slate-50 border-l-2 border-transparent transition-colors';
+                } else if (section.tagName.toLowerCase() === 'h3') {
+                    link.className = 'block pl-8 py-1 text-sm text-slate-500 hover:text-blue-600 hover:bg-slate-50 border-l-2 border-transparent transition-colors';
+                }
+
+                toc.appendChild(link);
+                tocLinks.push({ element: section, link: link });
+            });
+
+            // Scroll-spy functionality
+            const observerOptions = {
+                root: null,
+                rootMargin: '-20% 0px -60% 0px',
+                threshold: 0
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Remove active class from all
+                        tocLinks.forEach(item => item.link.classList.remove('active-toc-link'));
+                        
+                        // Add active class to current
+                        const activeItem = tocLinks.find(item => item.element === entry.target);
+                        if (activeItem) {
+                            activeItem.link.classList.add('active-toc-link');
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(sec => observer.observe(sec));
+        });
+    </script>
+
+
+</body></html>

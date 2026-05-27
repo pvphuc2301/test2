@@ -1,0 +1,177 @@
+<html lang="vi"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tài liệu Tích hợp API - EMR Flow</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom scrollbar for code blocks */
+        pre::-webkit-scrollbar { height: 8px; }
+        pre::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 4px; }
+    </style>
+</head>
+<body class="bg-slate-50 font-sans text-slate-800 antialiased selection:bg-blue-200">
+
+    <div class="max-w-5xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        
+        <!-- Header -->
+        <header class="mb-10 border-b border-slate-200 pb-6">
+            <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Tài liệu API: Flow Phiếu Tiền Sử Dị Ứng</h1>
+            <p class="mt-4 text-lg text-slate-600">Hướng dẫn chi tiết các bước gọi API từ Frontend để khởi tạo, cập nhật, tải lại và ký số phiếu khai thác tiền sử dị ứng cho bệnh nhân.</p>
+        </header>
+
+        <!-- Luồng tổng quan -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center">
+                <svg class="w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                Luồng thực thi (Flow)
+            </h2>
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <ol class="relative border-l border-blue-500 ml-3 space-y-6">
+                    <li class="pl-6">
+                        <span class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -left-3 ring-4 ring-white">
+                            <span class="text-blue-800 font-bold text-sm">1</span>
+                        </span>
+                        <h3 class="font-semibold text-slate-900">User chọn tạo phiếu</h3>
+                        <p class="text-slate-500 text-sm mt-1">Gọi API khởi tạo. Backend tự động map <code>DocumentModel</code>, tạo <code>DocumentData</code> và tạo <code>tbl_PhieuKhaiThacTienSuDiUng</code>.</p>
+                    </li>
+                    <li class="pl-6">
+                        <span class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -left-3 ring-4 ring-white">
+                            <span class="text-blue-800 font-bold text-sm">2</span>
+                        </span>
+                        <h3 class="font-semibold text-slate-900">Nhận định danh (IDs)</h3>
+                        <p class="text-slate-500 text-sm mt-1">Frontend nhận về <code>documentDataId</code> và <code>phieuId</code> để sử dụng cho các thao tác tiếp theo.</p>
+                    </li>
+                    <li class="pl-6">
+                        <span class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -left-3 ring-4 ring-white">
+                            <span class="text-blue-800 font-bold text-sm">3</span>
+                        </span>
+                        <h3 class="font-semibold text-slate-900">Nhập &amp; Lưu dữ liệu</h3>
+                        <p class="text-slate-500 text-sm mt-1">User điền form. Frontend gửi request PUT để lưu nháp hoặc hoàn tất phiếu.</p>
+                    </li>
+                    <li class="pl-6">
+                        <span class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -left-3 ring-4 ring-white">
+                            <span class="text-blue-800 font-bold text-sm">4</span>
+                        </span>
+                        <h3 class="font-semibold text-slate-900">Ký số (Tuỳ chọn)</h3>
+                        <p class="text-slate-500 text-sm mt-1">Thực hiện ký điện tử/chữ ký số để chốt hồ sơ, không cho phép chỉnh sửa nữa.</p>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- API 1: Khởi tạo -->
+        <section class="mb-12">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="px-6 py-4 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+                    <h3 class="text-lg font-bold text-slate-800">1. Khởi tạo Phiếu mới</h3>
+                    <span class="px-3 py-1 bg-green-100 text-green-800 text-xs font-bold rounded-full font-mono">POST</span>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center gap-2 font-mono text-sm mb-4 bg-slate-100 p-3 rounded-lg border border-slate-200">
+                        <span class="text-green-600 font-bold">POST</span>
+                        <span class="text-slate-700">/api/emr/visits/<span class="text-orange-500">{visitId}</span>/forms/allergy-history</span>
+                    </div>
+                    <p class="text-slate-600 text-sm mb-4">API này được gọi khi người dùng bấm nút "Thêm phiếu dị ứng". Nó sẽ trả về các ID cần thiết để thao tác.</p>
+                    
+                    <h4 class="text-sm font-semibold text-slate-800 mb-2">Response (200 OK)</h4>
+                    <pre class="bg-slate-800 text-green-400 p-4 rounded-lg text-sm font-mono overflow-x-auto"><code>{
+  "documentDataId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "phieuId": "12345678-1234-1234-1234-123456789012",
+  "documentType": "Phiếu khai thác tiền sử dị ứng",
+  "status": "Draft"
+}</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- API 2: Lấy dữ liệu -->
+        <section class="mb-12">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="px-6 py-4 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+                    <h3 class="text-lg font-bold text-slate-800">2. Load dữ liệu Phiếu (Mở lại)</h3>
+                    <span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-bold rounded-full font-mono">GET</span>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center gap-2 font-mono text-sm mb-4 bg-slate-100 p-3 rounded-lg border border-slate-200">
+                        <span class="text-blue-600 font-bold">GET</span>
+                        <span class="text-slate-700">/api/emr/documents/<span class="text-orange-500">{documentDataId}</span>/forms/allergy-history/<span class="text-orange-500">{phieuId}</span></span>
+                    </div>
+                    <p class="text-slate-600 text-sm mb-4">Gọi khi người dùng đóng form và mở lại. Dùng để bind dữ liệu cũ lên giao diện.</p>
+                    
+                    <h4 class="text-sm font-semibold text-slate-800 mb-2">Response (200 OK)</h4>
+                    <pre class="bg-slate-800 text-green-400 p-4 rounded-lg text-sm font-mono overflow-x-auto"><code>{
+  "id": "12345678-1234-1234-1234-123456789012",
+  "documentDataId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "thuocDiNguyen": "Paracetamol",
+  "thuocDiNguyenCoKhong": true,
+  "thuocDiNguyenSoLan": 1,
+  "thuocDiNguyenBieuHien": "Nổi mề đay",
+  "thucPham": null,
+  "thucPhamCoKhong": false,
+  ...
+}</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- API 3: Cập nhật -->
+        <section class="mb-12">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="px-6 py-4 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+                    <h3 class="text-lg font-bold text-slate-800">3. Lưu / Cập nhật Phiếu</h3>
+                    <span class="px-3 py-1 bg-yellow-100 text-yellow-800 text-xs font-bold rounded-full font-mono">PUT</span>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center gap-2 font-mono text-sm mb-4 bg-slate-100 p-3 rounded-lg border border-slate-200">
+                        <span class="text-yellow-600 font-bold">PUT</span>
+                        <span class="text-slate-700">/api/emr/documents/<span class="text-orange-500">{documentDataId}</span>/forms/allergy-history/<span class="text-orange-500">{phieuId}</span></span>
+                    </div>
+                    <p class="text-slate-600 text-sm mb-4">Gửi toàn bộ các field trong form khi người dùng bấm "Lưu".</p>
+                    
+                    <h4 class="text-sm font-semibold text-slate-800 mb-2">Request Body (JSON)</h4>
+                    <pre class="bg-slate-800 text-sky-300 p-4 rounded-lg text-sm font-mono overflow-x-auto mb-4"><code>{
+  "thuocDiNguyen": "Paracetamol",
+  "thuocDiNguyenCoKhong": true,
+  "thuocDiNguyenSoLan": 2,
+  "thuocDiNguyenBieuHien": "Khó thở, nổi mẩn đỏ",
+  "conTrung": "Ong đốt",
+  "conTrungCoKhong": true,
+  ...
+}</code></pre>
+
+                    <h4 class="text-sm font-semibold text-slate-800 mb-2">Response (200 OK)</h4>
+                    <pre class="bg-slate-800 text-green-400 p-4 rounded-lg text-sm font-mono overflow-x-auto"><code>{
+  "message": "Form saved successfully."
+}</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- API 4: Ký số -->
+        <section class="mb-12">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="px-6 py-4 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+                    <h3 class="text-lg font-bold text-slate-800">4. Ký số hoàn tất bệnh án</h3>
+                    <span class="px-3 py-1 bg-green-100 text-green-800 text-xs font-bold rounded-full font-mono">POST</span>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center gap-2 font-mono text-sm mb-4 bg-slate-100 p-3 rounded-lg border border-slate-200">
+                        <span class="text-green-600 font-bold">POST</span>
+                        <span class="text-slate-700">/api/signature/documents/<span class="text-orange-500">{documentDataId}</span>/sign</span>
+                    </div>
+                    <p class="text-slate-600 text-sm mb-4">Sử dụng để chốt hồ sơ. Sau khi ký, API Cập nhật (PUT) sẽ tự động bị khoá (Trả về 400 Bad Request).</p>
+                    
+                    <h4 class="text-sm font-semibold text-slate-800 mb-2">Request Body (JSON)</h4>
+                    <pre class="bg-slate-800 text-sky-300 p-4 rounded-lg text-sm font-mono overflow-x-auto"><code>{
+  "signatureType": "ELECTRONIC_SIGNATURE",
+  "signatureId": "ID_CHU_KY_DIEN_TU_CUA_BAC_SI",
+  "reason": "Xác nhận phiếu tiền sử dị ứng"
+}</code></pre>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+
+</body></html>
